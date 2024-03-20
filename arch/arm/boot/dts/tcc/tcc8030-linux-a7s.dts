@@ -1,0 +1,125 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+/dts-v1/;
+
+#include "tcc8031-subcore.dtsi"
+#include <dt-bindings/pmap/tcc803x/pmap-tcc803x-linux-ivi-subcore-a7s.h>
+
+/ {
+	/* Describe board specific items, e.g. port map */
+};
+
+&reserved_memory {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	ranges;
+
+        pmap_fb_video: fb_video {
+                compatible = "pmap,fb_video";
+                pmap-name = "fb_video";
+                reg = <FB_VIDEO_BASE PMAP_SIZE_FB_VIDEO>;
+                alignment = <0x1000>;
+                no-map;
+        };
+
+        pmap_fb1_video: fb1_video {
+                compatible = "pmap,fb1_video";
+                pmap-name = "fb1_video";
+                reg = <RESERVED_HEAP_BASE PMAP_SIZE_FB1_VIDEO>;
+                alignment = <0x1000>;
+                no-map;
+        };
+
+	/*-----------------------------------------------------------
+	 * Camera Memory
+	 *-----------------------------------------------------------
+	 */
+	pmap_parking_gui: pmap_parking_gui {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PGL_BASE PMAP_SIZE_CAMERA_PGL>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera_viqe: pmap_rearcamera_viqe {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_VIQE_BASE PMAP_SIZE_CAMERA_VIQE>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera: pmap_rearcamera {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PREVIEW_BASE PMAP_SIZE_CAMERA_PREVIEW0>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera1: pmap_rearcamera1 {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PREVIEW1_BASE PMAP_SIZE_CAMERA_PREVIEW1>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera2: pmap_rearcamera2 {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PREVIEW2_BASE PMAP_SIZE_CAMERA_PREVIEW2>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera3: pmap_rearcamera3 {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PREVIEW3_BASE PMAP_SIZE_CAMERA_PREVIEW3>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera4: pmap_rearcamera4 {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PREVIEW4_BASE PMAP_SIZE_CAMERA_PREVIEW4>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera5: pmap_rearcamera5 {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PREVIEW5_BASE PMAP_SIZE_CAMERA_PREVIEW5>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera6: pmap_rearcamera6 {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_PREVIEW6_BASE PMAP_SIZE_CAMERA_PREVIEW6>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_vin_lastframe: pmap_vin_lastframe {
+		compatible = "shared-dma-pool";
+		reg = <CAMERA_LASTFRAME_BASE PMAP_SIZE_CAMERA_LASTFRAME>;
+		alignment = <0x1000>;
+		no-map;
+	};
+};
+
+&cam_ipc0 {
+	status = "okay";
+};
+
+&switch0 {
+	compatible = "telechips,switch";
+	status = "okay";
+
+	pinctrl-names = "default";
+	pinctrl-0 = <&switch_ma15>;
+
+	switch-gpios = <&gpma 15 1>;
+	switch-active = <0>;
+};
+

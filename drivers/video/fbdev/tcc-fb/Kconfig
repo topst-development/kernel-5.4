@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# telechips fbdev configuration
+#
+
+source "drivers/video/fbdev/tcc-fb/vioc/Kconfig"
+source "drivers/video/fbdev/tcc-fb/g2d/Kconfig"
+
+if !DRM_TCC
+source "drivers/video/fbdev/tcc-fb/vioc/Kconfig"
+endif
+
+source "drivers/video/fbdev/tcc-fb/panel/Kconfig"
+
+config FB_NEW
+	bool "TSVFB - Telechips Simple VIOC Frame buffer support"
+	depends on FB && ARCH_TCC
+	select FB_CFB_FILLRECT
+	select FB_CFB_COPYAREA
+	select FB_CFB_IMAGEBLIT
+	default n
+	help
+		This is Simple Frame buffer driver for Telechips Soc.
+		It is complex and difficult to use TVFB because additional functions other
+		than UI control function are provided. Therefore, in this frame buffer driver,
+		unnecessary functions other than the UI control function are removed.
+
+config FB_TCC_OVERLAY
+	tristate "Overlay for Camera/Video"
+	depends on FB && ARCH_TCC
+	help
+	  This is the Overlay device driver for Telechips Soc.
+	  The overlay driver is used for video or camera output.
+
+config OVERLAY1
+	bool "/dev/overlay1 device support"
+	depends on FB_TCC_OVERLAY
+	help
+	  This is the Overlay1 device driver for Telechips Soc.
+	  /dev/overlay1 device support
+
+config TCC_VIDEO_DISPLAY_DEINTERLACE_MODE
+	bool "Support Interlaced Video"
+	#depends on TCC_VIDEO_DISPLAY_BY_VSYNC_INT
+	default y
+	help
+	  It makes the interlaced video can be displayed smoothly.

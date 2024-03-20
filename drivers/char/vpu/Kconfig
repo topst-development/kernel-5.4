@@ -1,0 +1,389 @@
+#
+# VPU device configuration
+#
+
+menuconfig TCC_VPU_DRV
+	tristate "VPU-Video Process Unit"
+
+if TCC_VPU_DRV
+
+# For test of WAVE420L in TCC805x
+config SUPPORT_TCC_WAVE420L_VPU_HEVC_ENC
+	bool "support HEVC encoder using WAVE420L"
+	depends on (ARCH_TCC805X)
+	default y
+	help
+		Enable HEVC codec using WAVE420L.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config SUPPORT_TCC_WAVE512_4K_D2
+	bool "support HEVC/VP9 Decoder using WAVE512"
+	depends on (ARCH_TCC899X || ARCH_TCC901X || ARCH_TCC805X)
+	default y
+	help
+		Enable HEVC/VP9 codec using WAVE512.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+if SUPPORT_TCC_WAVE512_4K_D2
+config SUPPORT_TCC_HEVC_4K
+	default y
+	bool "support 4K resolution for HEVC"
+	help
+		4K Resolution for HEVC/VP9
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config SUPPORT_TCC_VP9_4K
+	default y
+	bool "support 4K resolution for VP9"
+	help
+		4K Resolution for VP9
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+endif
+
+config SUPPORT_TCC_WAVE410_HEVC
+	bool "support HEVC Decoder using WAVE410"
+	depends on (ARCH_TCC803X || ARCH_TCC896X || ARCH_TCC897X || ARCH_TCC898X || ARCH_TCC570X)
+	default y
+	help
+		Enable HEVC codec using WAVE410.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+if SUPPORT_TCC_WAVE410_HEVC
+config SUPPORT_TCC_HEVC_4K
+	default y
+	depends on (ARCH_TCC803X || ARCH_TCC896X || ARCH_TCC898X)
+	bool "support 4K resolution for HEVC"
+	help
+		4K Resolution for HEVC
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+endif
+
+config SUPPORT_TCC_G2V2_VP9
+	bool "support VP9 Codec using G2V2"
+	default y
+	depends on (ARCH_TCC898X)
+	help
+		Enable VP9 codec.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+if SUPPORT_TCC_G2V2_VP9
+config SUPPORT_TCC_VP9_4K
+	default y
+	depends on (ARCH_TCC898X)
+	bool "support 4K resolution for VP9"
+	help
+		4K Resolution for VP9
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+endif
+
+config SUPPORT_TCC_JPU
+	bool "support JPU Codec"
+	default y
+	help
+		Enable JPU codec.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+choice
+	prompt "Max Frame Size (W x H)"
+	default VDEC_MAX_FRAME_SIZE_1
+	depends on (ARCH_TCC899X || ARCH_TCC901X ||ARCH_TCC805X)
+	help
+		max frame size(width/height) for decoder.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config VDEC_MAX_FRAME_SIZE_1
+	bool "4096x2160"
+	help
+		DEC_MAX_FRAME_SIZE_1
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VDEC_MAX_FRAME_SIZE_2
+	bool "3840x2160"
+	help
+		DEC_MAX_FRAME_SIZE_2
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+endchoice
+
+choice
+	prompt "Instance count of Decoder"
+	default VDEC_CNT_5
+	help
+		max instance count
+		for decoder.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config VDEC_CNT_1
+	bool "max 1"
+	select VDEC_MAX_CNT_1
+	help
+		VDEC_MAX_CNT_1
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VDEC_CNT_2
+	bool "max 2"
+	select VDEC_MAX_CNT_2
+	help
+		VDEC_MAX_CNT_2
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VDEC_CNT_3
+	bool "max 3"
+	select VDEC_MAX_CNT_3
+	help
+		VDEC_MAX_CNT_3
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VDEC_CNT_4
+	bool "max 4"
+	select VDEC_MAX_CNT_4
+	help
+		VDEC_MAX_CNT_4
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VDEC_CNT_5
+	bool "max 5"
+	select VDEC_MAX_CNT_5
+	help
+		VDEC_MAX_CNT_5
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+endchoice
+
+choice
+	prompt "Instance count of Encoder"
+	depends on (SUPPORT_TCC_JPU || ARCH_TCC893X || ARCH_TCC896X || ARCH_TCC898X || ARCH_TCC803X || ARCH_TCC805X)
+	default VENC_CNT_16
+	help
+		max instance count for encoder.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_1
+	bool "max 1"
+	select VENC_MAX_CNT_1
+	help
+		VENC_MAX_CNT_1
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_2
+	bool "max 2"
+	select VENC_MAX_CNT_2
+	help
+		VENC_MAX_CNT_2
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_3
+	bool "max 3"
+	select VENC_MAX_CNT_3
+	help
+		VENC_MAX_CNT_3
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_4
+	bool "max 4"
+	select VENC_MAX_CNT_4
+	help
+		VENC_MAX_CNT_4
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_5
+	bool "max 5"
+	select VENC_MAX_CNT_5
+	help
+		VENC_MAX_CNT_5
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_6
+	bool "max 6"
+	select VENC_MAX_CNT_6
+	help
+		VENC_MAX_CNT_6
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_7
+	bool "max 7"
+	select VENC_MAX_CNT_7
+	help
+		VENC_MAX_CNT_7
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_8
+	bool "max 8"
+	select VENC_MAX_CNT_8
+	help
+		VENC_MAX_CNT_8
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_9
+	bool "max 9"
+	select VENC_MAX_CNT_9
+	help
+		VENC_MAX_CNT_9
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_10
+	bool "max 10"
+	select VENC_MAX_CNT_10
+	help
+		VENC_MAX_CNT_10
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_11
+	bool "max 11"
+	select VENC_MAX_CNT_11
+	help
+		VENC_MAX_CNT_11
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_12
+	bool "max 12"
+	select VENC_MAX_CNT_12
+	help
+		VENC_MAX_CNT_12
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_13
+	bool "max 13"
+	select VENC_MAX_CNT_13
+	help
+		VENC_MAX_CNT_13
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_14
+	bool "max 14"
+	select VENC_MAX_CNT_14
+	help
+		VENC_MAX_CNT_14
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_15
+	bool "max 15"
+	select VENC_MAX_CNT_15
+	help
+		VENC_MAX_CNT_13
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config VENC_CNT_16
+	bool "max 16"
+	select VENC_MAX_CNT_16
+	help
+		VENC_MAX_CNT_16
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+
+config ENC_NO_SUPPORT
+	bool "not support"
+	select ENC_NOT_SUPPORT
+	help
+		ENC_NOT_SUPPORT
+		This adds support
+		the VPU drivers.
+		on TCCxxxx Soc devices.
+endchoice
+
+config VENC_BUFFER_SIZE
+	int "Encoder's buffer size (1 => 1MB, ex> 15MB(720p)/30MB(1080p))"
+	depends on (SUPPORT_TCC_JPU || ARCH_TCC893X || ARCH_TCC896X || ARCH_TCC898X || ARCH_TCC803X || ARCH_TCC805X)
+	default 30
+	help
+		Select buffer size of Encoder.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config VPU_ALLOC_MEM_IN_SPECIFIC_SEQUENCE
+	bool "alloc memory in specific sequence"
+	help
+		To alloc memory in regular sequence only
+		specific case like black-box in linux platform.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config VPU_TIME_MEASUREMENT
+	bool "processing time masurement"
+	help
+		Enable to measure the time of decoding/encoding.
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+config TEST_VPU_DRAM_INTLV
+	bool "dram interleaving test"
+	depends on ARCH_TCC896X
+	help
+		Enable to test DRAM Interleaving
+		This adds support
+		the VPU drivers
+		on TCCxxxx Soc devices.
+
+endif # TCC_VPU_DRV
+

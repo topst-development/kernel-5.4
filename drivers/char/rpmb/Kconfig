@@ -1,0 +1,30 @@
+config RPMB
+	tristate "RPMB partition interface"
+	help
+	  Unified RPMB partition interface for eMMC and UFS.
+	  Provides interface for in kernel security controllers to
+	  access RPMB partition.
+
+	  If unsure, select N.
+
+config RPMB_INTF_DEV
+	bool "RPMB character device interface /dev/rpmbN"
+	depends on RPMB
+	help
+	  "RPMB character device interface /dev/rpmbN"
+	  Say yes here if you want to access RPMB from user space
+	  via character device interface /dev/rpmb%d
+
+	  If unsure, select N.
+
+config RPMB_SIM
+	tristate "RPMB partition device simulator"
+	default n
+	select RPMB
+	select CRYPTO_SHA256
+	select CRYPTO_HMAC
+	help
+	  "RPMB partition device simulator"
+	  RPMB partition simulator used for testing the RPMB subsystem
+	  You can access via character device interface /dev/rpmb0
+	  If unsure, select N.

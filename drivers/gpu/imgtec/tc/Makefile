@@ -1,0 +1,13 @@
+include $(srctree)/drivers/staging/imgtec/config_kernel.mk
+
+obj-$(CONFIG_POWERVR_TC) += tc.o
+tc-y += tc_drv.o tc_apollo.o tc_odin.o
+tc-$(CONFIG_ION) += ../ion_fbcdc_clear.o ion_lma_heap.o tc_ion.o
+ccflags-y += -include drivers/staging/imgtec/config_kernel.h \
+ -I$(src) \
+ -I$(srctree)/drivers/staging/imgtec \
+ -I$(srctree)/drivers/staging/imgtec/pvrsrvkm \
+ -I$(srctree)/drivers/staging/imgtec/pvrsrvkm/$(PVR_ARCH) \
+ -I$(srctree)/drivers/staging/imgtec/pvrsrvkm/$(PVR_ARCH)/hwdefs
+ccflags-$(CONFIG_ION:m=y) += \
+ -I$(srctree)/drivers/staging/imgtec/pvrsrvkm/$(PVR_ARCH)/hwdefs/km

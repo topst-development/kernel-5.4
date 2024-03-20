@@ -1,0 +1,388 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+/dts-v1/;
+
+#include "tcc8971.dtsi"
+#include "tcc8971-linux-display.dtsi"
+#include <dt-bindings/pmap/tcc897x/pmap-tcc897x-linux-cluster.h>
+
+/ {
+	model = "Telechips TCC8971 LCN Board SV3.0";
+	compatible = "telechips,tcc8971", "telechips,tcc897x";
+
+	/* Describe board specific items, e.g. port map */
+
+	/* for SD Card*/
+	sdhc0_pwrseq: sdhc0_pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios = <&gpb 28 1>;
+	};
+
+	vqmmc_sdcard: vqmmc_sdcard {
+		compatible = "regulator-fixed";
+		regulator-name = "vqmmc_sdcard";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+
+	/* for SDIO */
+	vqmmc_sdio: vqmmc_sdio {
+		compatible = "regulator-fixed";
+		regulator-name = "vqmmc_sdio";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+
+	/* for eMMC */
+	vqmmc_emmc: vqmmc_emmc {
+		compatible = "regulator-fixed";
+		regulator-name = "vqmmc_emmc";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+
+	/* SD Card Slot */
+	sdhc@76020000 {
+		status = "okay";
+		compatible = "telechips,tcc897x-sdhci,module-only";
+		controller-id = <0>;
+		max-frequency = <50000000>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&sd5_clk &sd5_cmd &sd5_bus4>;
+
+		broken-cd;
+		cd-inverted;
+		keep-power-in-suspend;
+
+		cd-gpios = <&gpf 21 0>;
+		wp-gpios = <&gpf 20 0>;
+
+		vqmmc-supply = <&vqmmc_sdcard>;
+		/* Not used*/
+		//mmc-pwrseq = <&sdhc0_pwrseq>;
+	};
+
+	sdhc@76020400 { // Wi-Fi tcm3840
+		status = "okay";
+		compatible = "telechips,tcc897x-sdhci";
+		controller-id = <2>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&sd0_clk &sd0_cmd &sd0_bus4 &out0_clk>;
+		max-frequency = <50000000>;
+
+		keep-power-in-suspend;
+		cap-sdio-irq;
+
+		vqmmc-supply = <&vqmmc_sdio>;
+
+		cd-force-presence-change;
+
+		tcm38xx {
+			compatible = "telechips,tcm38xx";
+			wifi_pwr-gpio = <&gpc 21 0>; // BT_WIFI_VBAT_EN
+			wlreg_on-gpio = <&gpsd 10 0>; // WIFI_REG_ON
+			//wifi_pwr_1p8v-gpio = <&gpsd1 6 0>;
+			//wifi_pwr_3p3v-gpio = <&gpsd1 7 0>;
+		};
+	};
+
+	sdhc@76020600 {
+		status = "okay";
+		compatible = "telechips,tcc897x-sdhci";
+		controller-id = <3>;
+		bus-width = <8>;
+		max-frequency = <50000000>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&sd3_clk &sd3_cmd &sd3_bus8>;
+
+		non-removable;
+		keep-power-in-suspend;
+		disable-wp;
+		mmc-ddr-3_3v;
+
+		vqmmc-supply = <&vqmmc_emmc>;
+	};
+
+	vbus_supply_ehci: vbus_supply_ehci {
+		gpios = <&gphdmi 2 0>;
+	};
+
+	vbus_supply_dwc2: vbus_supply_dwc2 {
+		gpios = <&gphdmi 3 0>;
+	};
+	fb0: fb@0 {
+		status = "okay";
+	};
+
+	dummy: dummy0 {
+		status = "okay";
+	};
+
+	sound0: sound0 {};
+};
+&reserved_memory {
+	pmap_fb_video: fb_video {
+		compatible = "pmap,fb_video";
+		pmap-name = "fb_video";
+		status = "okay";
+		reg = <FB_VIDEO_BASE PMAP_SIZE_FB_VIDEO>;
+		alignment = <0x1000>;
+		no-map;
+	};
+};
+
+&gmac {
+	status = "okay";
+	phyrst-gpio = <&gpc 29 0>;
+	interrupt-names = "macirq";
+	phy-interface = "rgmii";
+	phy-mode = "rgmii";
+	//ecid-mac-addr;
+	txclk-o-dly = <0>;
+	txclk-o-inv = <0>;
+	txclk-i-dly = <0>;
+	txclk-i-inv = <0>;
+	txen-dly = <0>;
+	txer-dly = <0>;
+	txd0-dly = <0>;
+	txd1-dly = <0>;
+	txd2-dly = <0>;
+	txd3-dly = <0>;
+	txd4-dly = <0>;
+	txd5-dly = <0>;
+	txd6-dly = <0>;
+	txd7-dly = <0>;
+	rxclk-i-dly = <0>;
+	rxclk-i-inv = <0>;
+	rxdv-dly = <0>;
+	rxer-dly = <0>;
+	rxd0-dly = <0>;
+	rxd1-dly = <0>;
+	rxd2-dly = <0>;
+	rxd3-dly = <0>;
+	rxd4-dly = <0>;
+	rxd5-dly = <0>;
+	rxd6-dly = <0>;
+	rxd7-dly = <0>;
+	crs-dly = <0>;
+	col-dly = <0>;
+	pinctrl-names = "default", "mii", "rmii", "gmii", "rgmii";
+	pinctrl-0 = <>;
+	pinctrl-1 = <&gmac1_mdc &gmac1_mdio &gmac1_col &gmac1_crs &gmac1_txer &gmac1_rxer
+					&gmac1_txclk &gmac1_txen &gmac1_txd0 &gmac1_txd1 &gmac1_txd2 &gmac1_txd3
+					&gmac1_rxclk &gmac1_rxdv &gmac1_rxd0 &gmac1_rxd1 &gmac1_rxd2 &gmac1_rxd3>;
+	pinctrl-2 = <&gmac1_mdc &gmac1_mdio
+					&gmac1_txclk &gmac1_txen &gmac1_txd0 &gmac1_txd1
+					&gmac1_rxer &gmac1_rxdv &gmac1_rxd0 &gmac1_rxd1>;
+	pinctrl-3 = <&gmac1_mdc &gmac1_mdio &gmac1_col &gmac1_crs &gmac1_txer &gmac1_rxer
+					&gmac1_txclk &gmac1_txen &gmac1_txd0 &gmac1_txd1 &gmac1_txd2 &gmac1_txd3
+					&gmac1_txd4 &gmac1_txd5 &gmac1_txd6 &gmac1_txd7
+					&gmac1_rxclk &gmac1_rxdv &gmac1_rxd0 &gmac1_rxd1 &gmac1_rxd2 &gmac1_rxd3
+					&gmac1_rxd4 &gmac1_rxd5 &gmac1_rxd6 &gmac1_rxd7>;
+	pinctrl-4 = <&gmac1_mdc &gmac1_mdio
+					&gmac1_txclk &gmac1_txen &gmac1_txd0 &gmac1_txd1 &gmac1_txd2 &gmac1_txd3
+					&gmac1_rxclk &gmac1_rxdv &gmac1_rxd0 &gmac1_rxd1 &gmac1_rxd2 &gmac1_rxd3>;
+};
+
+
+/* console */
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart22_data>;
+	port-mux = <22>;
+	status = "okay";
+};
+
+/* bluetooth */
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart30_data &uart30_rtscts>;
+	port-mux = <30>;
+	//dmas = <&dma0 0 29 &dma0 1 30>;
+	//dma-names = "tx", "rx";
+	//auto-poll;
+	status = "okay";
+};
+
+/* GPS */
+&uart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart10_data>;
+	port-mux = <10>;
+	status = "okay";
+};
+
+&pinctrl {
+	/*gpg-6 is for SDR_GPIO1*/
+	mdai_clks: mdai_clks{
+		telechips,pins = "gpg-7", "gpg-8";
+		telechips,pin-function = <1>;
+	};
+};
+
+&adma0{
+	status = "okay";
+};
+
+&adma1{
+	status = "okay";
+};
+
+&adma3{
+	status = "okay";
+};
+
+&i2s0 { /*This is for BT hw:0,2*/
+	pinctrl-names = "default", "dai_mute";
+	pinctrl-0 = <&mdai_clks &mdai_d0>;
+	pinctrl-1 = <&mute_mdai_d0>;
+	clock-frequency = <48000>;
+	status = "okay";
+};
+
+&i2s1 { /*This is for MainAudio hw:0,0*/
+	pinctrl-names = "default", "dai_mute";
+	pinctrl-0 = <&s1dai_clks &s1dai_d0>;
+	pinctrl-1 = <&mute_s1dai_d0>;
+	clock-frequency = <48000>;
+	status = "okay";
+};
+
+&i2s3 { /*This is for hw:0,5*/
+	pinctrl-names = "default", "dai_mute";
+	pinctrl-0 = <&s3dai_clks &s3dai_d0>;
+	pinctrl-1 = <&mute_s3dai_d0>;
+	clock-frequency = <48000>;
+	status = "okay";
+};
+
+&spdif0 { /*This is for SPDIF TX1 hw:0,1*/
+	pinctrl-names = "default";
+	pinctrl-0 = <&mdai_spdif_tx &mdai_spdif_rx>;
+	status = "okay";
+};
+
+&spdif1 { /*This is for SPDIF TX2 hw:0,3*/
+	pinctrl-names = "default";
+	pinctrl-0 = <&s3dai_spdif_tx>;
+	status = "okay";
+};
+
+&cdif1 { /*This is for hw:0,4*/
+	pinctrl-names = "default";
+	pinctrl-0 = <&scdif2_clks &scdif2_d0>;
+	status = "okay";
+};
+
+&sound0 {
+	compatible = "telechips,snd-lcn3";
+	telechips,model = "TCC8971 LCN3 Card";
+	telechips,dai-controller = <&i2s1 &spdif0 &i2s0 &spdif1>;
+	telechips,audio-codec = <&ak4601 &dummy &dummy &dummy>;
+	status="okay";
+};
+
+&i2c0 {
+	status = "okay";
+	port-mux = <11>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c11_bus>;
+};
+
+&i2c1 {
+	status = "okay";
+	port-mux = <18>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c18_bus>;
+};
+
+&i2c2 {
+	status = "okay";
+	port-mux = <23>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c23_bus>;
+};
+
+
+&i2c3 {
+	status = "okay";
+	port-mux = <12>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c12_bus>;
+
+	ak4601: ak4601@10 {
+		compatible = "akm,ak4601";
+		//ak4601,pdn-gpio = <&gpe 4 1>;
+		cmute-gpios = <&gpc 18 1>;
+		//CODEC_MUTE 0: active high, 1: active low
+		//amute-gpios = <&gpc 18 0>;
+		//AMP_MUTE 0: active high, 1: active low
+		//stanby-gpios = <&gpc 16 0>;
+		//AMP_STBY 0: active high, 1: active low
+		reg = <0x10>;
+	};
+
+	pmic: rt5028@3f {
+		compatible = "richtek,rt5028";
+		reg = <0x3f>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pmic_irq>;
+		int-gpios = <&gpe 31 0>;
+		regulators {
+			RT5028_ID_BUCK1: buck1 {
+				regulator-name = "vdd_core";
+				regulator-always-on;
+			};
+			RT5028_ID_BUCK2: buck2 {
+				regulator-name = "vdd_mem";
+				regulator-always-on;
+			};
+			RT5028_ID_BUCK3: buck3 {
+				regulator-name = "vdd_cpu";
+				regulator-always-on;
+			};
+			RT5028_ID_BUCK4: buck4 {
+				regulator-name = "vdd_io3v3";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO1: ldo1 {
+				regulator-name = "vd2_core";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO2: ldo2 {
+				regulator-name = "vdd_io1v8";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO3: ldo3 {
+				regulator-name = "vdd_btwifi";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO4: ldo4 {
+				regulator-name = "vdd_vbat";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO5: ldo5 {
+				regulator-name = "vdd_gps";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO6: ldo6 {
+				regulator-name = "vd1_io";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO7: ldo7 {
+				regulator-name = "vd1_core";
+				regulator-always-on;
+			};
+			RT5028_ID_LDO8: ldo8 {
+				regulator-name = "vd2_io";
+				regulator-always-on;
+			};
+		};
+	};
+};

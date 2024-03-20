@@ -1,0 +1,1090 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+#ifndef TCC_ISP_REG_H
+#define TCC_ISP_REG_H
+
+#include "../tcc-mipi-csi2/tcc-mipi-cfg-reg.h"
+
+/******************************************************************
+ * ISP Factory Only Register Control ( 0 page 0x000~0xFFF )
+ ******************************************************************/
+#define REG_ISP_SLEEP_MODE				(0x0004)
+#define REG_ISP_SOFT_RESET				(0x0008)
+#define REG_ISP_MEM_SHARE				(0x000C)
+#define REG_ISP_IMG_WIDTH				(0x0010)
+#define REG_ISP_IMG_HEIGHT				(0x0014)
+#define REG_ISP_UP_CTL					(0x0030)
+#define REG_ISP_UP_SEL1					(0x0034)
+#define REG_ISP_UP_SEL2					(0x0038)
+#define REG_ISP_UP_MODE1				(0x003C)
+#define REG_ISP_UP_MODE2				(0x0040)
+#define REG_ISP_USR_CNT1				(0x0048)
+#define REG_ISP_USR_CNT2				(0x004C)
+#define REG_ISP_INTER_MSK				(0x0060)
+#define REG_ISP_INTER_CLR				(0x0064)
+#define REG_ISP_INTER_STATUS				(0x0068)
+
+
+/* SLEEP_MODE */
+#define SLEEP_MODE_SLEEP_MODE_MASK			(0x1)
+
+#define SLEEP_MODE_SLEEP_MODE_SHIFT			(0)
+
+#define SLEEP_MODE_SLEEP_MODE_DISABLE			(0)
+#define SLEEP_MODE_SLEEP_MODE_ENABLE			(1)
+
+
+/* SOFT_RESET */
+#define SOFT_RESET_ISP_SOFT_RESET_MASK			(0x1)
+#define SOFT_RESET_MCU_SOFT_RESET_MASK			(0x1)
+
+#define SOFT_RESET_ISP_SOFT_RESET_SHIFT			(0)
+#define SOFT_RESET_MCU_SOFT_RESET_SHIFT			(1)
+
+#define SOFT_RESET_ISP_SOFT_RESET_RELEASE		(0)
+#define SOFT_RESET_ISP_SOFT_RESET_RESET			(1)
+#define SOFT_RESET_MCU_SOFT_RESET_RELEASE		(0)
+#define SOFT_RESET_MCU_SOFT_RESET_RESET			(1)
+
+
+/* MEM_SHARE */
+#define MEM_SHARE_MEM_SHARE_EN_MASK			(0x1)
+
+#define MEM_SHARE_MEM_SHARE_EN_SHIFT			(0)
+
+#define MEM_SHARE_MEM_SHARE_EN_DISABLE			(0)
+#define MEM_SHARE_MEM_SHARE_EN_ENABLE			(1)
+
+
+/* IMG_WIDTH */
+#define IMG_WIDTH_IN_IMG_WIDTH_MASK			(0xFFFF)
+
+#define IMG_WIDTH_IN_IMG_WIDTH_SHIFT			(16)
+
+
+/* IMG_HEIGHT */
+#define IMG_HEIGHT_IN_IMG_HEIGHT_MASK			(0xFFFF)
+
+#define IMG_HEIGHT_IN_IMG_HEIGHT_SHIFT			(16)
+
+
+/* UP_CTL */
+#define UP_CTL_TP_UP_CTL_MASK				(0x1)
+#define UP_CTL_RAW_CH_GAIN_UP_CTL_MASK			(0x1)
+#define UP_CTL_LSC_UP_CTL_MASK				(0x1)
+#define UP_CTL_RAW_AWB_GAIN_UP_CTL_MASK			(0x1)
+#define UP_CTL_RAW_CURVE_UP_CTL_MASK			(0x1)
+#define UP_CTL_PRE_RAW_UP_CTL_MASK			(0x1)
+#define UP_CTL_POST_RAW_UP_CTL_MASK			(0x1)
+#define UP_CTL_RAW_INT_UP_CTL_MASK			(0x1)
+#define UP_CTL_AF_UP_CTL_MASK				(0x1)
+#define UP_CTL_TRI_AUTO_UP_CTL_MASK			(0x1)
+#define UP_CTL_CCM_UP_CTL_MASK				(0x1)
+#define UP_CTL_CONT_UP_CTL_MASK				(0x1)
+#define UP_CTL_YUV_PROC2_UP_CTL_MASK			(0x1)
+#define UP_CTL_YUV_PROC1_UP_CTL_MASK			(0x1)
+#define UP_CTL_WIN_UP_CTL_MASK				(0x1)
+#define UP_CTL_DEBLANK_UP_CTL_MASK			(0x1)
+
+#define UP_CTL_TP_UP_CTL_SHIFT				(16)
+#define UP_CTL_RAW_CH_GAIN_UP_CTL_SHIFT			(17)
+#define UP_CTL_LSC_UP_CTL_SHIFT				(18)
+#define UP_CTL_RAW_AWB_GAIN_UP_CTL_SHIFT		(19)
+#define UP_CTL_RAW_CURVE_UP_CTL_SHIFT			(20)
+#define UP_CTL_PRE_RAW_UP_CTL_SHIFT			(21)
+#define UP_CTL_POST_RAW_UP_CTL_SHIFT			(22)
+#define UP_CTL_RAW_INT_UP_CTL_SHIFT			(23)
+#define UP_CTL_AF_UP_CTL_SHIFT				(24)
+#define UP_CTL_TRI_AUTO_UP_CTL_SHIFT			(25)
+#define UP_CTL_CCM_UP_CTL_SHIFT				(26)
+#define UP_CTL_CONT_UP_CTL_SHIFT			(27)
+#define UP_CTL_YUV_PROC2_UP_CTL_SHIFT			(28)
+#define UP_CTL_YUV_PROC1_UP_CTL_SHIFT			(29)
+#define UP_CTL_WIN_UP_CTL_SHIFT				(30)
+#define UP_CTL_DEBLANK_UP_CTL_SHIFT			(31)
+
+#define UP_CTL_TP_UP_CTL				(0x1)
+#define UP_CTL_RAW_CH_GAIN_UP_CTL			(0x1)
+#define UP_CTL_LSC_UP_CTL				(0x1)
+#define UP_CTL_RAW_AWB_GAIN_UP_CTL			(0x1)
+#define UP_CTL_RAW_CURVE_UP_CTL				(0x1)
+#define UP_CTL_PRE_RAW_UP_CTL				(0x1)
+#define UP_CTL_POST_RAW_UP_CTL				(0x1)
+#define UP_CTL_RAW_INT_UP_CTL				(0x1)
+#define UP_CTL_AF_UP_CTL				(0x1)
+#define UP_CTL_TRI_AUTO_UP_CTL				(0x1)
+#define UP_CTL_CCM_UP_CTL				(0x1)
+#define UP_CTL_CONT_UP_CTL				(0x1)
+#define UP_CTL_YUV_PROC2_UP_CTL				(0x1)
+#define UP_CTL_YUV_PROC1_UP_CTL				(0x1)
+#define UP_CTL_WIN_UP_CTL				(0x1)
+#define UP_CTL_DEBLANK_UP_CTL				(0x1)
+
+#define UP_CTL_UP_ALL					\
+	((UP_CTL_TP_UP_CTL << UP_CTL_TP_UP_CTL_SHIFT) | \
+	(UP_CTL_RAW_CH_GAIN_UP_CTL << UP_CTL_RAW_CH_GAIN_UP_CTL_SHIFT) | \
+	(UP_CTL_LSC_UP_CTL << UP_CTL_LSC_UP_CTL_SHIFT) | \
+	(UP_CTL_RAW_AWB_GAIN_UP_CTL << UP_CTL_RAW_AWB_GAIN_UP_CTL_SHIFT) | \
+	(UP_CTL_RAW_CURVE_UP_CTL << UP_CTL_RAW_CURVE_UP_CTL_SHIFT) | \
+	(UP_CTL_PRE_RAW_UP_CTL << UP_CTL_PRE_RAW_UP_CTL_SHIFT) | \
+	(UP_CTL_POST_RAW_UP_CTL << UP_CTL_POST_RAW_UP_CTL_SHIFT) | \
+	(UP_CTL_RAW_INT_UP_CTL << UP_CTL_RAW_INT_UP_CTL_SHIFT) | \
+	(UP_CTL_AF_UP_CTL << UP_CTL_AF_UP_CTL_SHIFT) | \
+	(UP_CTL_TRI_AUTO_UP_CTL << UP_CTL_TRI_AUTO_UP_CTL_SHIFT) | \
+	(UP_CTL_CCM_UP_CTL << UP_CTL_CCM_UP_CTL_SHIFT) | \
+	(UP_CTL_CONT_UP_CTL << UP_CTL_CONT_UP_CTL_SHIFT) | \
+	(UP_CTL_YUV_PROC2_UP_CTL << UP_CTL_YUV_PROC2_UP_CTL_SHIFT) | \
+	(UP_CTL_YUV_PROC1_UP_CTL << UP_CTL_YUV_PROC1_UP_CTL_SHIFT) | \
+	(UP_CTL_WIN_UP_CTL << UP_CTL_WIN_UP_CTL_SHIFT) | \
+	(UP_CTL_DEBLANK_UP_CTL << UP_CTL_DEBLANK_UP_CTL_SHIFT))
+
+
+/* UP_SEL1 */
+#define UP_SEL1_TP_SEL_CTL_MASK				(0x3)
+#define UP_SEL1_RAW_CH_GAIN_SEL_CTL_MASK		(0x3)
+#define UP_SEL1_LSC_SEL_CTL_MASK			(0x3)
+#define UP_SEL1_RAW_AWB_GAIN_SEL_CTL_MASK		(0x3)
+#define UP_SEL1_RAW_CURVE_SEL_CTL_MASK			(0x3)
+#define UP_SEL1_PRE_RAW_SEL_CTL_MASK			(0x3)
+#define UP_SEL1_POST_RAW_SEL_CTL_MASK			(0x3)
+#define UP_SEL1_RAW_INT_SEL_CTL_MASK			(0x3)
+
+#define UP_SEL1_TP_SEL_CTL_SHIFT			(16)
+#define UP_SEL1_RAW_CH_GAIN_SEL_CTL_SHIFT		(18)
+#define UP_SEL1_LSC_SEL_CTL_SHIFT			(20)
+#define UP_SEL1_RAW_AWB_GAIN_SEL_CTL_SHIFT		(22)
+#define UP_SEL1_RAW_CURVE_SEL_CTL_SHIFT			(24)
+#define UP_SEL1_PRE_RAW_SEL_CTL_SHIFT			(26)
+#define UP_SEL1_POST_RAW_SEL_CTL_SHIFT			(28)
+#define UP_SEL1_RAW_INT_SEL_CTL_SHIFT			(30)
+
+#define UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING		(0)
+#define UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING	(1)
+#define UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING		(2)
+#define UP_SEL_SYNC_ON_WRITING_TIMING			(3)
+
+
+#define UP_SEL1_ALL_SYNC_ON_USER_SPECIFIED_TIMING \
+	((UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_TP_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_RAW_CH_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_LSC_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_RAW_AWB_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_RAW_CURVE_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_PRE_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_POST_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	UP_SEL1_RAW_INT_SEL_CTL_SHIFT))
+
+#define UP_SEL1_ALL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING \
+	((UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_TP_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_RAW_CH_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_LSC_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_RAW_AWB_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_RAW_CURVE_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_PRE_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_POST_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL1_RAW_INT_SEL_CTL_SHIFT))
+
+#define UP_SEL1_ALL_SYNC_ON_VSYNC_RISING_EDGE_TIMING \
+	((UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_TP_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_RAW_CH_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_LSC_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_RAW_AWB_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_RAW_CURVE_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_PRE_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_POST_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL1_RAW_INT_SEL_CTL_SHIFT))
+
+#define UP_SEL1_ALL_SYNC_ON_WRITING_TIMING \
+	((UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_TP_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_RAW_CH_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_LSC_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_RAW_AWB_GAIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_RAW_CURVE_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_PRE_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_POST_RAW_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << \
+	 UP_SEL1_RAW_INT_SEL_CTL_SHIFT))
+
+
+/* UP_SEL2 */
+#define UP_SEL2_AF_SEL_CTL_MASK				(0x3)
+#define UP_SEL2_TRI_AUTO_SEL_CTL_MASK			(0x3)
+#define UP_SEL2_CCM_SEL_CTL_MASK			(0x3)
+#define UP_SEL2_CONT_SEL_CTL_MASK			(0x3)
+#define UP_SEL2_YUV_PROC2_SEL_CTL_MASK			(0x3)
+#define UP_SEL2_YUV_PROC1_SEL_CTL_MASK			(0x3)
+#define UP_SEL2_WIN_SEL_CTL_MASK			(0x3)
+#define UP_SEL2_DEBLANK_SEL_CTL_MASK			(0x3)
+
+#define UP_SEL2_AF_SEL_CTL_SHIFT			(16)
+#define UP_SEL2_TRI_AUTO_SEL_CTL_SHIFT			(18)
+#define UP_SEL2_CCM_SEL_CTL_SHIFT			(20)
+#define UP_SEL2_CONT_SEL_CTL_SHIFT			(22)
+#define UP_SEL2_YUV_PROC2_SEL_CTL_SHIFT			(24)
+#define UP_SEL2_YUV_PROC1_SEL_CTL_SHIFT			(26)
+#define UP_SEL2_WIN_SEL_CTL_SHIFT			(28)
+#define UP_SEL2_DEBLANK_SEL_CTL_SHIFT			(30)
+
+
+#define UP_SEL2_ALL_SYNC_ON_USER_SPECIFIED_TIMING \
+	((UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_AF_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_TRI_AUTO_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_CCM_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_CONT_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_YUV_PROC2_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_YUV_PROC1_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_WIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_USER_SPECIFIED_TIMING << \
+	 UP_SEL2_DEBLANK_SEL_CTL_SHIFT))
+
+#define UP_SEL2_ALL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING \
+	((UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_AF_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_TRI_AUTO_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_CCM_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_CONT_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_YUV_PROC2_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_YUV_PROC1_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_WIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_FALLING_EDGE_TIMING << \
+	 UP_SEL2_DEBLANK_SEL_CTL_SHIFT))
+
+#define UP_SEL2_ALL_SYNC_ON_VSYNC_RISING_EDGE_TIMING \
+	((UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_AF_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_TRI_AUTO_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_CCM_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_CONT_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_YUV_PROC2_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_YUV_PROC1_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_WIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_VSYNC_RISING_EDGE_TIMING << \
+	 UP_SEL2_DEBLANK_SEL_CTL_SHIFT))
+
+#define UP_SEL2_ALL_SYNC_ON_WRITING_TIMING \
+	((UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_AF_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_TRI_AUTO_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_CCM_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_CONT_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_YUV_PROC2_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_YUV_PROC1_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_WIN_SEL_CTL_SHIFT) | \
+	(UP_SEL_SYNC_ON_WRITING_TIMING << UP_SEL2_DEBLANK_SEL_CTL_SHIFT))
+
+
+/* UP_MODE1 */
+#define UP_MODE1_TP_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_RAW_CH_GAIN_UP_MODE1_MASK		(0x1)
+#define UP_MODE1_LSC_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_RAW_AWB_GAIN_UP_MODE1_MASK		(0x1)
+#define UP_MODE1_RAW_CURVE_UP_MODE1_MASK		(0x1)
+#define UP_MODE1_PRE_RAW_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_POST_RAW_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_RAW_INT_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_AF_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_TRI_AUTO_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_CCM_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_CONT_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_YUV_PROC2_UP_MODE1_MASK		(0x1)
+#define UP_MODE1_YUV_PROC1_UP_MODE1_MASK		(0x1)
+#define UP_MODE1_WIN_UP_MODE1_MASK			(0x1)
+#define UP_MODE1_DEBLANK_UP_MODE1_MASK			(0x1)
+
+#define UP_MODE1_TP_UP_MODE1_SHIFT			(16)
+#define UP_MODE1_RAW_CH_GAIN_UP_MODE1_SHIFT		(17)
+#define UP_MODE1_LSC_UP_MODE1_SHIFT			(18)
+#define UP_MODE1_RAW_AWB_GAIN_UP_MODE1_SHIFT		(19)
+#define UP_MODE1_RAW_CURVE_UP_MODE1_SHIFT		(20)
+#define UP_MODE1_PRE_RAW_UP_MODE1_SHIFT			(21)
+#define UP_MODE1_POST_RAW_UP_MODE1_SHIFT		(22)
+#define UP_MODE1_RAW_INT_UP_MODE1_SHIFT			(23)
+#define UP_MODE1_AF_UP_MODE1_SHIFT			(24)
+#define UP_MODE1_TRI_AUTO_UP_MODE1_SHIFT		(25)
+#define UP_MODE1_CCM_UP_MODE1_SHIFT			(26)
+#define UP_MODE1_CONT_UP_MODE1_SHIFT			(27)
+#define UP_MODE1_YUV_PROC2_UP_MODE1_SHIFT		(28)
+#define UP_MODE1_YUV_PROC1_UP_MODE1_SHIFT		(29)
+#define UP_MODE1_WIN_UP_MODE1_SHIFT			(30)
+#define UP_MODE1_DEBLANK_UP_MODE1_SHIFT			(31)
+
+#define UP_MODE1_SYNC_MODE				(0)
+#define UP_MODE1_ASYNC_MODE				(1)
+
+#define UP_MODE1_ALL_ASYNC_MODE				\
+	((UP_MODE1_ASYNC_MODE << UP_MODE1_TP_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_RAW_CH_GAIN_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_LSC_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_RAW_AWB_GAIN_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_RAW_CURVE_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_PRE_RAW_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_POST_RAW_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_RAW_INT_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_AF_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_TRI_AUTO_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_CCM_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_CONT_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_YUV_PROC2_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_YUV_PROC1_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_WIN_UP_MODE1_SHIFT) | \
+	(UP_MODE1_ASYNC_MODE << UP_MODE1_DEBLANK_UP_MODE1_SHIFT))
+
+#define UP_MODE1_ALL_SYNC_MODE				\
+	((UP_MODE1_SYNC_MODE << UP_MODE1_TP_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_RAW_CH_GAIN_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_LSC_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_RAW_AWB_GAIN_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_RAW_CURVE_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_PRE_RAW_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_POST_RAW_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_RAW_INT_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_AF_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_TRI_AUTO_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_CCM_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_CONT_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_YUV_PROC2_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_YUV_PROC1_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_WIN_UP_MODE1_SHIFT) | \
+	(UP_MODE1_SYNC_MODE << UP_MODE1_DEBLANK_UP_MODE1_SHIFT))
+
+
+/* UP_MODE2 */
+#define UP_MODE2_TP_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_RAW_CH_GAIN_UP_MODE2_MASK		(0x1)
+#define UP_MODE2_LSC_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_RAW_AWB_GAIN_UP_MODE2_MASK		(0x1)
+#define UP_MODE2_RAW_CURVE_UP_MODE2_MASK		(0x1)
+#define UP_MODE2_PRE_RAW_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_POST_RAW_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_RAW_INT_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_AF_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_TRI_AUTO_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_CCM_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_CONT_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_YUV_PROC2_UP_MODE2_MASK		(0x1)
+#define UP_MODE2_YUV_PROC1_UP_MODE2_MASK		(0x1)
+#define UP_MODE2_WIN_UP_MODE2_MASK			(0x1)
+#define UP_MODE2_DEBLANK_UP_MODE2_MASK			(0x1)
+
+#define UP_MODE2_TP_UP_MODE2_SHIFT			(16)
+#define UP_MODE2_RAW_CH_GAIN_UP_MODE2_SHIFT		(17)
+#define UP_MODE2_LSC_UP_MODE2_SHIFT			(18)
+#define UP_MODE2_RAW_AWB_GAIN_UP_MODE2_SHIFT		(19)
+#define UP_MODE2_RAW_CURVE_UP_MODE2_SHIFT		(20)
+#define UP_MODE2_PRE_RAW_UP_MODE2_SHIFT			(21)
+#define UP_MODE2_POST_RAW_UP_MODE2_SHIFT		(22)
+#define UP_MODE2_RAW_INT_UP_MODE2_SHIFT			(23)
+#define UP_MODE2_AF_UP_MODE2_SHIFT			(24)
+#define UP_MODE2_TRI_AUTO_UP_MODE2_SHIFT		(25)
+#define UP_MODE2_CCM_UP_MODE2_SHIFT			(26)
+#define UP_MODE2_CONT_UP_MODE2_SHIFT			(27)
+#define UP_MODE2_YUV_PROC2_UP_MODE2_SHIFT		(28)
+#define UP_MODE2_YUV_PROC1_UP_MODE2_SHIFT		(29)
+#define UP_MODE2_WIN_UP_MODE2_SHIFT			(30)
+#define UP_MODE2_DEBLANK_UP_MODE2_SHIFT			(31)
+
+
+#define UP_MODE2_INDIV_SYNC_MODE			(0)
+#define UP_MODE2_GROUP_SYNC_MODE			(1)
+
+#define UP_MODE2_ALL_INDIV_SYNC_MODE			\
+	((UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_TP_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_RAW_CH_GAIN_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_LSC_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_RAW_AWB_GAIN_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_RAW_CURVE_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_PRE_RAW_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_POST_RAW_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_RAW_INT_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_AF_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_TRI_AUTO_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_CCM_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_CONT_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_YUV_PROC2_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_YUV_PROC1_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_WIN_UP_MODE2_SHIFT) | \
+	(UP_MODE2_INDIV_SYNC_MODE << UP_MODE2_DEBLANK_UP_MODE2_SHIFT))
+
+#define UP_MODE2_ALL_GROUP_SYNC_MODE			\
+	((UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_TP_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_RAW_CH_GAIN_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_LSC_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_RAW_AWB_GAIN_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_RAW_CURVE_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_PRE_RAW_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_POST_RAW_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_RAW_INT_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_AF_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_TRI_AUTO_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_CCM_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_CONT_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_YUV_PROC2_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_YUV_PROC1_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_WIN_UP_MODE2_SHIFT) | \
+	(UP_MODE2_GROUP_SYNC_MODE << UP_MODE2_DEBLANK_UP_MODE2_SHIFT))
+
+
+/* USR_CNT1 */
+#define USR_CNT1_MASK					(0xFFFF)
+
+#define USR_CNT1_SHIFT					(16)
+
+
+/* USR_CNT2 */
+#define USR_CNT2_MASK					(0xFFFF)
+
+#define USR_CNT2_SHIFT					(16)
+
+
+
+/******************************************************************
+ * Image Format Control (1page 0x000~0x0FF)
+ ******************************************************************/
+#define REG_ISP_IMG_WIN_CTL				(0x1000)
+#define REG_ISP_IMG_WIN_X_START				(0x1004)
+#define REG_ISP_IMG_WIN_Y_START				(0x1008)
+#define REG_ISP_IMG_WIN_WIDTH				(0x100C)
+#define REG_ISP_IMG_WIN_HEIGHT				(0x1010)
+#define REG_ISP_IMG_WIN_FORMAT				(0x1014)
+#define REG_ISP_IMG_IN_ORDER_CTL			(0x1020)
+#define REG_ISP_PT_GEN_CTL				(0x1030)
+#define REG_ISP_PT_IDX_CTL				(0x1034)
+#define REG_ISP_PT_RAND_CTL				(0x1038)
+#define REG_ISP_PT_RAND_SEED_CTL			(0x103C)
+
+
+
+/* IMG_WIN_CTL */
+#define IMG_WIN_CTL_WIN_EN_MASK				(0x1)
+#define IMG_WIN_CTL_IMG_OUT_ORDER_SEL_MASK		(0x3)
+#define IMG_WIN_CTL_IMG_SCALE_MASK			(0x3)
+#define IMG_WIN_CTL_VSYNC_POL_SEL_MASK			(0x1)
+#define IMG_WIN_CTL_DEBLANK_VS_POL_BYP_EN_MASK		(0x1)
+#define IMG_WIN_CTL_DEBLANK_EN_MASK			(0x1)
+
+#define IMG_WIN_CTL_WIN_EN_SHIFT			(16)
+#define IMG_WIN_CTL_IMG_OUT_ORDER_SEL_SHIFT		(17)
+#define IMG_WIN_CTL_IMG_SCALE_SHIFT			(20)
+#define IMG_WIN_CTL_VSYNC_POL_SEL_SHIFT			(22)
+#define IMG_WIN_CTL_DEBLANK_VS_POL_BYP_EN_SHIFT		(29)
+#define IMG_WIN_CTL_DEBLANK_EN_SHIFT			(30)
+
+
+#define IMG_WIN_CTL_WIN_EN_DISABLE			(0)
+#define IMG_WIN_CTL_WIN_EN_ENABLE			(1)
+
+#define IMG_WIN_CTL_IMG_OUT_ORDER_SEL_YCBYCR		(0)
+#define IMG_WIN_CTL_IMG_OUT_ORDER_SEL_YCRYCB		(1)
+#define IMG_WIN_CTL_IMG_OUT_ORDER_SEL_CBYCRY		(2)
+#define IMG_WIN_CTL_IMG_OUT_ORDER_SEL_CRYCBY		(3)
+
+#define IMG_WIN_CTL_IMG_SCALE_NO_SCALER			(0)
+#define IMG_WIN_CTL_IMG_SCALE_1_2			(1)
+#define IMG_WIN_CTL_IMG_SCALE_1_4			(2)
+#define IMG_WIN_CTL_IMG_SCALE_1_8			(3)
+
+#define IMG_WIN_CTL_VSYNC_POL_SEL_HIGH_VERTICAL_BLANK	(1)
+#define IMG_WIN_CTL_VSYNC_POL_SEL_LOW_VERTICAL_BLANK	(1)
+
+#define IMG_WIN_CTL_DEBLANK_VS_POL_BYP_EN_DISABLE	(0)
+#define IMG_WIN_CTL_DEBLANK_VS_POL_BYP_EN_ENABLE	(1)
+
+#define IMG_WIN_CTL_DEBLANK_EN_DISABLE			(0)
+#define IMG_WIN_CTL_DEBLANK_EN_ENABLE			(1)
+
+
+/* IMG_WIN_X_START */
+#define IMG_WIN_X_START_MASK				(0xFFFF)
+
+#define IMG_WIN_X_START_SHIFT				(16)
+
+
+/* IMG_WIN_Y_START */
+#define IMG_WIN_Y_START_MASK				(0xFFFF)
+
+#define IMG_WIN_Y_START_SHIFT				(16)
+
+
+/* IMG_WIN_WIDTH */
+#define IMG_WIN_WIDTH_MASK				(0xFFFF)
+
+#define IMG_WIN_WIDTH_SHIFT				(16)
+
+
+/* IMG_WIN_HEIGHT */
+#define IMG_WIN_HEIGHT_MASK				(0xFFFF)
+
+#define IMG_WIN_HEIGHT_SHIFT				(16)
+
+
+/* IMG_WIN_FORMAT */
+#define IMG_WIN_FORMAT_IMG_WIN_FORMAT_MASK		(0x3)
+#define IMG_WIN_FORMAT_IMG_DATA_ORDER_MASK		(0x3)
+
+#define IMG_WIN_FORMAT_IMG_WIN_FORMAT_SHIFT		(16)
+#define IMG_WIN_FORMAT_IMG_DATA_ORDER_SHIFT		(20)
+
+
+#define IMG_WIN_FORMAT_IMG_WIN_FORMAT_INVALID		(0)
+#define IMG_WIN_FORMAT_IMG_WIN_FORMAT_YUV422		(1)
+#define IMG_WIN_FORMAT_IMG_WIN_FORMAT_YUV444		(2)
+#define IMG_WIN_FORMAT_IMG_WIN_FORMAT_RGB888		(3)
+
+#define IMG_WIN_FORMAT_IMG_DATA_ORDER_P2P1P0		(0)
+#define IMG_WIN_FORMAT_IMG_DATA_ORDER_P0P2P1		(1)
+#define IMG_WIN_FORMAT_IMG_DATA_ORDER_P0P1P2		(2)
+#define IMG_WIN_FORMAT_IMG_DATA_ORDER_P2P0P1		(3)
+
+
+/* IMG_IN_ORDER_CTL */
+#define IMG_IN_ORDER_CTL_IMG_IN_PIXEL_ORDER_MASK	(0x3)
+
+#define IMG_IN_ORDER_CTL_IMG_IN_PIXEL_ORDER_SHIFT	(16)
+
+
+#define IMG_IN_ORDER_CTL_IMG_IN_PIXEL_ORDER_B_FIRST	(0)
+#define IMG_IN_ORDER_CTL_IMG_IN_PIXEL_ORDER_GB_FIRST	(1)
+#define IMG_IN_ORDER_CTL_IMG_IN_PIXEL_ORDER_GR_FIRST	(2)
+#define IMG_IN_ORDER_CTL_IMG_IN_PIXEL_ORDER_R_FIRST	(3)
+
+
+/******************************************************************
+ * 3A Control Register Define (1page 0x200~2FF)
+ ******************************************************************/
+#define REG_ISP_TRI_AUTO_CTL				(0x1200)
+#define REG_ISP_TRI_AUTO_CFG				(0x1204)
+
+
+/******************************************************************
+ * Bayer Channel Gain (1page 0x300~0x330)
+ ******************************************************************/
+#define REG_ISP_RAW_CH_CTL				(0x1300)
+#define REG_ISP_RAW_CH_CFG1				(0x1304)
+#define REG_ISP_RAW_CH_CFG2				(0x1308)
+#define REG_ISP_RAW_CH_CFG3				(0x130C)
+#define REG_ISP_RAW_CH_CFG4				(0x1310)
+
+/* RAW_CH_CTL */
+#define RAW_CH_CTL_BLUE_CH_OFS_MASK			(0x3FF)
+#define RAW_CH_CTL_RAW_CH_GAIN_EN_MASK			(0x1)
+#define RAW_CH_CTL_RAW_CH_OFS_EN_MASK			(0x1)
+#define RAW_CH_CTL_BLUE_SIGN_MASK			(0x1)
+#define RAW_CH_CTL_GB_SIGN_MASK				(0x1)
+#define RAW_CH_CTL_GR_SIGN_MASK				(0x1)
+#define RAW_CH_CTL_RED_SIGN_MASK			(0x1)
+
+#define RAW_CH_CTL_BLUE_CH_OFS_SHIFT			(0)
+#define RAW_CH_CTL_RAW_CH_GAIN_EN_SHIFT			(16)
+#define RAW_CH_CTL_RAW_CH_OFS_EN_SHIFT			(17)
+#define RAW_CH_CTL_BLUE_SIGN_SHIFT			(20)
+#define RAW_CH_CTL_GB_SIGN_SHIFT			(21)
+#define RAW_CH_CTL_GR_SIGN_SHIFT			(22)
+#define RAW_CH_CTL_RED_SIGN_SHIFT			(23)
+
+
+/******************************************************************
+ * Bayer AWB Gain (1page 0x400~0x40A)
+ ******************************************************************/
+#define REG_ISP_RAW_AWB_GCTL				(0x1400)
+#define REG_ISP_RAW_AWB_GCFG				(0x1404)
+
+
+/******************************************************************
+ * RGB AE Gain (1page 0x500~0x504)
+ ******************************************************************/
+#define REG_ISP_RGB_AE_GCTL				(0x1500)
+
+
+/******************************************************************
+ * Bayer Curve Gain (1page 0x800~0x850)
+ ******************************************************************/
+#define REG_RAW_CUR__GCTL				(0x1800)
+#define REG_RAW_CUR_GCFG1				(0x1804)
+#define REG_RAW_CUR_GCFG2				(0x1808)
+#define REG_RAW_CUR_GCFG3				(0x180C)
+#define REG_RAW_CUR_GCFG4				(0x1810)
+#define REG_RAW_CUR_GCFG5				(0x1814)
+#define REG_RAW_CUR_GCFG6				(0x1818)
+#define REG_RAW_CUR_GCFG7				(0x181C)
+#define REG_RAW_CUR_GCFG8				(0x1820)
+#define REG_RAW_CUR_GCFG9				(0x1824)
+#define REG_RAW_CUR_GCFG10				(0x1828)
+
+
+/******************************************************************
+ * De-Companding (1page 0x860~0x880)
+ ******************************************************************/
+#define REG_ISP_DCPD_CTL				(0x1860)
+#define REG_ISP_DCPD_CUR_GCFG1				(0x1864)
+#define REG_ISP_DCPD_CUR_GCFG2				(0x1868)
+#define REG_ISP_DCPD_CUR_GCFG3				(0x186C)
+#define REG_ISP_DCPD_CUR_GCFG4				(0x1870)
+#define REG_ISP_DCPD_CUR_XCFG1				(0x1874)
+#define REG_ISP_DCPD_CUR_XCFG2				(0x1878)
+#define REG_ISP_DCPD_CUR_XCFG3				(0x187C)
+#define REG_ISP_DCPD_CUR_XCFG4				(0x1880)
+
+
+/* DCPD_CTL */
+#define DCPD_CTL_DCPD_CUR_GAIN0_MASK			(0x3FF)
+#define DCPD_CTL_DCPD_EN_MASK				(0x1)
+#define DCPD_CTL_IN_BIT_SEL_MASK			(0x7)
+#define DCPD_CTL_OUT_BIT_SEL_MASK			(0x7)
+#define DCPD_CTL_DCPD_CUR_MAXVAL_MASK			(0x7)
+
+#define DCPD_CTL_DCPD_CUR_GAIN0_SHIFT			(0)
+#define DCPD_CTL_DCPD_EN_SHIFT				(16)
+#define DCPD_CTL_IN_BIT_SEL_SHIFT			(17)
+#define DCPD_CTL_OUT_BIT_SEL_SHIFT			(20)
+#define DCPD_CTL_DCPD_CUR_MAXVAL_SHIFT			(24)
+
+#define DCPD_CTL_DCPD_EN_DISABLE			(0)
+#define DCPD_CTL_DCPD_EN_ENABLE				(1)
+
+#define DCPD_CTL_IN_BIT_SEL_10BITS			(0)
+#define DCPD_CTL_IN_BIT_SEL_12BITS			(1)
+
+#define DCPD_CTL_OUT_BIT_SEL_10BITS			(0)
+#define DCPD_CTL_OUT_BIT_SEL_12BITS			(1)
+#define DCPD_CTL_OUT_BIT_SEL_14BITS			(2)
+#define DCPD_CTL_OUT_BIT_SEL_15BITS			(3)
+#define DCPD_CTL_OUT_BIT_SEL_16BITS			(4)
+#define DCPD_CTL_OUT_BIT_SEL_17BITS			(5)
+#define DCPD_CTL_OUT_BIT_SEL_20BITS			(6)
+
+/* DCPD_CUR_GCF1 */
+#define DCPD_CUR_GCFG1_DCPD_CUR_GAIN2_MASK		(0x3FF)
+#define DCPD_CUR_GCFG1_DCPD_CUR_GAIN1_MASK		(0x3FF)
+
+#define DCPD_CUR_GCFG1_DCPD_CUR_GAIN2_SHIFT		(0)
+#define DCPD_CUR_GCFG1_DCPD_CUR_GAIN1_SHIFT		(16)
+
+/* DCPD_CUR_GCF2 */
+#define DCPD_CUR_GCFG2_DCPD_CUR_GAIN4_MASK		(0x3FF)
+#define DCPD_CUR_GCFG2_DCPD_CUR_GAIN3_MASK		(0x3FF)
+
+#define DCPD_CUR_GCFG2_DCPD_CUR_GAIN4_SHIFT		(0)
+#define DCPD_CUR_GCFG2_DCPD_CUR_GAIN3_SHIFT		(16)
+
+/* DCPD_CUR_GCF3 */
+#define DCPD_CUR_GCFG3_DCPD_CUR_GAIN6_MASK		(0x3FF)
+#define DCPD_CUR_GCFG3_DCPD_CUR_GAIN5_MASK		(0x3FF)
+
+#define DCPD_CUR_GCFG3_DCPD_CUR_GAIN6_SHIFT		(0)
+#define DCPD_CUR_GCFG3_DCPD_CUR_GAIN5_SHIFT		(16)
+
+/* DCPD_CUR_GCF4 */
+#define DCPD_CUR_GCFG4_DCPD_CUR_X_AXIS0_MASK		(0x3FF)
+#define DCPD_CUR_GCFG4_DCPD_CUR_GAIN7_MASK		(0x3FF)
+
+#define DCPD_CUR_GCFG4_DCPD_CUR_X_AXIS0_SHIFT		(0)
+#define DCPD_CUR_GCFG4_DCPD_CUR_GAIN7_SHIFT		(16)
+
+/* DCPD_CUR_XCFG1 */
+#define DCPD_CUR_XCFG1_DCPD_CUR_X_AXIS2_MASK		(0x3FF)
+#define DCPD_CUR_XCFG1_DCPD_CUR_X_AXIS1_MASK		(0x3FF)
+
+#define DCPD_CUR_XCFG1_DCPD_CUR_X_AXIS2_SHIFT		(0)
+#define DCPD_CUR_XCFG1_DCPD_CUR_X_AXIS1_SHIFT		(16)
+
+/* DCPD_CUR_XCFG2 */
+#define DCPD_CUR_XCFG2_DCPD_CUR_X_AXIS4_MASK		(0x3FF)
+#define DCPD_CUR_XCFG2_DCPD_CUR_X_AXIS3_MASK		(0x3FF)
+
+#define DCPD_CUR_XCFG2_DCPD_CUR_X_AXIS4_SHIFT		(0)
+#define DCPD_CUR_XCFG2_DCPD_CUR_X_AXIS3_SHIFT		(16)
+
+/* DCPD_CUR_XCFG3 */
+#define DCPD_CUR_XCFG3_DCPD_CUR_X_AXIS6_MASK		(0x3FF)
+#define DCPD_CUR_XCFG3_DCPD_CUR_X_AXIS5_MASK		(0x3FF)
+
+#define DCPD_CUR_XCFG3_DCPD_CUR_X_AXIS6_SHIFT		(0)
+#define DCPD_CUR_XCFG3_DCPD_CUR_X_AXIS5_SHIFT		(16)
+
+/* DCPD_CUR_XCFG4 */
+#define DCPD_CUR_XCFG4_DCPD_CUR_X_AXIS7_MASK		(0x3FF)
+
+#define DCPD_CUR_XCFG4_DCPD_CUR_X_AXIS7_SHIFT		(16)
+
+
+/******************************************************************
+ * Shading Correction Register Define (1page 0x900~0x918)
+ ******************************************************************/
+#define REG_ISP_LSC_CTL					(0x1900)
+#define REG_ISP_LSC_CFG					(0x1904)
+#define REG_ISP_LSC_GCFG				(0x1908)
+
+
+/******************************************************************
+ * Pre/Post Bayer DPC (1page 0xA00~0xA02)
+ ******************************************************************/
+#define REG_ISP_DPC_CTL					(0x1A00)
+
+
+/******************************************************************
+ * GBGR Correction (1page 0xA10~0xA16)
+ ******************************************************************/
+#define REG_ISP_GBGR_CCTL				(0x1A10)
+#define REG_ISP_GBGR_GCTL				(0x1A14)
+
+
+/******************************************************************
+ * Pre Bayer NR (1page 0xA30~0xA36)
+ ******************************************************************/
+#define REG_ISP_PRRAW_NR_CTL				(0x1A30)
+#define REG_ISP_PRRAW_NR_GCTL				(0x1A34)
+
+
+/******************************************************************
+ * Pre Bayer Sharpness (1page 0xA50~0xA5C)
+ ******************************************************************/
+#define REG_ISP_PRRAW_SH_CTL				(0x1A50)
+#define REG_ISP_PRRAW_SH_GCTL1				(0x1A54)
+#define REG_ISP_PRRAW_SH_GCTL2				(0x1A58)
+#define REG_ISP_PRRAW_SH_CCTL				(0x1A5C)
+
+
+/******************************************************************
+ * Post Bayer NR(Noise Reduction) (1page 0xA80~0xA8E)
+ ******************************************************************/
+#define REG_ISP_PORAW_NR_CTL				(0x1A80)
+#define REG_ISP_PORAW_NR_GCTL1				(0x1A84)
+#define REG_ISP_PORAW_NR_GCTL2				(0x1A88)
+#define REG_ISP_PORAW_NR_GCTL3				(0x1A8C)
+
+
+/******************************************************************
+ * Post Bayer Sharpness (1page 0xAB0~0xABA)
+ ******************************************************************/
+#define REG_ISP_PORAW_SH_CTL				(0x1AB0)
+#define REG_ISP_PORAW_SH_GCTL1				(0x1AB4)
+#define REG_ISP_PORAW_SH_GCTL2				(0x1AB8)
+
+
+/******************************************************************
+ * RGBInt (2page 0x000~0x060)
+ ******************************************************************/
+#define REG_ISP_RGB_INT_CTL				(0x2000)
+#define REG_ISP_RGB_INT_CFG1				(0x2004)
+#define REG_ISP_RGB_INT_CFG2				(0x2008)
+#define REG_ISP_RGB_INT_GCTL1				(0x200C)
+#define REG_ISP_RGB_INT_GCTL2				(0x2010)
+#define REG_ISP_RGB_INT_GCTL3				(0x2014)
+
+
+/******************************************************************
+ * RGB Sharpness (2page 0x040~0x068)
+ ******************************************************************/
+#define REG_ISP_RGB_SH_CTL				(0x2040)
+#define REG_ISP_RGB_SH_CFG				(0x2044)
+#define REG_ISP_RGB_SH_GCTL1				(0x2048)
+#define REG_ISP_RGB_SH_GCTL2				(0x204C)
+#define REG_ISP_RGB_SH_GCTL3				(0x2050)
+#define REG_ISP_RGB_SH_GCTL4				(0x2054)
+
+
+/******************************************************************
+ * Y NR(Noise Reduction) Define (2page 0x070~0x0A8)
+ ******************************************************************/
+#define REG_ISP_YF_CTL					(0x2070)
+#define REG_ISP_YF_CFG1					(0x2074)
+#define REG_ISP_YF_CFG2					(0x2078)
+#define REG_ISP_YF_CFG3					(0x207C)
+#define REG_ISP_YF_CFG4					(0x2080)
+#define REG_ISP_YF_CFG5					(0x2084)
+
+
+/******************************************************************
+ * Y Contrast (2page 0x0A8~0x0B0)
+ ******************************************************************/
+#define REG_ISP_YC_CTL					(0x20A8)
+#define REG_ISP_YC_CFG					(0x20AC)
+
+
+/******************************************************************
+ * CNR(Chroma Noise Reduction) (2page 0x0B8~0x108)
+ ******************************************************************/
+#define REG_ISP_CF_CTL					(0x20B8)
+#define REG_ISP_CF_CFG1					(0x20BC)
+#define REG_ISP_CF_CFG2					(0x20C0)
+#define REG_ISP_CF_CFG3					(0x20C4)
+#define REG_ISP_CF_CFG4					(0x20C8)
+
+
+/******************************************************************
+ * Y Sharpness (2page 0x0E0~0x108)
+ ******************************************************************/
+#define REG_ISP_Y_SH_CTL				(0x20E0)
+#define REG_ISP_Y_SH_CFG1				(0x20E4)
+#define REG_ISP_Y_SH_CFG2				(0x20E8)
+#define REG_ISP_Y_SH_CFG3				(0x20EC)
+#define REG_ISP_Y_SH_CFG4				(0x20F0)
+#define REG_ISP_Y_SH_CFG5				(0x20F4)
+
+
+/******************************************************************
+ * RGB Color Correction Matrix (2page 0x500~0x530)
+ ******************************************************************/
+#define REG_ISP_RGB_CCM_CTL				(0x2500)
+#define REG_ISP_RGB_CCM_CFG1				(0x2504)
+#define REG_ISP_RGB_CCM_CFG2				(0x2508)
+#define REG_ISP_RGB_CCM_CFG3				(0x250C)
+#define REG_ISP_RGB_CCM_CFG4				(0x2510)
+
+
+/******************************************************************
+ * YUV Saturation Control (2page 0x600~0x61C)
+ ******************************************************************/
+#define REG_ISP_YUV_SA_CTL				(0x2600)
+#define REG_ISP_YUV_SA_GCTL1				(0x2604)
+#define REG_ISP_YUV_SA_GCTL2				(0x2608)
+#define REG_ISP_YUV_SA_GCTL3				(0x260C)
+
+
+/******************************************************************
+ * RGB Multi-Color Enhancement (2page 0x700~0x754)
+ ******************************************************************/
+#define REG_ISP_RGB_CE_CTL				(0x2700)
+#define REG_ISP_RGB_CE_CFG1				(0x2704)
+#define REG_ISP_RGB_CE_CFG2				(0x2708)
+#define REG_ISP_RGB_CE_CFG3				(0x270C)
+#define REG_ISP_RGB_CE_CFG4				(0x2710)
+#define REG_ISP_RGB_CE_CFG5				(0x2714)
+#define REG_ISP_RGB_CE_CFG6				(0x2718)
+#define REG_ISP_RGB_CE_CFG7				(0x271C)
+#define REG_ISP_RGB_CE_CFG8				(0x2720)
+#define REG_ISP_RGB_CE_CFG9				(0x2724)
+
+
+/******************************************************************
+ * HDR (2page 0x810~0x8FF)
+ ******************************************************************/
+#define REG_ISP_HDR_CTL					(0x2810)
+#define REG_ISP_HDR_CGAIN1				(0x2814)
+#define REG_ISP_HDR_CGAIN2				(0x2818)
+#define REG_ISP_HDR_CGAIN3				(0x281C)
+#define REG_ISP_HDR_CGAIN4				(0x2820)
+#define REG_ISP_HDR_CGAIN5				(0x2824)
+#define REG_ISP_HDR_CGAIN6				(0x2828)
+#define REG_ISP_HDR_WGAIN1				(0x282C)
+#define REG_ISP_HDR_WGAIN2				(0x2830)
+#define REG_ISP_HDR_WGAIN3				(0x2834)
+#define REG_ISP_HDR_WGAIN4				(0x2838)
+#define REG_ISP_HDR_WGAIN5				(0x283C)
+#define REG_ISP_HDR_GM_CGAIN1				(0x2840)
+#define REG_ISP_HDR_GM_CGAIN2				(0x2844)
+#define REG_ISP_HDR_GM_WGAIN1				(0x2848)
+#define REG_ISP_HDR_GM_WGAIN2				(0x284C)
+#define REG_ISP_HDR_GM_WGAIN3				(0x2850)
+#define REG_ISP_HDR_LUM_CGCTL1				(0x2854)
+#define REG_ISP_HDR_LUM_CGCTL2				(0x2858)
+#define REG_ISP_HDR_LUM_CGCTL3				(0x285C)
+#define REG_ISP_HDR_LUM_WGCTL1				(0x2860)
+#define REG_ISP_HDR_LUM_WGCTL2				(0x2864)
+#define REG_ISP_HDR_LUM_WGCTL3				(0x2868)
+#define REG_ISP_HDR_LUM_WGCTL4				(0x286C)
+#define REG_ISP_HDR_LUM_WGCTL5				(0x2870)
+#define REG_ISP_HDR_CFG1				(0x2874)
+#define REG_ISP_HDR_CFG2				(0x2878)
+#define REG_ISP_HDR_CFG3				(0x287C)
+#define REG_ISP_HDR_CFG4				(0x2880)
+
+#define HDR_MODE_INTERLEAVED				(0)
+#define HDR_MODE_COMPANDING				(1)
+#define HDR_MODE_NONE					(2)
+
+
+/******************************************************************
+ * WDR (2page 0x900~0x96C)
+ ******************************************************************/
+#define REG_ISP_WDR_CTL					(0x2900)
+#define REG_ISP_WDR_GAIN1				(0x2904)
+#define REG_ISP_WDR_GAIN2				(0x2908)
+#define REG_ISP_WDR_GAIN3				(0x290C)
+#define REG_ISP_WDR_GAIN4				(0x2910)
+#define REG_ISP_WDR_GAIN5				(0x2914)
+#define REG_ISP_WDR_GAIN6				(0x2918)
+#define REG_ISP_WDR_GAIN7				(0x291C)
+#define REG_ISP_WDR_CFG1				(0x2920)
+#define REG_ISP_WDR_CFG2				(0x2924)
+#define REG_ISP_WDR_CUR_GAIN1				(0x2928)
+#define REG_ISP_WDR_CUR_GAIN2				(0x292C)
+#define REG_ISP_WDR_CUR_GAIN3				(0x2930)
+#define REG_ISP_WDR_CUR_GAIN4				(0x2934)
+
+
+/******************************************************************
+ * I2C Master Control (2page 0xB00~0xB14)
+ ******************************************************************/
+#define REG_ISP_I2C_MST_CTL				(0x2B00)
+#define REG_ISP_I2C_MST_TEN				(0x2B04)
+#define REG_ISP_I2C_MST_SPEED				(0x2B08)
+#define REG_ISP_I2C_MST_SUB_ADDR			(0x2B0C)
+#define REG_ISP_I2C_MST_WDATA				(0x2B10)
+#define REG_ISP_I2C_MST_RDATA				(0x2B14)
+
+
+/******************************************************************
+ * MCU Configuration (0x2B80~0x2C00)
+ ******************************************************************/
+#define REG_ISP_MCU_CTL					(0x2B80)
+#define REG_ISP_MCU_MEM_CTL				(0x2BE0)
+
+/* MCU_CTL */
+#define MCU_CTL_MCU_EN_MASK				(0x1)
+#define MCU_CTL_MCU_CLK_DIV_MASK			(0x3)
+#define MCU_CTL_MCU_DBG_EN_MASK				(0x1)
+
+#define MCU_CTL_MCU_EN_SHIFT				(0)
+#define MCU_CTL_MCU_CLK_DIV_SHIFT			(2)
+#define MCU_CTL_MCU_DBG_EN_SHIFT			(4)
+
+#define MCU_CTL_MCU_EN_DISABLE				(0)
+#define MCU_CTL_MCU_EN_ENABLE				(1)
+
+#define MCU_CTL_MCU_CLK_DIV_1_2				(0)
+#define MCU_CTL_MCU_CLK_DIV_1_4				(1)
+#define MCU_CTL_MCU_CLK_DIV_1_8				(2)
+#define MCU_CTL_MCU_CLK_DIV_1_16			(3)
+
+/* MCU_MEM_CTL */
+#define MCU_MEM_CTL_MCU_MEM_DL_EN_MASK			(0x1)
+#define MCU_MEM_CTL_MCU_HOLD_EN_MASK			(0x1)
+
+#define MCU_MEM_CTL_MCU_MEM_DL_EN_SHIFT			(0)
+#define MCU_MEM_CTL_MCU_HOLD_EN_SHIFT			(1)
+
+#define MCU_MEM_CTL_MCU_MEM_DL_EN_DISABLE		(0)
+#define MCU_MEM_CTL_MCU_MEM_DL_EN_ENABLE		(1)
+
+#define MCU_MEM_CTL_MCU_HOLD_EN_DISABLE			(0)
+#define MCU_MEM_CTL_MCU_HOLD_EN_ENABLE			(1)
+
+#define ISP_MEM_OFFSET_SFR				(0x0)
+#define ISP_MEM_OFFSET_DATA_MEM				(0x200)
+#define ISP_MEM_OFFSET_CODE_MEM				(0x3800)
+#define ISP_MEM_SIZE_DATA_MEM				(14 * 1024)
+#define ISP_MEM_SIZE_CODE_MEM				(50 * 1024)
+
+
+/******************************************************************
+ * ATI Configuration (2page 0xC00~0xC4E)
+ ******************************************************************/
+#define REG_ISP_ATI_I2C_SLV_CTL				(0x2C00)
+#define REG_ISP_ATI_I2C_SLV_AWD0			(0x2C04)
+#define REG_ISP_ATI_I2C_SLV_AWD1			(0x2C08)
+#define REG_ISP_ATI_I2C_SLV_AWD2			(0x2C0C)
+#define REG_ISP_ATI_I2C_SLV_AWD3			(0x2C10)
+#define REG_ISP_ATI_I2C_SLV_AWD4			(0x2C14)
+#define REG_ISP_ATI_I2C_SLV_AWD5			(0x2C18)
+#define REG_ISP_ATI_I2C_SLV_AWD6			(0x2C1C)
+#define REG_ISP_ATI_I2C_SLV_AWD7			(0x2C20)
+#define REG_ISP_ATI_I2C_SLV_RD01			(0x2C24)
+#define REG_ISP_ATI_I2C_SLV_RD23			(0x2C28)
+#define REG_ISP_ATI_I2C_SLV_RD45			(0x2C2C)
+#define REG_ISP_ATI_I2C_SLV_RD67			(0x2C30)
+#define REG_ISP_ATI_I2C_MST_CTL				(0x2C44)
+#define REG_ISP_ATI_I2C_MST_WD				(0x2C48)
+#define REG_ISP_ATI_I2C_MST_RD				(0x2C4C)
+
+/* ATI_I2C_SLV_CTL */
+#define ATI_I2C_SLV_CTL_I2C_SLV_ID_MASK			(0x7F)
+#define ATI_I2C_SLV_CTL_I2C_SLV_MODE_MASK		(0x3)
+
+#define ATI_I2C_SLV_CTL_I2C_SLV_ID_SHIFT		(0)
+#define ATI_I2C_SLV_CTL_I2C_SLV_MODE_SHIFT		(8)
+
+/* set I2C data length(address / data bit) */
+#define ATI_I2C_SLV_CTL_I2C_SLV_MODE_16_16		(3)
+#define ATI_I2C_SLV_CTL_I2C_SLV_MODE_16_8		(2)
+#define ATI_I2C_SLV_CTL_I2C_SLV_MODE_8_16		(1)
+#define ATI_I2C_SLV_CTL_I2C_SLV_MODE_8_8		(0)
+
+/******************************************************************
+ * DMA Configuration (4page 0x000~0x01C)
+ ******************************************************************/
+#define REG_ISP_WDMA_CTL0				(0x4000)
+
+/* WDMA_CTL0 */
+#define WDMA_CTL0_WDMA_ENABLE_MASK			(0x1)
+
+#define WDMA_CTL0_WDMA_ENABLE_SHIFT			(16)
+
+#define WDMA_CTL0_WDMA_DISABLE				(0)
+#define WDMA_CTL0_WDMA_ENABLE				(1)
+
+
+/******************************************************************
+ * H/W Statistics
+ ******************************************************************/
+#define REG_HW_STATISTICS				(0x8000)
+#define REG_HW_STATISTICS_R_SUM				(0x8000)
+#define REG_HW_STATISTICS_G_SUM				(0x8400)
+#define REG_HW_STATISTICS_B_SUM				(0x8800)
+#define REG_HW_STATISTICS_Y_AVERAGE			(0x8C00)
+#define REG_HW_STATISTICS_RG_RATIO			(0x9000)
+#define REG_HW_STATISTICS_BG_RATIO			(0x9400)
+
+#define REG_ANN_FLAG					(0x2C1C)
+#define ANN_FLAG_WDR_SHIFT				(0)
+#define ANN_FLAG_AWB_SHIFT				(8)
+#define ANN_FLAG_WDR_MASK				(0x3)
+#define ANN_FLAG_AWB_MASK				(0x7)
+
+#define REG_ANN_AWB_APPLY				(0x250C)
+#define ANN_AWB_APPLY_SHIFT				(0)
+#define ANN_AWB_APPLY_MASK				(0x1)
+
+#endif

@@ -1,0 +1,40 @@
+* Telechips GDMA controller
+
+Required properties:
+- compatible: "telechips,tcc805x-dma"
+              "telechips,tcc803x-dma"
+              "telechips,tcc897x-dma"
+- reg: Specification for the controllers memory mapped register map
+- interrupts: Specification for the controllers interrupt
+- #dma-cells: Must be 2
+- dma-channels: Contains the total number of DMA channels supported by DMAC
+- dma-requests: Contains the total number of DMA requests supported by DMAC
+- channel-priority: Priority of channels
+- clocks: Phandle and specifier to the controllers clock
+- clock-names: Clock names
+
+Clients required properties:
+- dmas: List of DMA controller phandle, request channel and external request
+- dma-names: Names of the aforementioned requested channels
+
+Example:
+
+dma0: dma@16020000 {
+	compatible = "telechips,tcc805x-dma";
+	reg = <0x0 0x16020000 0x0 0x94>, /* base address */
+	      <0x0 0x1605101C 0x0 0x04>; /* DMAREQSEL0 */
+	interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_HIGH>;
+	#dma-cells = <2>;
+	dma-channels = <3>;
+	dma-requests = <32>;
+	channel-priority = <0>;
+	clocks = <&clk_io IOBUS_DMA0>;
+	clock-names = "dmac0";
+};
+
+device@12345678 {
+	...
+	dmas = <&dma0 0 3 &dma0 1 9>;
+	dma-names = "tx", "rx";
+	...
+};

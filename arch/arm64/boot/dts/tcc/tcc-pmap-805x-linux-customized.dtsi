@@ -1,0 +1,196 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+#ifndef DT_PMAP_TCC805X_LINUX_CUSTOMIZED_DTSI
+#define DT_PMAP_TCC805X_LINUX_CUSTOMIZED_DTSI
+
+/*
+ * Temporary chip definition before sending
+ * VPU memory calculation code to dt-bindings
+ * completely
+ */
+#define ARCH_TCC805X_LINUX
+
+//########################################################################
+/**************** Customer edit from the following line. ****************/
+//########################################################################
+
+// Enable in case supporting the display-device
+// or video-contents rotation (90/180/270)
+// have to have rotation h/w block
+//#define SUPPORT_ROTATION
+#define SUPPORT_TCC_HEVC_4K             (1)
+
+//***************************** VPU/HEVC ******************************/
+//Should sync with hardware/telechips/omx/omx_videodec_interface/include/vdec.h
+#if SUPPORT_TCC_HEVC_4K
+#define SUPPORT_VIDEO_MAX_WIDTH         (4096)
+#define SUPPORT_VIDEO_MAX_HEIGHT        (2176)
+#else
+#define SUPPORT_VIDEO_MAX_WIDTH         (1920)
+#define SUPPORT_VIDEO_MAX_HEIGHT        (1088)
+#endif
+
+/*
+ * DECODER on VPU
+ *
+ * INST_XXX_USE : Decide whether to use an instance or not. 1 means to use.
+ * INST_XXX_IS_HEVC_TYPE : Decide whether or not to set the HEVC codec type.
+ *                  1 means to set to HEVC (please put the defconfig
+ *                  file to "CONFIG_SUPPORT_TCC_HEVC_4K=y")
+ * INST_XXX_VIDEO_WIDTH : Set the width of the video (HEVC: 32x alignment,
+ *                  Other: 16x alignment)
+ * INST_XXX_VIDEO_HEIGHT : Set the height of the video (HEVC: 32x alignment,
+ *                  Other: 16x alignment)
+ * INST_XXX_MAX_FRAMEBUFFER : Set the number of frame buffers (HEVC-4K: 7,
+ *                  Others: 24)
+ */
+#define INST_1ST_USE                    (1)
+#define INST_1ST_IS_HEVC_TYPE           (1)
+#define INST_1ST_VIDEO_WIDTH            (SUPPORT_VIDEO_MAX_WIDTH)
+#define INST_1ST_VIDEO_HEIGHT           (SUPPORT_VIDEO_MAX_HEIGHT)
+#if SUPPORT_TCC_HEVC_4K
+#define INST_1ST_MAX_FRAMEBUFFERS       (7)
+#else
+#define INST_1ST_MAX_FRAMEBUFFERS       (24)
+#endif
+
+#define INST_2ND_USE                    (1)
+#define INST_2ND_IS_HEVC_TYPE           (0)
+#define INST_2ND_VIDEO_WIDTH            (1920)
+#define INST_2ND_VIDEO_HEIGHT           (1088)
+#define INST_2ND_MAX_FRAMEBUFFERS       (24)
+
+#define INST_3RD_USE                    (0)
+#define INST_3RD_IS_HEVC_TYPE           (0)
+#define INST_3RD_VIDEO_WIDTH            (1920)
+#define INST_3RD_VIDEO_HEIGHT           (1088)
+#define INST_3RD_MAX_FRAMEBUFFERS       (24)
+
+#define INST_4TH_USE                    (0)
+#define INST_4TH_IS_HEVC_TYPE           (0)
+#define INST_4TH_VIDEO_WIDTH            (1920)
+#define INST_4TH_VIDEO_HEIGHT           (1088)
+#define INST_4TH_MAX_FRAMEBUFFERS       (24)
+
+#define INST_5TH_USE                    (0)
+#define INST_5TH_IS_HEVC_TYPE           (0)
+#define INST_5TH_VIDEO_WIDTH            (1920)
+#define INST_5TH_VIDEO_HEIGHT           (1088)
+#define INST_5TH_MAX_FRAMEBUFFERS       (24)
+
+/*
+ * ENCODER on VPU
+ *
+ * INST_ENC_XXX_USE : Decide whether to use an instance or not. 1 means to use.
+ * INST_ENC_XXX_IS_HEVC_TYPE : Decide whether or not to set the HEVC codec type.
+ *                  1 means to set HEVC (please set the defconfig file to
+ *                  CONFIG_SUPPORT_TCC_WAVE420L_VPU_HEVC_ENC=y"
+ *                  )
+ * INST_ENC_XXX_VIDEO_WIDTH : Set the width of the video (16x alignment)
+ * INST_ENC_XXX_VIDEO_HEIGHT : Set the height of the video (16x alignment)
+ * INST_ENC_XXX_MAX_FRAMEBUFFERS : 8 :: fixed value. (Please, ask the right
+ *                  engineerif you want to change it.)
+ */
+#define INST_ENC_1ST_USE                (1)
+#define INST_ENC_1ST_IS_HEVC_TYPE       (0)
+#define INST_ENC_1ST_VIDEO_WIDTH        (1920)
+#define INST_ENC_1ST_VIDEO_HEIGHT       (1088)
+#define INST_ENC_1ST_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_2ND_USE                (0)
+#define INST_ENC_2ND_IS_HEVC_TYPE       (0)
+#define INST_ENC_2ND_VIDEO_WIDTH        (1920)
+#define INST_ENC_2ND_VIDEO_HEIGHT       (1088)
+#define INST_ENC_2ND_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_3RD_USE                (0)
+#define INST_ENC_3RD_IS_HEVC_TYPE       (0)
+#define INST_ENC_3RD_VIDEO_WIDTH        (1920)
+#define INST_ENC_3RD_VIDEO_HEIGHT       (1088)
+#define INST_ENC_3RD_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_4TH_USE                (0)
+#define INST_ENC_4TH_IS_HEVC_TYPE       (0)
+#define INST_ENC_4TH_VIDEO_WIDTH        (1920)
+#define INST_ENC_4TH_VIDEO_HEIGHT       (1088)
+#define INST_ENC_4TH_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_5TH_USE                (0)
+#define INST_ENC_5TH_IS_HEVC_TYPE       (0)
+#define INST_ENC_5TH_VIDEO_WIDTH        (1920)
+#define INST_ENC_5TH_VIDEO_HEIGHT       (1088)
+#define INST_ENC_5TH_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_6TH_USE                (0)
+#define INST_ENC_6TH_IS_HEVC_TYPE       (0)
+#define INST_ENC_6TH_VIDEO_WIDTH        (1920)
+#define INST_ENC_6TH_VIDEO_HEIGHT       (1088)
+#define INST_ENC_6TH_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_7TH_USE                (0)
+#define INST_ENC_7TH_IS_HEVC_TYPE       (0)
+#define INST_ENC_7TH_VIDEO_WIDTH        (1920)
+#define INST_ENC_7TH_VIDEO_HEIGHT       (1088)
+#define INST_ENC_7TH_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_8TH_USE                (0)
+#define INST_ENC_8TH_IS_HEVC_TYPE       (0)
+#define INST_ENC_8TH_VIDEO_WIDTH        (1920)
+#define INST_ENC_8TH_VIDEO_HEIGHT       (1088)
+#define INST_ENC_8TH_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_9TH_USE                (0)
+#define INST_ENC_9TH_IS_HEVC_TYPE       (0)
+#define INST_ENC_9TH_VIDEO_WIDTH        (1920)
+#define INST_ENC_9TH_VIDEO_HEIGHT       (1088)
+#define INST_ENC_9TH_MAX_FRAMEBUFFERS   (8)
+
+#define INST_ENC_10TH_USE               (0)
+#define INST_ENC_10TH_IS_HEVC_TYPE      (0)
+#define INST_ENC_10TH_VIDEO_WIDTH       (1920)
+#define INST_ENC_10TH_VIDEO_HEIGHT      (1088)
+#define INST_ENC_10TH_MAX_FRAMEBUFFERS  (8)
+
+#define INST_ENC_11TH_USE               (0)
+#define INST_ENC_11TH_IS_HEVC_TYPE      (0)
+#define INST_ENC_11TH_VIDEO_WIDTH       (1920)
+#define INST_ENC_11TH_VIDEO_HEIGHT      (1088)
+#define INST_ENC_11TH_MAX_FRAMEBUFFERS  (8)
+
+#define INST_ENC_12TH_USE               (0)
+#define INST_ENC_12TH_IS_HEVC_TYPE      (0)
+#define INST_ENC_12TH_VIDEO_WIDTH       (1920)
+#define INST_ENC_12TH_VIDEO_HEIGHT      (1088)
+#define INST_ENC_12TH_MAX_FRAMEBUFFERS  (8)
+
+#define INST_ENC_13TH_USE               (0)
+#define INST_ENC_13TH_IS_HEVC_TYPE      (0)
+#define INST_ENC_13TH_VIDEO_WIDTH       (1920)
+#define INST_ENC_13TH_VIDEO_HEIGHT      (1088)
+#define INST_ENC_13TH_MAX_FRAMEBUFFERS  (8)
+
+#define INST_ENC_14TH_USE               (0)
+#define INST_ENC_14TH_IS_HEVC_TYPE      (0)
+#define INST_ENC_14TH_VIDEO_WIDTH       (1920)
+#define INST_ENC_14TH_VIDEO_HEIGHT      (1088)
+#define INST_ENC_14TH_MAX_FRAMEBUFFERS  (8)
+
+#define INST_ENC_15TH_USE               (0)
+#define INST_ENC_15TH_IS_HEVC_TYPE      (0)
+#define INST_ENC_15TH_VIDEO_WIDTH       (1920)
+#define INST_ENC_15TH_VIDEO_HEIGHT      (1088)
+#define INST_ENC_15TH_MAX_FRAMEBUFFERS  (8)
+
+#define INST_ENC_16TH_USE               (0)
+#define INST_ENC_16TH_IS_HEVC_TYPE      (0)
+#define INST_ENC_16TH_VIDEO_WIDTH       (1920)
+#define INST_ENC_16TH_VIDEO_HEIGHT      (1088)
+#define INST_ENC_16TH_MAX_FRAMEBUFFERS  (8)
+
+//########################################################################
+/****************           Customer edit - end!          ****************/
+//########################################################################
+
+#endif //DT_PMAP_TCC805X_LINUX_CUSTOMIZED_DTSI

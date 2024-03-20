@@ -1,0 +1,87 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+&mipi_csi2_1 {
+	status = "okay";
+
+	mipi-chmux-4 = <0>;
+	mipi-chmux-5 = <0>;
+	mipi-chmux-6 = <0>;
+	mipi-chmux-7 = <0>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		/*
+		 * 0
+		 * input port.
+		 *
+		 * 1 ~ 4
+		 * output ports. (1: VC0 ~ 4: VC3)
+		 */
+		port@0 {
+			reg = <0>;
+			mipi_csi2_1_in0: endpoint@0 {				
+				remote-endpoint	= <&imx219_out0>;
+
+				io-direction	= "input";
+				channel		= <0>;
+				num-channel	= <1>;
+
+				/*
+				 * 0: CH0 only, no data interleave
+				 * 1: DT only
+				 * 2: VC only
+				 * 3: VC and DT
+				 */
+				interleave-mode = <2>;
+				hs-settle = <13>;
+				data-lanes = <1 2>;
+				//deskew-level = <1>;
+				//deskew-enable = <1>;
+			};
+		};
+		port@1 {
+			reg = <1>;
+			mipi_csi2_1_out0: endpoint {
+				remote-endpoint	= <&videoinput4_in>;
+				io-direction	= "output";
+				channel		= <0>;
+				/*
+				 * 0: Single pixel mode
+				 * 1: Dual pixel mode (RAW8/10/12, YUV422)
+				 * 2: Quad pixel mode (RAW8/10/12)
+				 * 3: Invalid
+				 */
+				pixel-mode = <1>;
+			};
+		};
+	};
+};
+
+&videoinput4 {
+	status		= "okay";
+	cifport		= <&cifport		9>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera4
+			   0>;
+	port {
+		videoinput4_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_1_out0>;
+
+			io-direction	= "input";
+			bus-type        = <0>;
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};

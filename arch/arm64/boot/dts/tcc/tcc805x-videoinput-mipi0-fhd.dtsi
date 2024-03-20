@@ -1,0 +1,282 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+&i2c7 {
+	status = "okay";
+};
+
+&cxd5700 {
+	/* ISP of camera module */
+	status		= "okay";
+	port {
+		cxd5700_out: endpoint {
+			remote-endpoint = <&max9275_in>;
+			io-direction	= "output";
+		};
+	};
+};
+
+&max9275 {
+	/* serializer */
+	status		= "okay";
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		port@0 {
+			reg = <0>;
+			max9275_in: endpoint {
+				remote-endpoint = <&cxd5700_out>;
+				io-direction	= "input";
+			};
+		};
+		port@1 {
+			reg = <1>;
+			max9275_out: endpoint {
+				remote-endpoint = <&max96712_in0>;
+				io-direction	= "output";
+			};
+		};
+	};
+};
+
+&max96712 {
+	/* deserializer */
+	status		= "okay";
+	/*
+	 * broadcasting mode access each linked devices
+	 * by the same I2C slave address.
+	 *
+	 * Also,
+	 * using the serdes I2C address mapping table,
+	 * each liked devices can be accessed
+	 * by the unique I2C slave address.
+	 */
+	broadcasting-mode;
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		/*
+		 * 0 ~ 3
+		 * input ports. The number is matched with VC
+		 *
+		 * 4
+		 * output port.
+		 */
+		port@0 {
+			reg = <0>;
+			max96712_in0: endpoint {
+				remote-endpoint = <&max9275_out>;
+				io-direction	= "input";
+				channel		= <0>;
+			};
+		};
+		port@4 {
+			reg = <4>;
+			max96712_out0: endpoint@0 {
+				remote-endpoint = <&mipi_csi2_0_in0>;
+				io-direction	= "output";
+				channel		= <0>;
+			};
+			max96712_out1: endpoint@1 {
+				remote-endpoint = <&mipi_csi2_0_in1>;
+				io-direction	= "output";
+				channel		= <1>;
+			};
+			max96712_out2: endpoint@2 {
+				remote-endpoint = <&mipi_csi2_0_in2>;
+				io-direction	= "output";
+				channel		= <2>;
+			};
+			max96712_out3: endpoint@3 {
+				remote-endpoint = <&mipi_csi2_0_in3>;
+				io-direction	= "output";
+				channel		= <3>;
+			};
+		};
+	};
+};
+
+&mipi_csi2_0 {
+	status = "okay";
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		/*
+		 * 0
+		 * input port.
+		 *
+		 * 1 ~ 4
+		 * output ports. (1: VC0 ~ 4: VC3)
+		 */
+		port@0 {
+			reg = <0>;
+			mipi_csi2_0_in0: endpoint@0 {
+				remote-endpoint	= <&max96712_out0>;
+				io-direction	= "input";
+				channel		= <0>;
+				num-channel	= <4>;
+
+				/*
+				 * 0: CH0 only, no data interleave
+				 * 1: DT only
+				 * 2: VC only
+				 * 3: VC and DT
+				 */
+				interleave-mode = <3>;
+				hs-settle = <37>;
+				data-lanes = <1 2 3 4>;
+			};
+			mipi_csi2_0_in1: endpoint@1 {
+				remote-endpoint	= <&max96712_out1>;
+				io-direction	= "input";
+				channel		= <1>;
+			};
+			mipi_csi2_0_in2: endpoint@2 {
+				remote-endpoint	= <&max96712_out2>;
+				io-direction	= "input";
+				channel		= <2>;
+			};
+			mipi_csi2_0_in3: endpoint@3 {
+				remote-endpoint	= <&max96712_out3>;
+				io-direction	= "input";
+				channel		= <3>;
+			};
+		};
+		port@1 {
+			reg = <1>;
+			mipi_csi2_0_out0: endpoint {
+				remote-endpoint	= <&videoinput4_in>;
+				io-direction	= "output";
+				channel		= <0>;
+				/*
+				 * 0: Single pixel mode
+				 * 1: Dual pixel mode (RAW8/10/12, YUV422)
+				 * 2: Quad pixel mode (RAW8/10/12)
+				 * 3: Invalid
+				 */
+				pixel-mode = <1>;
+			};
+		};
+		port@2 {
+			reg = <2>;
+			mipi_csi2_0_out1: endpoint {
+				remote-endpoint	= <&videoinput5_in>;
+				io-direction	= "output";
+				channel		= <1>;
+				pixel-mode = <1>;
+			};
+		};
+		port@3 {
+			reg = <3>;
+			mipi_csi2_0_out2: endpoint {
+				remote-endpoint	= <&videoinput6_in>;
+				io-direction	= "output";
+				channel		= <2>;
+				pixel-mode = <1>;
+			};
+		};
+		port@4 {
+			reg = <4>;
+			mipi_csi2_0_out3: endpoint {
+				remote-endpoint	= <&videoinput7_in>;
+				io-direction	= "output";
+				channel		= <3>;
+				pixel-mode = <1>;
+			};
+		};
+	};
+};
+
+&videoinput4 {
+	status		= "okay";
+	cifport		= <&cifport		5>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera4
+			   0>;
+	port {
+		videoinput4_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out0>;
+			io-direction	= "input";
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};
+
+&videoinput5 {
+	status		= "okay";
+	cifport		= <&cifport		6>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera5
+			   0>;
+	port {
+		videoinput5_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out1>;
+			io-direction	= "input";
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};
+
+&videoinput6 {
+	status		= "okay";
+	cifport		= <&cifport		7>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera6
+			   0>;
+	port {
+		videoinput6_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out2>;
+			io-direction	= "input";
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};
+
+&videoinput7 {
+	status		= "okay";
+	cifport		= <&cifport		8>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera7
+			   0>;
+	port {
+		videoinput7_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out3>;
+			io-direction	= "input";
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};

@@ -1,0 +1,155 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+#include "tcc805x-videoinput.dtsi"
+
+&pinctrl {
+	isp0_uart_tx: isp0_uart_tx {
+		telechips,pins = "gpmb-0";
+		telechips,pin-function = <5>;
+		telechips,output-high;
+		telechips,input_buffer_disable;
+	};
+
+	isp0_uart_rx: isp0_uart_rx {
+		telechips,pins = "gpmb-1";
+		telechips,pin-function = <5>;
+		telechips,input-enable;
+		telechips,input_buffer_enable;
+	};
+
+	isp1_uart_tx: isp1_uart_tx {
+		telechips,pins = "gpmb-6";
+		telechips,pin-function = <5>;
+		telechips,output-high;
+		telechips,input_buffer_disable;
+	};
+
+	isp1_uart_rx: isp1_uart_rx {
+		telechips,pins = "gpmb-7";
+		telechips,pin-function = <5>;
+		telechips,input-enable;
+		telechips,input_buffer_enable;
+	};
+
+	isp2_uart_tx: isp2_uart_tx {
+		telechips,pins = "gpmb-12";
+		telechips,pin-function = <5>;
+		telechips,output-high;
+		telechips,input_buffer_disable;
+	};
+
+	isp2_uart_rx: isp2_uart_rx {
+		telechips,pins = "gpmb-13";
+		telechips,pin-function = <5>;
+		telechips,input-enable;
+		telechips,input_buffer_enable;
+	};
+
+	isp3_uart_tx: isp3_uart_tx {
+		telechips,pins = "gpmb-24";
+		telechips,pin-function = <5>;
+		telechips,output-high;
+		telechips,input_buffer_disable;
+	};
+
+	isp3_uart_rx: isp3_uart_rx {
+		telechips,pins = "gpmb-25";
+		telechips,pin-function = <5>;
+		telechips,input-enable;
+		telechips,input_buffer_enable;
+	};
+};
+
+&i2c6 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+	port-mux = <12>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c12_bus>;
+
+    tp2855: tp2855 {
+        status = "okay";
+        compatible = "techpoint,tp2855";
+
+        rst-gpios = <&gpmb 15 1>;
+        intb-gpios = <&gpmb 16 1>;
+        reg = <0x44>;
+        ports {
+            #address-cells = <1>;
+            #size-cells = <0>;
+            port@4 {
+                reg = <0>;
+                tp2855_out0: endpoint@0 {
+                    remote-endpoint = <&mipi_csi2_0_in0>;
+                    io-direction = "output";
+                    channel = <0>;
+				};
+                tp2855_out1: endpoint@1 {
+                    remote-endpoint = <&mipi_csi2_0_in1>;
+                    io-direction = "output";
+                    channel = <1>;
+				};
+                tp2855_out2: endpoint@2 {
+                    remote-endpoint = <&mipi_csi2_0_in2>;
+                    io-direction = "output";
+                    channel = <2>;
+				};
+                tp2855_out3: endpoint@3 {
+                    remote-endpoint = <&mipi_csi2_0_in3>;
+                    io-direction = "output";
+                    channel = <3>;
+				};
+			};
+		};
+	};
+};
+
+&i2c7 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+	port-mux = <13>; 
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c13_bus>; 
+
+	imx219: imx219@10 {
+		status		= "okay";
+		compatible	= "sony,imx219";
+
+		clocks = <&imx219_clk>;
+		clock-names = "xclk";
+
+		VANA-supply = <&imx219_vana>;	// 2.8v 
+		VDIG-supply = <&imx219_vdig>;	// 1.8v 
+		VDDL-supply = <&imx219_vddl>;	// 1.2v 
+
+		reset  = <&gpg 5 1>;
+
+		clock-lanes = <0>;
+		data-lanes = <1 2>;
+		clock-noncontinuous;
+		link-frequencies = /bits/ 64 <456000000>;
+
+		reg		= <0x10>;
+		port {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+	
+			imx219_out0: endpoint@0 {
+				remote-endpoint = <&mipi_csi2_1_in0>;
+				io-direction = "output";
+				channel = <0>;
+                		bus-width = <2>;
+                		data-lanes = <0 1>;
+                		clock-lanes = <2>;
+                		hsync-active = <0>;
+                		vsync-active = <0>;
+			};
+		};
+	};
+};

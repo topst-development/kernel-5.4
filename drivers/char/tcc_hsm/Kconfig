@@ -1,0 +1,5 @@
+config TCC_HSM
+	tristate "TCC HSM"
+	default y
+	help
+		Support to HSM based on Cortex-M4(TCC803x) or HSM Core(TCC805x)

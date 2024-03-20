@@ -1,0 +1,189 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+#include "tcc805x.dtsi"
+#include "tcc8050_53-pinctrl.dtsi"
+#include <dt-bindings/thermal/thermal.h>
+
+/ {
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu-map {
+			cluster0 {
+				core0 {
+					cpu = <&A72_0>;
+				};
+				core1 {
+					cpu = <&A72_1>;
+				};
+				core2 {
+					cpu = <&A72_2>;
+				};
+				core3 {
+					cpu = <&A72_3>;
+				};
+			};
+		};
+
+		A72_0: cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a72";
+			reg = <0x0>;
+			enable-method = "psci";
+			next-level-cache = <&A72_L2>;
+			cpu-idle-states = <&CPU_SLEEP_0_0>;
+			operating-points-v2 = <&cpu_opp_table>;
+			#cooling-cells = <2>;
+			clocks = <&clk_fbus FBUS_CPU0>;
+		};
+
+		A72_1: cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a72";
+			reg = <0x1>;
+			enable-method = "psci";
+			next-level-cache = <&A72_L2>;
+			cpu-idle-states = <&CPU_SLEEP_0_0>;
+			#cooling-cells = <2>;
+			operating-points-v2 = <&cpu_opp_table>;
+		};
+
+		A72_2: cpu@2 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a72";
+			reg = <0x2>;
+			enable-method = "psci";
+			next-level-cache = <&A72_L2>;
+			cpu-idle-states = <&CPU_SLEEP_0_0>;
+			#cooling-cells = <2>;
+			operating-points-v2 = <&cpu_opp_table>;
+		};
+
+		A72_3: cpu@3 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a72";
+			reg = <0x3>;
+			enable-method = "psci";
+			next-level-cache = <&A72_L2>;
+			cpu-idle-states = <&CPU_SLEEP_0_0>;
+			#cooling-cells = <2>;
+			operating-points-v2 = <&cpu_opp_table>;
+		};
+
+		A72_L2: l2-cache {
+			compatible = "cache";
+			cache-level = <2>;
+		};
+
+		idle-states {
+			entry-method = "arm,psci";
+
+			CPU_SLEEP_0_0: cpu-sleep-0-0 {
+				compatible = "arm,idle-state";
+				local-timer-stop;
+				arm,psci-suspend-param = <0x0010000>;
+				entry-latency-us = <250>;
+				exit-latency-us = <500>;
+				min-residency-us = <950>;
+			};
+		};
+
+		cpu_opp_table: cpu_opp_table {
+			compatible = "operating-points-v2";
+			opp-shared;
+
+			opp0 {
+				opp-hz = /bits/ 64 <1690000000>;
+				opp-microvolt = <1000000>;
+				clock-latency-ns = <300000>;
+			};
+
+			opp1 {
+				opp-hz = /bits/ 64 <1500000000>;
+				opp-microvolt = <1000000>;
+				clock-latency-ns = <300000>;
+			};
+			opp2 {
+				opp-hz = /bits/ 64 <1460000000>;
+				opp-microvolt = <900000>;
+				clock-latency-ns = <300000>;
+			};
+			opp3 {
+				opp-hz = /bits/ 64 <950000000>;
+				opp-microvolt = <800000>;
+				clock-latency-ns = <300000>;
+			};
+		};
+	};
+
+	pmu_a72 {
+		compatible = "arm,cortex-a15-pmu", "arm,cortex-a72-pmu";
+		interrupts = <GIC_SPI 165 IRQ_TYPE_LEVEL_LOW>,
+			     <GIC_SPI 166 IRQ_TYPE_LEVEL_LOW>,
+			     <GIC_SPI 167 IRQ_TYPE_LEVEL_LOW>,
+			     <GIC_SPI 168 IRQ_TYPE_LEVEL_LOW>;
+		interrupt-affinity = <&A72_0>,
+				     <&A72_1>,
+				     <&A72_2>,
+				     <&A72_3>;
+	};
+	thermal_zone: thermal-zones {
+		cpu_thermal: cpu-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <1000>;
+			thermal-sensors = <&thermal0 1>;
+			trips {
+				trip0: trip-point@0 {
+					temperature = <75000>;
+					hysteresis = <0>;
+					type = "passive";
+				};
+				trip1: trip-point@1 {
+					temperature = <80000>;
+					hysteresis = <0>;
+					type = "passive";
+				};
+				trip2: trip-point@2 {
+					temperature = <85000>;
+					hysteresis = <0>;
+					type = "passive";
+				};
+			};
+			cooling-maps {
+				map0 {
+					trip = <&trip0>;
+					cooling-device =
+						<&A72_0 0 1>;
+				};
+				map1 {
+					trip = <&trip1>;
+					cooling-device =
+						<&A72_0 1 2>;
+				};
+				map2 {
+					trip = <&trip2>;
+					cooling-device =
+						<&A72_0 2 3>;
+				};
+			};
+		};
+		probe1-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <1000>;
+			thermal-sensors = <&thermal1 2>;
+		};
+		probe2-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <1000>;
+			thermal-sensors = <&thermal2 3>;
+		};
+		probe3-thermal {
+			polling-delay = <1000>;
+			polling-delay-passive = <1000>;
+			thermal-sensors = <&thermal3 4>;
+		};
+	};
+};

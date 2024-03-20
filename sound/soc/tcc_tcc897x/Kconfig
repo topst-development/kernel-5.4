@@ -1,0 +1,15 @@
+config SND_SOC_TCC
+	tristate "SoC Audio for the Telechips TCC chip"
+	depends on ARCH_TCC && SND_SOC
+	help
+	  Say Y or M if you want to add support for codecs attached to
+	  the TCC I2S interface. You will also need
+	  to select the audio interfaces to support below.
+
+config SND_SOC_TCC8971_BOARD_LCN3
+	tristate "TCC8971 LCN 3.0"
+	select SND_SOC_AK4601
+	depends on SND_SOC_TCC && ARCH_TCC897X
+
+	help
+	  Say Y if you want to add support for SoC audio on TCC8971 LCN 3.0(AK4601)

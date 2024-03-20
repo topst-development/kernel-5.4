@@ -1,0 +1,43 @@
+# drivers/media/platform/tccvin/Kconfig
+#
+# Copyright (c) 2020-2020 Telechips Co., Ltd.
+#	http://www.telechips.com/
+# Jay <B150095@telechips.com>
+#
+# Licensed under GPL
+
+config VIDEO_TCCVIN2
+	bool "Telechips Video-Input Path Driver V2"
+	depends on VIDEO_V4L2 && VIDEO_V4L2_SUBDEV_API && OF
+	default n
+	select V4L2_FWNODE
+	select VIDEOBUF2_DMA_CONTIG
+	help
+	Support v4l2 capture interface
+
+	Note that the driver is supported on the following chipsets.
+	- tcc803x
+	- tcc805x
+
+config OVERLAY_PGL
+	bool "Overlay Video-Input with Parking Guide Line"
+	depends on VIDEO_TCCVIN2
+	default n
+	help
+	Support overlay function of static pgl on the camera preview
+
+	Note that the driver is supported on the following conditions.
+	- The pgl image is loaded on bootloader step.
+	- The related device node is updated to overlay.
+
+config VIDEO_TCCVIN2_DIAG
+	bool "Video-Input Path Diagnostics"
+	depends on VIDEO_TCCVIN2
+	default n
+	help
+	Support Video-Input Path Diagnostics
+
+	Note that the following diagnostics functions are supported.
+	- cif port pinctrl checking.
+	- cif port mapping checking.
+

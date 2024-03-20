@@ -1,0 +1,21 @@
+Telechips reboot mode driver
+
+The driver gets reboot mode magic value from reboot-mode driver and store it.
+Then the bootloader can read it and take different action according to the magic
+value stored.
+
+Required properties:
+- compatible: Should be "telechips,reboot-mode"
+- mode-xxx: Magic value for xxx reboot mode.  Refer to reboot-mode.txt.
+
+Optional properties:
+- record-panic: Magic value for kernel panic.
+
+Example:
+	reboot-mode {
+		compatible = "telechips,reboot-mode";
+		mode-normal = <BOOT_NORMAL>;
+		mode-bootloader = <BOOT_FASTBOOT>;
+		mode-recovery = <BOOT_RECOVERY>;
+		record-panic = <BOOT_PANIC>;
+	};

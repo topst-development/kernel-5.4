@@ -1,0 +1,46 @@
+* Device Tree Bindings for Camera IPC Manager
+
+  Camera IPC Manager (a.k.a. cam_ipc) is a device driver to communicate between
+  mcu and sub-core, which is needed for trust RVC or communicate between main and sub-core,
+  which is needed for ovp changed in RVC since TCC805X.
+
+  Trust RVC checks the state of sub-core by transferring a request message to
+  sub-core via mailbox. Then, sub-core sends back an ACK to MCU. If the message
+  cannot receive by MCU, Trust RVC will recognize the state of subcore as safety
+  state, it will control the video mux and change the display bus from DDIBUS to
+  Trust RVC.
+
+  During RVC operation, the sub-core sends a request message to the main-core 
+  for an ovp change request via mailbox. Then, main-core receives a request message,
+  performs an ovp change, and returns the result value.
+
+Required properties:
+
+- status     : disable or enable the device node
+- compatible : property name that conveys the platform architecture identifiers,
+               as 'telechips,cam_ipc'
+- mbox-names : the name of mailbox
+- mboxes     : specifies the channel for the mailbox (IPC)
+- mbox-id    : specifies the mailbox id for camera ipc manager
+- device-name: the name of the device
+
+Example
+-------
+  cam_ipc0: cam_ipc@0 {
+    compatible = "telechips,cam_ipc";
+    device-name ="cam_ipc_ap";
+    mbox-names ="cam-ipc-ap";
+    mboxes = <&cb_mbox TCC_CB_MBOX_CAMIPC>;
+    mbox-id = TCC_MBOX_CAMIPC_ID;
+    status = "disabled";
+  };
+
+  cam_ipc1: cam_ipc@1 {
+    compatible = "telechips,cam_ipc";
+    device-name ="cam_ipc_micom";
+    mbox-names ="cam-ipc-micom";
+    mboxes = <&micom_mbox TCC_MICOM_MBOX1_CAMIPC>;
+    mbox-id = TCC_MBOX_CAMIPC_ID;
+    status = "disabled";
+  };
+

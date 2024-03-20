@@ -1,0 +1,325 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+/dts-v1/;
+
+/* Definition for H/W LCD ports */
+#define LCD_PORT1_PWR "gpmc-19"
+#define LCD_PORT1_RST "gpmc-20"
+#define LCD_PORT1_BLK "gph-6"
+
+#define LCD_PORT2_PWR "gpc-8"
+#define LCD_PORT2_RST "gpc-9"
+#define LCD_PORT2_BLK "gph-7"
+
+#define LCD_PORT3_PWR "gpmc-2"
+#define LCD_PORT3_RST "gpmc-18"
+#define LCD_PORT3_BLK "gpe-15"
+
+#define LCD_PORT4_PWR "gpmb-25"
+#define LCD_PORT4_RST "gpmb-19"
+#define LCD_PORT4_BLK "gpmc-21"
+
+#include "tcc8050-subcore.dtsi"
+#include <dt-bindings/pmap/tcc805x/pmap-tcc805x-linux-ivi-subcore-a53q.h>
+
+/ {
+	vqmmc_emmc: vqmmc_emmc {
+		compatible = "regulator-fixed";
+		regulator-name = "vqmmc_emmc";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-always-on;
+	};
+
+	tcc_sc_mmc: tcc_sc_mmc {
+		compatible = "telechips,tcc805x-sc-mmc";
+		status = "okay";
+
+		max-frequency = <200000000>;
+		bus-width = <8>;
+
+		sc-firmware = <&tcc_sc_fw>;
+
+		no-sdio;
+		no-sd;
+		non-removable;
+		keep-power-in-suspend;
+		disable-wp;
+
+		mmc-hs400-1_8v;
+		vqmmc-supply = <&vqmmc_emmc>;
+	};
+
+	tcc_sc_ufs: tcc_sc_ufs {
+		compatible = "telechips,tcc805x-sc-ufs";
+		status = "disabled";
+		sc-firmware = <&tcc_sc_fw>;
+	};
+
+	tcc_shared_memory: tcc_shared_memory {
+		compatible = "telechips,tcc_shmem";
+		reg = <0x0 0x38000000 0x0 0x8000000>;
+		reg-names = "tcc_shmem";
+		interrupts = <GIC_SPI 50 IRQ_TYPE_LEVEL_HIGH>;
+		lable = "TCC shared memory";
+		memory-region = <&pmap_tcc_shmem>;
+		dist_regs = <0x17301000 0x1000 0x17C01000 0x1000>;
+		core-num = <1>;
+	};
+
+	tcc_virt_eth: tcc_virt_eth {
+		compatible = "telechips,tcc_virt_eth";
+		status = "okay";
+	};
+
+	lcd_port3_bl: lcd_port3_bl {
+			status = "okay";
+			compatible = "gpio-backlight";
+			gpios = <&gpe 15 0>;
+			default-on;
+	};
+
+	fb_tm123xdhp90:fb_tm123xdhp90 {
+			status = "okay";
+			pinctrl-names = "default", "pwr_on_1", "pwr_on_2", "blk_on",
+									"blk_off", "power_off";
+			pinctrl-0 = <&lcd_port_default3>;
+			pinctrl-1 = <&lcd_port_power_on3>;
+			pinctrl-2 = <&lcd_port_reset_off3>;
+			pinctrl-3 = <&lcd_port_blk_on3>;
+			pinctrl-4 = <&lcd_port_blk_off3>;
+			pinctrl-5 = <&lcd_port_reset_on3 &lcd_port_power_off3>;
+			backlight = <&lcd_port3_bl>;
+	};
+
+	vbus_supply_ehci: vbus_supply_ehci {
+		gpios = <&gpmc 7 0x0>;
+		gpios-states = <0x1>;
+		status = "okay";
+	};
+
+	vbus_supply_enable: vbus_supply_enable {
+		compatible = "regulator-fixed";
+		regulator-name = "vbus_supply_enable";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpios = <&gpmc 5 0x0>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	tcc_gpio_sample {
+		compatible = "gpio_sample";
+		label = "TCC GPIO";
+		interrupt-parent = <&gpa>;
+		interrupts = <1 IRQ_TYPE_EDGE_BOTH>;
+		gpios = <&gpa 2 0>;
+	};
+
+
+	imx219_vana: fixedregulator@0 {
+		compatible = "regulator-fixed";
+		regulator-name = "imx219_vana";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+		gpios = <&gpg 5 0x0>;
+		enable-active-high;
+		regulator-always-on;
+	};
+	imx219_vdig: fixedregulator@1 {
+		compatible = "regulator-fixed";
+		regulator-name = "imx219_vdig";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+	imx219_vddl: fixedregulator@2 {
+		compatible = "regulator-fixed";
+		regulator-name = "imx219_vddl";
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	imx219_clk: camera-clk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <24000000>;
+	};
+};
+
+&reserved_memory {
+	pmap_tcc_shmem: tcc_shmem {
+		reg = <0x0 0x38000000 0x0 0x8000000>;
+		no-map;
+		status = "disabled";
+	};
+
+	/*-----------------------------------------------------------
+	 * Camera Memory
+	 *-----------------------------------------------------------
+	 */
+	pmap_parking_gui: pmap_parking_gui {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PGL_BASE 0x0 PMAP_SIZE_CAMERA_PGL>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera_viqe: pmap_rearcamera_viqe {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_VIQE_BASE 0x0 PMAP_SIZE_CAMERA_VIQE>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_rearcamera: pmap_rearcamera {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW0>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_rearcamera1: pmap_rearcamera1 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW1_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW1>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_rearcamera2: pmap_rearcamera2 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW2_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW2>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_rearcamera3: pmap_rearcamera3 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW3_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW3>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_rearcamera4: pmap_rearcamera4 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW4_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW4>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_rearcamera5: pmap_rearcamera5 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW5_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW5>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_rearcamera6: pmap_rearcamera6 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW6_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW6>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_rearcamera7: pmap_rearcamera7 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_PREVIEW7_BASE 0x0 PMAP_SIZE_CAMERA_PREVIEW7>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	pmap_vin_lastframe: pmap_vin_lastframe {
+		compatible = "shared-dma-pool";
+		reg = <0x0 CAMERA_LASTFRAME_BASE 0x0 PMAP_SIZE_CAMERA_LASTFRAME>;
+		alignment = <0x1000>;
+//		no-map;
+	};
+
+	/*-----------------------------------------------------------
+	 * Secure Area 1 (CPU X, VPU X, GPU W, VIOC R)
+	 *-----------------------------------------------------------
+	 */
+	pmap_fb_video: fb_video {
+		compatible = "pmap,fb_video";
+		pmap-name = "fb_video";
+		reg = <0x0 FB_VIDEO_BASE 0x0 PMAP_SIZE_FB_VIDEO>;
+		alignment = <0x1000>;
+		no-map;
+	};
+
+	pmap_fb1_video: fb1_video {
+		compatible = "pmap,fb1_video";
+		pmap-name = "fb1_video";
+		alloc-ranges = <0x0 RESERVED_HEAP_BASE 0x0 RESERVED_HEAP_SIZE>;
+		size = <0x0 PMAP_SIZE_FB1_VIDEO>;
+		no-map;
+	};
+
+	pmap_fb2_video: fb2_video {
+		compatible = "pmap,fb2_video";
+		pmap-name = "fb2_video";
+		alloc-ranges = <0x0 RESERVED_HEAP_BASE 0x0 RESERVED_HEAP_SIZE>;
+		size = <0x0 PMAP_SIZE_FB2_VIDEO>;
+		no-map;
+	};
+
+	pmap_fb3_video: fb3_video {
+		compatible = "pmap,fb3_video";
+		pmap-name = "fb3_video";
+		alloc-ranges = <0x0 RESERVED_HEAP_BASE 0x0 RESERVED_HEAP_SIZE>;
+		size = <0x0 PMAP_SIZE_FB3_VIDEO>;
+		no-map;
+	};
+
+	pmap_overlay_rot: overlay_rot {
+		compatible = "pmap,overlay_rot";
+		pmap-name = "overlay_rot";
+		alloc-ranges = <0x0 RESERVED_HEAP_BASE 0x0 RESERVED_HEAP_SIZE>;
+		size = <0x0 PMAP_SIZE_OVERLAY_ROT>;
+		no-map;
+	};
+};
+
+&a53_sc_mbox {
+	status = "okay";
+};
+
+&tcc_sc_fw {
+	status = "okay";
+	mboxes = <&a53_sc_mbox 0>;
+};
+
+&cam_ipc0 {
+	status = "okay";
+};
+
+&cam_ipc1 {
+	status = "okay";
+};
+
+&switch0 {
+	compatible = "telechips,switch";
+	status = "okay";
+
+	pinctrl-names = "default";
+	pinctrl-0 = <&switch_mb23>;
+
+	switch-gpios = <&gpmb 23 1>;
+	switch-active = <0>;
+};
+
+&uart4 {
+        pinctrl-0 = <&uart9_data>;
+        status = "okay";
+};
+
+#include "tcc8050_53-videoinput-sv0.1.dtsi"
+#include "tcc805x-videoinput-parallel-sd.dtsi"
+#include "tcc805x-videoinput-mipi0-hd.dtsi"
+#include "tcc805x-videoinput-mipi1-hd.dtsi"

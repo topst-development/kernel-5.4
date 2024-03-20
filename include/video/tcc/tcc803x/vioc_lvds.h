@@ -1,0 +1,1338 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+/*
+ * linux/include/video/tcc/tcc803x/vioc_lvds.h
+ * Author:  <linux@telechips.com>
+ * Created: June 10, 2008
+ * Description: TCC VIOC h/w block
+ *
+ * Copyright (C) 2008-2009 Telechips
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see the file COPYING, or write
+ * to the Free Software Foundation, Inc.,
+ * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+#ifndef VIOC_LVDS_H
+#define VIOC_LVDS_H
+
+/*
+ * Register offset
+ */
+#define LVDS_RESETB (0x00U)
+#define LVDS_CLK_SET (0x04U)
+#define LVDS_AUTO_STB_SET (0x08U)
+#define LVDS_STB_EN (0x1CU)
+#define LVDS_AUTO_STB_DONE (0x2CU)
+#define LVDS_AUTO_STB_RDATA (0x30U)
+#define LVDS_EN (0x40U)
+#define LVDS_FORMAT (0x44U)
+#define LVDS_PORT (0x48U)
+#define LVDS_STARTUP_MODE (0x4CU)
+// Skip Test & Debug mode registers (0x50 ~ 0x68)
+#define LVDS_USER_MODE_PHY_IF_SET0 (0x6CU)
+#define LVDS_USER_MODE_PHY_IF_SET1 (0x70U)
+#define LVDS_MONITOR_DEBUG1 (0x80U)
+#define LVDS_CTSET0 (0x90U)
+#define LVDS_CTSET1 (0x94U)
+#define LVDS_FCCNTR0 (0x98U)
+#define LVDS_FCOPT (0x9CU)
+#define LVDS_FCSTAT (0xA0U)
+#define LVDS_FCCNTVAL1 (0xA4U)
+#define LVDS_FCRESEVAL (0xA8U)
+#define LVDS_FCDSTEPSET (0xACU)
+#define LVDS_FCCNTR1 (0xB0U)
+#define LVDS_FCCONTINSET0 (0xB4U)
+#define LVDS_FCCONTINSET1 (0xB8U)
+#define LVDS_FCCONTINSET2 (0xBCU)
+
+/*
+ * Resets by software
+ */
+#define RSTB_CT_SHIFT (12U)
+#define RSTB_FIFO2_SHIFT (11U)
+#define RSTB_FIFO1_SHIFT (10U)
+#define RSTB_FIFO0_SHIFT (9U)
+#define RSTB_CLK_NCO_SHIFT (7U)
+#define RSTB_CLK_SSCG_2BIT_SHIFT (6U)
+#define RSTB_CLK_SSCG_7BIT_SHIFT (5U)
+#define RSTB_CLK_PIXEL_SHIFT (4U)
+#define RSTB_MOD_CLK_SHIFT (3U)
+#define RSTB_PCLK_SHIFT (2U)
+#define RSTB_CLK_VCO20_SHIFT (1U)
+#define RSTB_ALL_SHIFT (0U)
+
+#define RSTB_CT_MASK ((u32)0x1U << RSTB_CT_SHIFT)
+#define RSTB_FIFO2_MASK ((u32)0x1U << RSTB_FIFO2_SHIFT)
+#define RSTB_FIFO1_MASK ((u32)0x1U << RSTB_FIFO1_SHIFT)
+#define RSTB_FIFO0_MASK ((u32)0x1U << RSTB_FIFO0_SHIFT)
+#define RSTB_CLK_NCO_MASK (0x1U << RSTB_CLK_NCO_SHIFT)
+#define RSTB_CLK_SSCG_2BIT_MASK (0x1U << RSTB_CLK_SSCG_2BIT_SHIFT)
+#define RSTB_CLK_SSCG_7BIT_MASK ((u32)0x1U << RSTB_CLK_SSCG_7BIT_SHIFT)
+#define RSTB_CLK_PIXEL_MASK ((u32)0x1U << RSTB_CLK_PIXEL_SHIFT)
+#define RSTB_MOD_CLK_MASK ((u32)0x1U << RSTB_MOD_CLK_SHIFT)
+#define RSTB_PCLK_MASK ((u32)0x1U << RSTB_PCLK_SHIFT)
+#define RSTB_CLK_VCO20_MASK ((u32)0x1U << RSTB_CLK_VCO20_SHIFT)
+#define RSTB_ALL_MASK ((u32)0x1U << RSTB_ALL_SHIFT)
+
+/*
+ * Enable and inverts clocks
+ */
+#define CT_REFCLK_SEL_SHIFT (19U)
+#define DACCLK_MANUAL_VALUE_SHIFT (18U)
+#define DACCLK_MODE_SHIFT (17U)
+#define DACCLK_EN_SHIFT (16U)
+#define CLK_INV_CLK_CT_REF_SHIFT (15U)
+#define CLK_INV_CLK_NCO_SHIFT (14U)
+#define CLK_INV_CLK_SSCG_2BIT_SHIFT (13U)
+#define CLK_INV_CLK_SSCG_7BIT_SHIFT (12U)
+#define CLK_INV_CLK_PIXEL_SHIFT (11U)
+#define CLK_INV_MOD_CLK_SHIFT (10U)
+#define CLK_INV_CLK_VCO20_SHIFT (8U)
+#define CLK_EN_CLK_CT_REF_SHIFT (7U)
+#define CLK_EN_CLK_NCO_SHIFT (6U)
+#define CLK_EN_CLK_SSCG_2BIT_SHIFT (5U)
+#define CLK_EN_CLK_SSCG_7BIT_SHIFT (4U)
+#define CLK_EN_CLK_PIXEL_SHIFT (3U)
+#define CLK_EN_MOD_CLK_SHIFT (2U)
+#define CLK_EN_CLK_VCO20_SHIFT (0U)
+
+#define CT_REFCLK_SEL_MASK ((u32)0x1U << CT_REFCLK_SEL_SHIFT)
+#define DACCLK_MANUAL_VALUE_MASK ((u32)0x1U << DACCLK_MANUAL_VALUE_SHIFT)
+#define DACCLK_MODE_MASK ((u32)0x1U << DACCLK_MODE_SHIFT)
+#define DACCLK_EN_MASK ((u32)0x1U << DACCLK_EN_SHIFT)
+#define CLK_INV_CLK_CT_REF_MASK ((u32)0x1U << CLK_INV_CLK_CT_REF_SHIFT)
+#define CLK_INV_CLK_NCO_MASK ((u32)0x1U << CLK_INV_CLK_NCO_SHIFT)
+#define CLK_INV_CLK_SSCG_2BIT_MASK ((u32)0x1U << CLK_INV_CLK_SSCG_2BIT_SHIFT)
+#define CLK_INV_CLK_SSCG_7BIT_MASK ((u32)0x1U << CLK_INV_CLK_SSCG_7BIT_SHIFT)
+#define CLK_INV_CLK_PIXEL_MASK ((u32)0x1U << CLK_INV_CLK_PIXEL_SHIFT)
+#define CLK_INV_MOD_CLK_MASK ((u32)0x1U << CLK_INV_MOD_CLK_SHIFT)
+#define CLK_INV_CLK_VCO20_MASK ((u32)0x1U << CLK_INV_CLK_VCO20_SHIFT)
+#define CLK_EN_CLK_CT_REF_MASK ((u32)0x1U << CLK_EN_CLK_CT_REF_SHIFT)
+#define CLK_EN_CLK_NCO_MASK ((u32)0x1U << CLK_EN_CLK_CT_REF_SHIFT)
+#define CLK_EN_CLK_SSCG_2BIT_MASK ((u32)0x1U << CLK_EN_CLK_SSCG_2BIT_SHIFT)
+#define CLK_EN_CLK_SSCG_7BIT_MASK ((u32)0x1U << CLK_EN_CLK_SSCG_7BIT_SHIFT)
+#define CLK_EN_CLK_PIXEL_MASK ((u32)0x1U << CLK_EN_CLK_PIXEL_SHIFT)
+#define CLK_EN_MOD_CLK_MASK ((u32)0x1U << CLK_EN_MOD_CLK_SHIFT)
+#define CLK_EN_CLK_VCO20_MASK ((u32)0x1U << CLK_EN_CLK_VCO20_SHIFT)
+
+/*
+ * Sets auto strobe mode
+ */
+#define LVDS_STB_DELAY2_SHIFT (12U)
+#define LVDS_STB_DELAY1_SHIFT (8U)
+#define LVDS_STB_DELAY0_SHIFT (4U)
+#define LVDS_STB_REQ_LENGTH_SHIFT (2U)
+#define LVDS_STB_POLARITY_SHIFT (1U)
+#define LVDS_STB_AUTO_EN_SHIFT (0U)
+
+#define LVDS_STB_DELAY2_MASK \
+	((u32)0xFU << LVDS_STB_DELAY2_SHIFT)
+#define LVDS_STB_DELAY1_MASK \
+	((u32)0xFU << LVDS_STB_DELAY1_SHIFT)
+#define LVDS_STB_DELAY0_MASK \
+	((u32)0xFU << LVDS_STB_DELAY0_SHIFT)
+#define LVDS_STB_REQ_LENGTH_MASK \
+	((u32)0x3U << LVDS_STB_REQ_LENGTH_SHIFT)
+#define LVDS_STB_POLARITY_MASK \
+	((u32)0x1U << LVDS_STB_POLARITY_SHIFT)
+#define LVDS_STB_AUTO_EN_MASK \
+	((u32)0x1U << LVDS_STB_AUTO_EN_SHIFT)
+
+/*
+ * Manual strobe mode enable
+ * Register Name - LVDS_AUTO_STB_SET
+ */
+#define LVDS_STB_EN_SHIFT (0U)
+
+#define LVDS_STB_EN_MASK ((u32)0x1U << LVDS_STB_EN_SHIFT)
+
+/*
+ * Enable FIFOs
+ * Register Name - LVDS_EN
+ */
+#define LVDS_FIFO2_EN_SHIFT (3U)
+#define LVDS_FIFO1_EN_SHIFT (2U)
+#define LVDS_FIFO0_EN_SHIFT (1U)
+#define LVDS_DATA_EN_SHIFT (0U)
+
+#define LVDS_FIFO2_EN_MASK ((u32)0x1U << LVDS_FIFO2_EN_SHIFT)
+#define LVDS_FIFO1_EN_MASK ((u32)0x1U << LVDS_FIFO1_EN_SHIFT)
+#define LVDS_FIFO0_EN_MASK ((u32)0x1U << LVDS_FIFO0_EN_SHIFT)
+#define LVDS_DATA_EN_MASK ((u32)0x1U << LVDS_DATA_EN_SHIFT)
+
+/*
+ * Selects format, color depth, operating mode and up-sampling ratio
+ * Register Name - LVDS_FORMAT
+ */
+#define LVDS_UPSAMPLE_RATIO_SHIFT (3U)
+#define LVDS_BALANCED_EN_SHIFT (2U)
+#define LVDS_COLOR_DEPTH_SHIFT (1U)
+#define LVDS_COLOR_FORMAT_SHIFT (0U)
+
+#define LVDS_UPSAMPLE_RATIO_MASK \
+	((u32)0x7U << LVDS_UPSAMPLE_RATIO_SHIFT)
+#define LVDS_BALANCED_EN_MASK ((u32)0x1U << LVDS_BALANCED_EN_SHIFT)
+#define LVDS_COLOR_DEPTH_MASK ((u32)0x1U << LVDS_COLOR_DEPTH_SHIFT)
+#define LVDS_COLOR_FORMAT_MASK ((u32)0x1U << LVDS_COLOR_FORMAT_SHIFT)
+
+/*
+ * Selects a port option for dual pixel mode
+ * Register Name - LVDS_PORT
+ */
+#define LVDS_SYNC_TRANSMITTED_SHIFT (12U)
+#define LVDS_LANE_EN_SHIFT (4U)
+#define LVDS_USE_SYNC_FROM_OP_SHIFT (2U)
+#define LVDS_VSYNC_HSYNC_SWAP_SHIFT (1U)
+#define LVDS_SET_SECONDARY_PORT_SHIFT (0U)
+
+#define LVDS_SYNC_TRANSMITTED_MASK \
+	((u32)0x7U << LVDS_SYNC_TRANSMITTED_SHIFT)
+#define LVDS_LANE_EN_MASK ((u32)0x1FU << LVDS_LANE_EN_SHIFT)
+#define LVDS_USE_SYNC_FROM_OP_MASK \
+	((u32)0x1U << LVDS_USE_SYNC_FROM_OP_SHIFT)
+#define LVDS_VSYNC_HSYNC_SWAP_MASK \
+	((u32)0x1U << LVDS_VSYNC_HSYNC_SWAP_SHIFT)
+#define LVDS_SET_SECONDARY_PORT_MASK \
+	((u32)0x1FU << LVDS_SET_SECONDARY_PORT_SHIFT)
+
+/*
+ * Selects LVDS Start-up mode
+ * Register Name - LVDS_STARTUP_MODE
+ */
+#define LVDS_FIFO2_RD_EN_TIMING_SHIFT (13U)
+#define LVDS_WAIT_PARAM_BF_FIFO2_SHIFT (10U)
+#define LVDS_WAIT_PARAM_BF_FIFO1_SHIFT (7U)
+#define LVDS_WAIT_PARAM_BF_FIFO0_SHIFT (4U)
+#define LVDS_WAIT_PARAM_BF_DATA_SHIFT (1U)
+#define LVDS_START_MANUAL_MODE_EN_SHIFT (0U)
+
+#define LVDS_FIFO2_RD_EN_TIMING_MASK \
+	((u32)0x3U << LVDS_FIFO2_RD_EN_TIMING_SHIFT)
+#define LVDS_WAIT_PARAM_BF_FIFO2_MASK \
+	((u32)0x7U << LVDS_WAIT_PARAM_BF_FIFO2_SHIFT)
+#define LVDS_WAIT_PARAM_BF_FIFO1_MASK \
+	((u32)0x7U << LVDS_WAIT_PARAM_BF_FIFO1_SHIFT)
+#define LVDS_WAIT_PARAM_BF_FIFO0_MASK \
+	((u32)0x7U << LVDS_WAIT_PARAM_BF_FIFO0_SHIFT)
+#define LVDS_WAIT_PARAM_BF_DATA_MASK \
+	((u32)0x8U << LVDS_WAIT_PARAM_BF_DATA_SHIFT)
+#define LVDS_START_MANUAL_MODE_EN_MASK \
+	((u32)0x1U << LVDS_START_MANUAL_MODE_EN_SHIFT)
+
+/*
+ * Controls lane skew and p/n swap
+ * Register Name - LVDS_USER_MODE_PHY_IF_SET0
+ */
+#define LVDS_DATA3_PN_SWAP_SHIFT (19U)
+#define LVDS_DATA3_LANE_SKEW_SHIFT (16U)
+#define LVDS_DATA2_PN_SWAP_SHIFT (15U)
+#define LVDS_DATA2_LANE_SKEW_SHIFT (12U)
+#define LVDS_DATA1_PN_SWAP_SHIFT (11U)
+#define LVDS_DATA1_LANE_SKEW_SHIFT (8U)
+#define LVDS_DATA0_PN_SWAP_SHIFT (7U)
+#define LVDS_DATA0_LANE_SKEW_SHIFT (4U)
+#define LVDS_CLK_PN_SWAP_SHIFT (3U)
+#define LVDS_CLK_LANE_SKEW_SHIFT (0U)
+
+#define LVDS_DATA3_PN_SWAP_MASK \
+	((u32)0x1U << LVDS_DATA3_PN_SWAP_SHIFT)
+#define LVDS_DATA3_LANE_SKEW_MASK \
+	((u32)0x7U << LVDS_DATA3_LANE_SKEW_SHIFT)
+#define LVDS_DATA2_PN_SWAP_MASK \
+	((u32)0x1U << LVDS_DATA2_PN_SWAP_SHIFT)
+#define LVDS_DATA2_LANE_SKEW_MASK \
+	((u32)0x7U << LVDS_DATA2_LANE_SKEW_SHIFT)
+#define LVDS_DATA1_PN_SWAP_MASK \
+	((u32)0x1U << LVDS_DATA1_PN_SWAP_SHIFT)
+#define LVDS_DATA1_LANE_SKEW_MASK \
+	((u32)0x7U << LVDS_DATA1_LANE_SKEW_SHIFT)
+#define LVDS_DATA0_PN_SWAP_MASK \
+	((u32)0x1U << LVDS_DATA0_PN_SWAP_SHIFT)
+#define LVDS_DATA0_LANE_SKEW_MASK \
+	((u32)0x7U << LVDS_DATA0_LANE_SKEW_SHIFT)
+#define LVDS_CLK_PN_SWAP_MASK \
+	((u32)0x1U << LVDS_CLK_PN_SWAP_SHIFT)
+#define LVDS_CLK_LANE_SKEW_MASK \
+	((u32)0x7U << LVDS_CLK_LANE_SKEW_SHIFT)
+
+/*
+ * Selects lane input
+ * Register Name - LVDS_USER_MODE_PHY_IF_SET1
+ */
+#define LVDS_SET_LANE4_SHIFT (16U)
+#define LVDS_SET_LANE3_SHIFT (12U)
+#define LVDS_SET_LANE2_SHIFT (8U)
+#define LVDS_SET_LANE1_SHIFT (4U)
+#define LVDS_SET_LANE0_SHIFT (0U)
+
+#define LVDS_SET_LANE4_MASK \
+	((u32)0x7U << LVDS_SET_LANE4_SHIFT)
+#define LVDS_SET_LANE3_MASK \
+	((u32)0x7U << LVDS_SET_LANE3_SHIFT)
+#define LVDS_SET_LANE2_MASK \
+	((u32)0x7U << LVDS_SET_LANE2_SHIFT)
+#define LVDS_SET_LANE1_MASK \
+	((u32)0x7U << LVDS_SET_LANE1_SHIFT)
+#define LVDS_SET_LANE0_MASK \
+	((u32)0x7U << LVDS_SET_LANE0_SHIFT)
+
+/*
+ * Debug monitor of PHY PLL and FIFOs
+ */
+#define LVDS_FIFO1_STATUS_SHIFT (16U)
+#define LVDS_FIFO0_STATUS_SHIFT (4U)
+#define LVDS_PLL_STATUS_SHIFT (0U)
+
+#define LVDS_FIFO1_STATUS_MASK \
+	((u32)0xFFFU << LVDS_FIFO1_STATUS_SHIFT)
+#define LVDS_FIFO0_STATUS_MASK \
+	((u32)0xFFFU << LVDS_FIFO0_STATUS_SHIFT)
+#define LVDS_PLL_STATUS_MASK \
+	((u32)0xFU << LVDS_PLL_STATUS_SHIFT)
+
+/*
+ * Controls coarse tunning operation
+ * Register Name - LVDS_CTEST0
+ */
+#define LVDS_RUN_SHIFT (1U)
+#define LVDS_ENABLE_SHIFT (0U)
+
+#define LVDS_RUN_MASK ((u32)0x1U << LVDS_RUN_SHIFT)
+#define LVDS_ENABLE_MASK ((u32)0x1U << LVDS_ENABLE_SHIFT)
+
+/*
+ * Controls Manual coarse tunning
+ * Register Name - LVDS_CTEST1
+ */
+#define LVDS_MPLL_CTLCK_SHIFT (13U)
+#define LVDS_MPLL_DIVN_SHIFT (10U)
+#define LVDS_MPLL_FCON_SHIFT (0U)
+
+#define LVDS_MPLL_CTLCK_MASK ((u32)0x1U << LVDS_MPLL_CTLCK_SHIFT)
+#define LVDS_MPLL_DIVN_MASK ((u32)0x7U << LVDS_MPLL_DIVN_SHIFT)
+#define LVDS_MPLL_FCON_MASK ((u32)0x3FFU << LVDS_MPLL_FCON_SHIFT)
+
+/*
+ * Controls counter in coarse tunning
+ * Register Name - LVDS_FCCNTR0
+ */
+#define LVDS_REF_CNT_LEN_SHIFT (24U)
+#define LVDS_VCO_OPEN_WAIT_SHIFT (16U)
+#define LVDS_VCO_ST_WAIT_SHIFT (8U)
+#define LVDS_VCO_CLOSE_WAIT_SHIFT (0U)
+
+#define LVDS_REF_CNT_LEN_MASK ((u32)0xFFU << LVDS_REF_CNT_LEN_SHIFT)
+#define LVDS_VCO_OPEN_WAIT_MASK \
+	((u32)0xFFU << LVDS_VCO_OPEN_WAIT_SHIFT)
+#define LVDS_VCO_ST_WAIT_MASK ((u32)0xFFU << LVDS_VCO_ST_WAIT_SHIFT)
+#define LVDS_VCO_CLOSE_WAIT_MASK \
+	((u32)0xFFU << LVDS_VCO_CLOSE_WAIT_SHIFT)
+
+/*
+ * Controls coarse tunning options
+ * Register Name - LVDS_FCOPT
+ */
+#define LVDS_FCOPT_CLK_DET_SEL_SHIFT (1U)
+#define LVDS_FCOPT_CT_SEL_SHIFT (0U)
+
+#define LVDS_FCOPT_CLK_DET_SEL_MASK ((u32)0x1U << LVDS_FCOPT_CLK_DET_SEL_SHIFT)
+#define LVDS_FCOPT_CT_SEL_MASK ((u32)0x1U << LVDS_FCOPT_CT_SEL_SHIFT)
+
+/*
+ * Controls the target conuter value for PLL VCO clock
+ * in automatic coarse tunning
+ * Register Name -LVDS_FCCNTR1
+ */
+#define LVDS_CONTIN_TARGET_TH_SHIFT (16U)
+#define LVDS_REF_CNT_SHIFT (0U)
+
+#define LVDS_CONTIN_TARGET_TH_MASK \
+	((u32)0xFFFFU << LVDS_CONTIN_TARGET_TH_SHIFT)
+#define LVDS_REF_CNT_MASK ((u32)0xFFFFU << LVDS_REF_CNT_SHIFT)
+
+/*
+ * Controls continuous coarse tunning
+ * Register Name - LVDS_FCCONTINSET0
+ */
+#define LVDS_CONTIN_UPD_STEP_SHIFT (4U)
+#define LVDS_CONTIN_UPD_POL_SHIFT (3U)
+#define LVDS_CONTIN_UPD_OPT_SHIFT (1U)
+#define LVDS_CONTIN_UPD_EN_SHIFT (0U)
+
+#define LVDS_CONTIN_UPD_STEP_MASK \
+	((u32)0xFU << LVDS_CONTIN_UPD_STEP_SHIFT)
+#define LVDS_CONTIN_UPD_POL_MASK \
+	((u32)0x1U << LVDS_CONTIN_UPD_POL_SHIFT)
+#define LVDS_CONTIN_UPD_OPT_MASK \
+	((u32)0x3U << LVDS_CONTIN_UPD_OPT_SHIFT)
+#define LVDS_CONTIN_UPD_EN_MASK \
+	((u32)0x1U << LVDS_CONTIN_UPD_EN_SHIFT)
+
+/*
+ * Controls the reading for continuous coarse tunning
+ * Register Name - LVDS_FCCONTINSET1
+ */
+#define LVDS_CONTIN_UPD_TIME_SHIFT (28U)
+#define LVDS_CONTIN_UPD_RATE_SHIFT (0U)
+
+#define LVDS_CONTIN_UPD_TIME_MASK \
+	((u32)0xFU << LVDS_CONTIN_UPD_TIME_SHIFT)
+#define LVDS_CONTIN_UPD_RATE_MASK \
+	((u32)0xFFFFFFFU << LVDS_CONTIN_UPD_RATE_SHIFT)
+
+/*
+ * Controls the FCON threshold value for continuous coarse tunning
+ * Register Name - LVDS_FCCONTINSET2
+ */
+#define LVDS_CONTIN_UPD_TH_UP_SHIFT (12U)
+#define LVDS_CONTIN_UPD_TH_DN_SHIFT (0U)
+
+#define LVDS_CONTIN_UPD_TH_UP_MASK \
+	((u32)0x3FFU << LVDS_CONTIN_UPD_TH_UP_SHIFT)
+#define LVDS_CONTIN_UPD_TH_DN_MASK \
+	((u32)0x3FFU << LVDS_CONTIN_UPD_TH_DN_SHIFT)
+
+/*
+ * the status of coarse tunning
+ */
+#define LVDS_FCST_CLK_OK_MASK (0x00000001U)
+#define LVDS_FCST_BUSY_MASK (0x00000002U)
+#define LVDS_FCST_DONE_MASK (0x00000004U)
+#define LVDS_FCST_ERROR_MASK (0x00000008U)
+#define LVDS_FCST_VOC_SUB_MASK (0x00000010U)
+#define LVDS_FCST_REF_CLK_MASK (0x00000020U)
+
+/*
+ * the status of PHY PLL
+ */
+#define LVDS_MONITOR_DEBUG1_LKVDETL_MASK (0x00000001U)
+#define LVDS_MONITOR_DEBUG1_LKVDET2_MASK (0x00000002U)
+#define LVDS_MONITOR_DEBUG1_LKVDETLOW_MASK (0x00000004U)
+#define LVDS_MONITOR_DEBUG1_LKVDETHIGH_MASK (0x00000008U)
+
+typedef enum {
+	LVDS_PHY_INIT = 0,
+	LVDS_PHY_READY,
+	LVDS_PHY_START,
+	LVDS_PHY_CONFIG_MAX
+} LVDS_PHY_CONFIG;
+
+#define LVDS_PHY_PORT_S0 0
+#define LVDS_PHY_PORT_S1 1
+#define LVDS_PHY_PORT_D0 2
+#define LVDS_PHY_PORT_D1 3
+#define LVDS_PHY_PORT_MAX 4
+
+#define LVDS_PHY_CLK_LANE 0
+#define LVDS_PHY_DATA0_LANE 1
+#define LVDS_PHY_DATA1_LANE 2
+#define LVDS_PHY_DATA2_LANE 3
+#define LVDS_PHY_DATA3_LANE 4
+#define LVDS_PHY_LANE_MAX 5
+
+typedef enum {
+	LVDS_PHY_FCON_MANUAL = 0,
+	LVDS_PHY_FCON_AUTOMATIC,
+	LVDS_PHY_FCON_MAX
+} LVDS_PHY_FCON_MODE;
+
+/* DUAL_CLK_MODE_MAIN, DUAL_CLK_MODE_SUB are enabled only for tcc805x BX
+ * revision although the registers is set to the same value as the modified mode
+ * value.
+ *  * tcc803x CS and tcc805x CS will work with both PLL mode.
+ *   *  */
+enum {
+        DUAL_CLK_MODE_MAIN = 0,
+        DUAL_CLK_MODE_SUB,
+        DUAL_CLK_MODE_BOTH,
+        DUAL_CLK_MODE_MAX
+};
+
+extern unsigned int LVDS_PHY_GetUpsampleRatio(
+	unsigned int p_port, unsigned int s_port, unsigned int freq);
+extern unsigned int LVDS_PHY_GetRefCnt(
+	unsigned int p_port, unsigned int s_port, unsigned int freq,
+	unsigned int upsample_ratio);
+extern void LVDS_PHY_SetFormat(
+	unsigned int port, unsigned int balanced, unsigned int depth,
+	unsigned int format, unsigned int freq);
+extern void LVDS_PHY_SetFifoEnableTiming(unsigned int port, unsigned int cycle);
+extern void LVDS_PHY_SetUserMode(
+	unsigned int port, unsigned int lane, unsigned int skew,
+	unsigned int pnswap);
+extern void LVDS_PHY_SetLaneSwap(
+	unsigned int port, unsigned int lane, unsigned int select);
+extern void LVDS_PHY_SetPortOption(
+	unsigned int port, unsigned int port_mode, unsigned int sync_swap,
+	unsigned int use_other_port, unsigned int lane_en,
+	unsigned int sync_transmit_src);
+extern void LVDS_PHY_LaneEnable(unsigned int port, unsigned int enable);
+extern void LVDS_PHY_FifoEnable(unsigned int port, unsigned int enable);
+extern void LVDS_PHY_FifoReset(unsigned int port, unsigned int reset);
+extern void LVDS_PHY_SWReset(unsigned int port, unsigned int reset);
+extern void LVDS_PHY_ClockEnable(unsigned int port, unsigned int enable);
+extern void LVDS_PHY_SetStrobe(
+	unsigned int port, unsigned int automode, unsigned int enable);
+extern void LVDS_PHY_SetFcon(
+	unsigned int port, unsigned int automode, unsigned int loop,
+	unsigned int division, unsigned int fcon);
+extern int LVDS_PHY_CheckFcon(
+	unsigned int p_port, unsigned int s_port, unsigned int mfcon,
+	unsigned int sfcon);
+extern void LVDS_PHY_FConEnable(unsigned int port, unsigned int enable);
+extern void LVDS_PHY_StrobeWrite(
+	void __iomem *reg, unsigned int offset, unsigned int value);
+extern void LVDS_PHY_VsSet(unsigned int p_port, unsigned int s_port, unsigned int vs);
+extern void LVDS_PHY_SetCFcon(
+	unsigned int port, unsigned int automode, unsigned int enable);
+extern void LVDS_PHY_CheckPLLStatus(unsigned int p_port, unsigned int s_port);
+extern unsigned int LVDS_PHY_Fcon_Value(unsigned int port);
+extern void LVDS_PHY_StrobeConfig(
+	unsigned int p_port, unsigned int s_port, unsigned int upsample_ratio,
+	unsigned int step, unsigned int vcm, unsigned int vsw);
+extern unsigned int LVDS_PHY_CheckStatus(
+	unsigned int p_port, unsigned int s_port);
+extern unsigned int LVDS_PHY_GetRegValue(
+	unsigned int port, unsigned int offset);
+extern void __iomem *LVDS_PHY_GetAddress(unsigned int port);
+extern void LVDS_PHY_LaneSwap(
+	unsigned int s_port_en, unsigned int lvds_main, unsigned int lvds_sub,
+	const unsigned int *lane_main, const unsigned int *lane_sub);
+#endif
+
+// LVDS_WRAP start
+
+#ifndef LVDS_WRAP_H
+#define LVDS_WRAP_H
+
+/*
+ * Register offset
+ */
+#define TS_CFG (0x040U)
+#define DISP_MUX_EN (0x100U)
+#define DISP_MUX_SEL (0x104U)
+#define TS_MUX_EN0 (0x110U)
+#define TS_MUX_SEL0 (0x114U)
+#define TXOUT_SEL0_0 (0x118U)
+#define TXOUT_SEL1_0 (0x11CU)
+#define TXOUT_SEL2_0 (0x120U)
+#define TXOUT_SEL3_0 (0x124U)
+#define TXOUT_SEL4_0 (0x128U)
+#define TXOUT_SEL5_0 (0x12CU)
+#define TXOUT_SEL6_0 (0x130U)
+#define TXOUT_SEL7_0 (0x134U)
+#define TXOUT_SEL8_0 (0x138U)
+#define TS_MUX_EN1 (0x13CU)
+#define TS_MUX_SEL1 (0x140U)
+#define TXOUT_SEL0_1 (0x144U)
+#define TXOUT_SEL1_1 (0x148U)
+#define TXOUT_SEL2_1 (0x14CU)
+#define TXOUT_SEL3_1 (0x150U)
+#define TXOUT_SEL4_1 (0x154U)
+#define TXOUT_SEL5_1 (0x158U)
+#define TXOUT_SEL6_1 (0x15CU)
+#define TXOUT_SEL7_1 (0x160U)
+#define TXOUT_SEL8_1 (0x164U)
+#define TS_MUX_EN2 (0x168U)
+#define TS_MUX_SEL2 (0x16CU)
+#define TXOUT_SEL0_2 (0x170U)
+#define TXOUT_SEL1_2 (0x174U)
+#define TXOUT_SEL2_2 (0x178U)
+#define TXOUT_SEL3_2 (0x17CU)
+#define TXOUT_SEL4_2 (0x180U)
+#define TXOUT_SEL5_2 (0x184U)
+#define TXOUT_SEL6_2 (0x188U)
+#define TXOUT_SEL7_2 (0x18CU)
+#define TXOUT_SEL8_2 (0x190U)
+#define TS_MUX_EN3 (0x194)
+#define TS_MUX_SEL3 (0x198)
+#define TXOUT_SEL0_3 (0x19C)
+#define TXOUT_SEL1_3 (0x1A0)
+#define TXOUT_SEL2_3 (0x1A4)
+#define TXOUT_SEL3_3 (0x1A8)
+#define TXOUT_SEL4_3 (0x1AC)
+#define TXOUT_SEL5_3 (0x1B0)
+#define TXOUT_SEL6_3 (0x1B4)
+#define TXOUT_SEL7_3 (0x1B8)
+#define TXOUT_SEL8_3 (0x1BC)
+#define CRC_VRF_CNT (0x1C0U)
+#define SAL_0 (0x1C8U)
+#define REF_CLK_CNT (0x1CCU)
+#define CMP_CLK_CNT (0x1D0U)
+#define HSYNC_CFG_0 (0x1D4U)
+#define HSYNC_CFG_1 (0x1D8U)
+#define HSYNC_CFG_2 (0x1DCU)
+#define VSYNC_CFG_0 (0x1E0U)
+#define VSYNC_CFG_1 (0x1E4U)
+#define VSYNC_CFG_2 (0x1E8U)
+#define CFG_PROTECT (0x1ECU)
+#define TS_IREQ_CLEAR (0x1F0U)
+#define TS_IREQ_STATUS (0x1F4U)
+#define SAL_1 (0x1F8U)
+#define TS_SWRESET (0x1FCU)
+#define LVDS_IREQ_CLEAR (0x200U)
+#define LVDS_IREQ_STATUS (0x204U)
+#define TS_IREQ_MASK (0x208U)
+#define LVDS_IREQ_MASK (0x20CU)
+
+/*
+ * Tx splitter configuration Register
+ * Register Name - TS_CFG
+ */
+#define TS_CFG_WIDTH_SHIFT (16)
+#define TS_CFG_SWAP3_SHIFT (10)
+#define TS_CFG_SWAP2_SHIFT (8)
+#define TS_CFG_SWAP1_SHIFT (6)
+#define TS_CFG_SWAP0_SHIFT (4)
+#define TS_CFG_MODE_SHIFT (2)
+#define TS_CFG_LR_SHIFT (1)
+#define TS_CFG_BP_SHIFT (0)
+
+#define TS_CFG_WIDTH_MASK ((u32)0xFFFU << TS_CFG_WIDTH_SHIFT)
+#define TS_CFG_SWAP3_MASK ((u32)0x3U << TS_CFG_SWAP3_SHIFT)
+#define TS_CFG_SWAP2_MASK ((u32)0x3U << TS_CFG_SWAP2_SHIFT)
+#define TS_CFG_SWAP1_MASK ((u32)0x3U << TS_CFG_SWAP1_SHIFT)
+#define TS_CFG_SWAP0_MASK ((u32)0x3U << TS_CFG_SWAP0_SHIFT)
+#define TS_CFG_MODE_MASK ((u32)0x1U << TS_CFG_MODE_SHIFT)
+#define TS_CFG_LR_MASK ((u32)0x1U << TS_CFG_LR_SHIFT)
+#define TS_CFG_BP_MASK ((u32)0x1U << TS_CFG_BP_SHIFT)
+
+/*
+ * DISP MUX Enable Register
+ * Register Name - DISP_MUX_EN
+ */
+#define DISP_MUX_EN_EN_SHIFT (0)
+#define DISP_MUX_EN_EN_MASK ((u32)0x1U << DISP_MUX_EN_EN_SHIFT)
+
+/*
+ * DISP MUX Select Register
+ * Register Name - DISP_MUX_SEL
+ */
+#define DISP_MUX_SEL_SEL_SHIFT (0)
+#define DISP_MUX_SEL_SEL_MASK ((u32)0x3U << DISP_MUX_SEL_SEL_SHIFT)
+
+/*
+ * Tx splitter MUX Enable Register
+ * Register Name - TS_MUX_EN0, TS_MUX_EN1, TS_MUX_EN2
+ */
+#define TS_MUX_EN_EN_SHIFT (0)
+#define TS_MUX_EN_EN_MASK ((u32)0x1U << TS_MUX_EN_EN_SHIFT)
+
+/*
+ * Tx splitter MUX Select Register
+ * Register Name - TS_MUX_SEL0, TS_MUX_SEL1
+ */
+#define TS_MUX_SEL_SEL_SHIFT (0)
+#define TS_MUX_SEL_SEL_MASK ((u32)0x7U << TS_MUX_SEL_SEL_SHIFT)
+
+/*
+ * Tx splitter TXOUT select0 Register
+ * Register Name - TXOUT_SEL0_0, TXOUT_SEL0_1, TXOUT_SEL0_2
+ */
+#define TXOUT_SEL0_SEL03_SHIFT (24)
+#define TXOUT_SEL0_SEL02_SHIFT (16)
+#define TXOUT_SEL0_SEL01_SHIFT (8)
+#define TXOUT_SEL0_SEL00_SHIFT (0)
+
+#define TXOUT_SEL0_SEL03_MASK ((u32)0x1FU << TXOUT_SEL0_SEL03_SHIFT)
+#define TXOUT_SEL0_SEL02_MASK ((u32)0x1FU << TXOUT_SEL0_SEL02_SHIFT)
+#define TXOUT_SEL0_SEL01_MASK ((u32)0x1FU << TXOUT_SEL0_SEL01_SHIFT)
+#define TXOUT_SEL0_SEL00_MASK ((u32)0x1FU << TXOUT_SEL0_SEL00_SHIFT)
+
+/*
+ * Tx splitter TXOUT select1 Register
+ * Register Name - TXOUT_SEL1_0, TXOUT_SEL1_1, TXOUT_SEL1_2
+ */
+#define TXOUT_SEL1_SEL07_SHIFT (24)
+#define TXOUT_SEL1_SEL06_SHIFT (16)
+#define TXOUT_SEL1_SEL05_SHIFT (8)
+#define TXOUT_SEL1_SEL04_SHIFT (0)
+
+#define TXOUT_SEL1_SEL07_MASK ((u32)0x1FU << TXOUT_SEL1_SEL07_SHIFT)
+#define TXOUT_SEL1_SEL06_MASK ((u32)0x1FU << TXOUT_SEL1_SEL06_SHIFT)
+#define TXOUT_SEL1_SEL05_MASK ((u32)0x1FU << TXOUT_SEL1_SEL05_SHIFT)
+#define TXOUT_SEL1_SEL04_MASK ((u32)0x1FU << TXOUT_SEL1_SEL04_SHIFT)
+
+/*
+ * Tx splitter TXOUT select2 Register
+ * Register Name - TXOUT_SEL2_0, TXOUT_SEL2_1, TXOUT_SEL2_2
+ */
+#define TXOUT_SEL2_SEL11_SHIFT (24)
+#define TXOUT_SEL2_SEL10_SHIFT (16)
+#define TXOUT_SEL2_SEL09_SHIFT (8)
+#define TXOUT_SEL2_SEL08_SHIFT (0)
+
+#define TXOUT_SEL2_SEL11_MASK ((u32)0x1FU << TXOUT_SEL2_SEL11_SHIFT)
+#define TXOUT_SEL2_SEL10_MASK ((u32)0x1FU << TXOUT_SEL2_SEL10_SHIFT)
+#define TXOUT_SEL2_SEL09_MASK ((u32)0x1FU << TXOUT_SEL2_SEL09_SHIFT)
+#define TXOUT_SEL2_SEL08_MASK ((u32)0x1FU << TXOUT_SEL2_SEL08_SHIFT)
+
+/*
+ * Tx splitter TXOUT select3 Register
+ * Register Name - TXOUT_SEL3_0, TXOUT_SEL3_1, TXOUT_SEL3_2
+ */
+#define TXOUT_SEL3_SEL15_SHIFT (24)
+#define TXOUT_SEL3_SEL14_SHIFT (16)
+#define TXOUT_SEL3_SEL13_SHIFT (8)
+#define TXOUT_SEL3_SEL12_SHIFT (0)
+
+#define TXOUT_SEL3_SEL15_MASK ((u32)0x1FU << TXOUT_SEL3_SEL15_SHIFT)
+#define TXOUT_SEL3_SEL14_MASK ((u32)0x1FU << TXOUT_SEL3_SEL14_SHIFT)
+#define TXOUT_SEL3_SEL13_MASK ((u32)0x1FU << TXOUT_SEL3_SEL13_SHIFT)
+#define TXOUT_SEL3_SEL12_MASK ((u32)0x1FU << TXOUT_SEL3_SEL12_SHIFT)
+
+/*
+ * Tx splitter TXOUT select4 Register
+ * Register Name - TXOUT_SEL4_0, TXOUT_SEL4_1, TXOUT_SEL4_2
+ */
+#define TXOUT_SEL4_SEL19_SHIFT (24)
+#define TXOUT_SEL4_SEL18_SHIFT (16)
+#define TXOUT_SEL4_SEL17_SHIFT (8)
+#define TXOUT_SEL4_SEL16_SHIFT (0)
+
+#define TXOUT_SEL4_SEL19_MASK ((u32)0x1FU << TXOUT_SEL4_SEL19_SHIFT)
+#define TXOUT_SEL4_SEL18_MASK ((u32)0x1FU << TXOUT_SEL4_SEL18_SHIFT)
+#define TXOUT_SEL4_SEL17_MASK ((u32)0x1FU << TXOUT_SEL4_SEL17_SHIFT)
+#define TXOUT_SEL4_SEL16_MASK ((u32)0x1FU << TXOUT_SEL4_SEL16_SHIFT)
+
+/*
+ * Tx splitter TXOUT select5 Register
+ * Register Name - TXOUT_SEL5_0, TXOUT_SEL5_1, TXOUT_SEL5_2
+ */
+#define TXOUT_SEL5_SEL23_SHIFT (24)
+#define TXOUT_SEL5_SEL22_SHIFT (16)
+#define TXOUT_SEL5_SEL21_SHIFT (8)
+#define TXOUT_SEL5_SEL20_SHIFT (0)
+
+#define TXOUT_SEL5_SEL23_MASK ((u32)0x1FU << TXOUT_SEL5_SEL23_SHIFT)
+#define TXOUT_SEL5_SEL22_MASK ((u32)0x1FU << TXOUT_SEL5_SEL22_SHIFT)
+#define TXOUT_SEL5_SEL21_MASK ((u32)0x1FU << TXOUT_SEL5_SEL21_SHIFT)
+#define TXOUT_SEL5_SEL20_MASK ((u32)0x1FU << TXOUT_SEL5_SEL20_SHIFT)
+
+/*
+ * Tx splitter TXOUT select6 Register
+ * Register Name - TXOUT_SEL6_0, TXOUT_SEL6_1, TXOUT_SEL6_2
+ */
+#define TXOUT_SEL6_SEL27_SHIFT (24)
+#define TXOUT_SEL6_SEL26_SHIFT (16)
+#define TXOUT_SEL6_SEL25_SHIFT (8)
+#define TXOUT_SEL6_SEL24_SHIFT (0)
+
+#define TXOUT_SEL6_SEL27_MASK ((u32)0x1FU << TXOUT_SEL6_SEL27_SHIFT)
+#define TXOUT_SEL6_SEL26_MASK ((u32)0x1FU << TXOUT_SEL6_SEL26_SHIFT)
+#define TXOUT_SEL6_SEL25_MASK ((u32)0x1FU << TXOUT_SEL6_SEL25_SHIFT)
+#define TXOUT_SEL6_SEL24_MASK ((u32)0x1FU << TXOUT_SEL6_SEL24_SHIFT)
+
+/*
+ * Tx splitter TXOUT select7 Register
+ * Register Name - TXOUT_SEL7_0, TXOUT_SEL7_1, TXOUT_SEL7_2
+ */
+#define TXOUT_SEL7_SEL31_SHIFT (24)
+#define TXOUT_SEL7_SEL30_SHIFT (16)
+#define TXOUT_SEL7_SEL29_SHIFT (8)
+#define TXOUT_SEL7_SEL28_SHIFT (0)
+
+#define TXOUT_SEL7_SEL31_MASK ((u32)0x1FU << TXOUT_SEL7_SEL31_SHIFT)
+#define TXOUT_SEL7_SEL30_MASK ((u32)0x1FU << TXOUT_SEL7_SEL30_SHIFT)
+#define TXOUT_SEL7_SEL29_MASK ((u32)0x1FU << TXOUT_SEL7_SEL29_SHIFT)
+#define TXOUT_SEL7_SEL28_MASK ((u32)0x1FU << TXOUT_SEL7_SEL28_SHIFT)
+
+/*
+ * Tx splitter TXOUT select8 Register
+ * Register Name - TXOUT_SEL8_0, TXOUT_SEL8_1, TXOUT_SEL8_2
+ */
+#define TXOUT_SEL8_SEL34_SHIFT (16)
+#define TXOUT_SEL8_SEL33_SHIFT (8)
+#define TXOUT_SEL8_SEL32_SHIFT (0)
+
+#define TXOUT_SEL8_SEL34_MASK ((u32)0x1FU << TXOUT_SEL8_SEL34_SHIFT)
+#define TXOUT_SEL8_SEL33_MASK ((u32)0x1FU << TXOUT_SEL8_SEL33_SHIFT)
+#define TXOUT_SEL8_SEL32_MASK ((u32)0x1FU << TXOUT_SEL8_SEL32_SHIFT)
+
+/*
+ * CRC VRF Count register
+ * Register Name - CRC_VRF_CNT
+ */
+#define CRC_VRF_CNT_CMP1_SHIFT (24)
+#define CRC_VRF_CNT_CMP0_SHIFT (16)
+#define CRC_VRF_CNT_REF1_SHIFT (8)
+#define CRC_VRF_CNT_REF0_SHIFT (0)
+
+#define CRC_VRF_CNT_CMP1_MASK ((u32)0xFU << CRC_VRF_CNT_CMP1_SHIFT)
+#define CRC_VRF_CNT_CMP0_MASK ((u32)0xFU << CRC_VRF_CNT_CMP0_SHIFT)
+#define CRC_VRF_CNT_REF1_MASK ((u32)0xFU << CRC_VRF_CNT_REF1_SHIFT)
+#define CRC_VRF_CNT_REF0_MASK ((u32)0xFU << CRC_VRF_CNT_REF0_SHIFT)
+
+/*
+ * Tx splitter sync signal polarity
+ * Register Name - SAL_0, SAL_1
+ */
+#define SAL_DE_SHIFT (2)
+#define SAL_HS_SHIFT (1)
+#define SAL_VS_SHIFT (0)
+
+#define SAL_DE_MASK ((u32)0x1U << SAL_DE_SHIFT)
+#define SAL_HS_MASK ((u32)0x1U << SAL_HS_SHIFT)
+#define SAL_VS_MASK ((u32)0x1U << SAL_VS_SHIFT)
+
+/*
+ * Clock checker reference clock count
+ * Register Name - REF_CLK_CNT
+ */
+#define REF_CLK_CNT_SHIFT (0)
+#define REF_CLK_CNT_MAX ((u32)0xFFFFU << REF_CLK_CNT_SHIFT)
+
+/*
+ * Clock checker compare clock count
+ * Register Name - CMP_CLK_CNT
+ */
+#define CMP_CLK_MIN_SHIFT (16)
+#define CMP_CLK_MAX_SHIFT (0)
+
+#define CMP_CLK_MIN_MASK ((u32)0xFFFFU << CMP_CLK_MIN_SHIFT)
+#define CMP_CLK_MAX_MASK ((u32)0xFFFFU << CMP_CLK_MAX_SHIFT)
+
+/*
+ * Hsync checker configuration 0
+ * Register Name - HSYNC_CFG_0
+ */
+#define HSYNC_CFG_0_HSYNC_SHIFT (16)
+#define HSYNC_CFG_0_HFP_SHIFT (0)
+
+#define HSYNC_CFG_0_HSYNC_MASK ((u32)0xFFFFU << HSYNC_CFG_0_HSYNC_SHIFT)
+#define HSYNC_CFG_0_HFP_MASK ((u32)0xFFFFU << HSYNC_CFG_0_HFP_SHIFT)
+
+/*
+ * Hsync checker configuration 1
+ * Register Name - HSYNC_CFG_1
+ */
+#define HSYNC_CFG_1_HACTIVE_SHIFT (16)
+#define HSYNC_CFG_1_HBP_SHIFT (0)
+
+#define HSYNC_CFG_1_HACTIVE_MASK ((u32)0xFFFFU << HSYNC_CFG_1_HACTIVE_SHIFT)
+#define HSYNC_CFG_1_HBP_MASK ((u32)0xFFFFU << HSYNC_CFG_1_HBP_SHIFT)
+
+/*
+ * Hsync checker configuration 2
+ * Register Name - HSYNC_CFG_2
+ */
+#define HSYNC_CFG_2_HACTIVEM_SHIFT (24)
+#define HSYNC_CFG_2_HBPM_SHIFT (16)
+#define HSYNC_CFG_2_HSYNCM_SHIFT (8)
+#define HSYNC_CFG_2_HFPM_SHIFT (0)
+
+#define HSYNC_CFG_2_HACTIVE_MASK ((u32)0xFU << HSYNC_CFG_2_HACTIVEM_SHIFT)
+#define HSYNC_CFG_2_HBPM_MASK ((u32)0xFU << HSYNC_CFG_2_HBPM_SHIFT)
+#define HSYNC_CFG_2_HSYNCM_MASK ((u32)0xFU << HSYNC_CFG_2_HSYNCM_SHIFT)
+#define HSYNC_CFG_2_HFPM_MASK ((u32)0xFU << HSYNC_CFG_2_HBPM_SHIFT)
+
+/*
+ * VSYNC checker configuration 0
+ * Register Name - VSYNC_CFG_0
+ */
+#define VSYNC_CFG_0_VSYNC_SHIFT (16)
+#define VSYNC_CFG_0_VFP_SHIFT (0)
+
+#define VSYNC_CFG_0_VSYNC_MASK ((u32)0xFFFFU << VSYNC_CFG_0_VSYNC_SHIFT)
+#define VSYNC_CFG_0_VFP_MASK ((u32)0xFFFFU << VSYNC_CFG_0_VFP_SHIFT)
+
+/*
+ * Vsync checker configuration 1
+ * Register Name - VSYNC_CFG_1
+ */
+#define VSYNC_CFG_1_VACTIVE_SHIFT (16)
+#define VSYNC_CFG_1_VBP_SHIFT (0)
+
+#define VSYNC_CFG_1_VACTIVE_MASK ((u32)0xFFFFU << VSYNC_CFG_1_VACTIVE_SHIFT)
+#define VSYNC_CFG_1_VBP_MASK ((u32)0xFFFFU << VSYNC_CFG_1_VBP_SHIFT)
+
+/*
+ * Vsync checker configuration 2
+  * Register Name - VSYNC_CFG_2
+ */
+#define VSYNC_CFG_2_VACTIVEM_SHIFT (24)
+#define VSYNC_CFG_2_VBPM_SHIFT (16)
+#define VSYNC_CFG_2_VSYNCM_SHIFT (8)
+#define VSYNC_CFG_2_VFPM_SHIFT (0)
+
+#define VSYNC_CFG_2_VACTIVE_MASK ((u32)0xFU << VSYNC_CFG_2_VACTIVEM_SHIFT)
+#define VSYNC_CFG_2_VBPM_MASK ((u32)0xFU << VSYNC_CFG_2_VBPM_SHIFT)
+#define VSYNC_CFG_2_VSYNCM_MASK ((u32)0xFU << VSYNC_CFG_2_VSYNCM_SHIFT)
+#define VSYNC_CFG_2_VFPM_MASK ((u32)0xFU << VSYNC_CFG_2_VFPM_SHIFT)
+
+/*
+ * LVDS WRAP configuration protect
+ * Register Name - CFG_PROTECT
+ */
+#define CFG_PROTECT_SHIFT (0)
+
+#define CFG_PROTECT_MASK ((u32)0xFFFFFFFFU << CFG_PROTECT_SHIFT)
+
+/*
+ * Tx splitter interrupt clear
+ * Register Name - TS_IREQ_CLEAR
+ */
+#define TS_IREQ_CLEAR_HSYNC1_TM_SHIFT (12)
+#define TS_IREQ_CLEAR_HSYNC0_TM_SHIFT (11)
+#define TS_IREQ_CLEAR_VSYNC1_TM_SHIFT (10)
+#define TS_IREQ_CLEAR_VSYNC0_TM_SHIFT (9)
+#define TS_IREQ_CLEAR_CLK1_TM_SHIFT (8)
+#define TS_IREQ_CLEAR_CLK0_TM_SHIFT (7)
+#define TS_IREQ_CLEAR_HSYNC1_ERR_SHIFT (6)
+#define TS_IREQ_CLEAR_HSYNC0_ERR_SHIFT (5)
+#define TS_IREQ_CLEAR_VSYNC1_ERR_SHIFT (4)
+#define TS_IREQ_CLEAR_VSYNC0_ERR_SHIFT (3)
+#define TS_IREQ_CLEAR_CLK1_ERR_SHIFT (2)
+#define TS_IREQ_CLEAR_CLK0_ERR_SHIFT (1)
+#define TS_IREQ_CLEAR_CRC_FAIL_SHIFT (0)
+
+#define TS_IREQ_CLEAR_HSYNC1_TM_MASK ((u32)0x1U << TS_IREQ_CLEAR_HSYNC1_TM_SHIFT)
+#define TS_IREQ_CLEAR_HSYNC0_TM_MASK ((u32)0x1U << TS_IREQ_CLEAR_HSYNC0_TM_SHIFT)
+#define TS_IREQ_CLEAR_VSYNC1_TM_MASK ((u32)0x1U << TS_IREQ_CLEAR_VSYNC1_TM_SHIFT)
+#define TS_IREQ_CLEAR_VSYNC0_TM_MASK ((u32)0x1U << TS_IREQ_CLEAR_VSYNC0_TM_SHIFT)
+#define TS_IREQ_CLEAR_CLK1_TM_MASK ((u32)0x1U << TS_IREQ_CLEAR_CLK1_TM_SHIFT)
+#define TS_IREQ_CLEAR_CLK0_TM_MASK ((u32)0x1U << TS_IREQ_CLEAR_CLK0_TM_SHIFT)
+#define TS_IREQ_CLEAR_HSYNC1_ERR_MASK ((u32)0x1U << TS_IREQ_CLEAR_HSYNC1_ERR_SHIFT)
+#define TS_IREQ_CLEAR_HSYNC0_ERR_MASK ((u32)0x1U << TS_IREQ_CLEAR_HSYNC0_ERR_SHIFT)
+#define TS_IREQ_CLEAR_VSYNC1_ERR_MASK ((u32)0x1U << TS_IREQ_CLEAR_VSYNC1_ERR_SHIFT)
+#define TS_IREQ_CLEAR_VSYNC0_ERR_MASK ((u32)0x1U << TS_IREQ_CLEAR_VSYNC0_ERR_SHIFT)
+#define TS_IREQ_CLEAR_CLK1_ERR_MASK ((u32)0x1U << TS_IREQ_CLEAR_CLK1_ERR_SHIFT)
+#define TS_IREQ_CLEAR_CLK0_ERR_MASK ((u32)0x1U << TS_IREQ_CLEAR_CLK0_ERR_SHIFT)
+#define TS_IREQ_CLEAR_CRC_FAIL_MASK ((u32)0x1U << TS_IREQ_CLEAR_CRC_FAIL_SHIFT)
+
+/*
+ * Tx splitter interrupt status
+ * Register Name - TS_IREQ_STATUS
+ */
+#define TS_IREQ_STATUS_HSYNC1_TM_SHIFT (12)
+#define TS_IREQ_STATUS_HSYNC0_TM_SHIFT (11)
+#define TS_IREQ_STATUS_VSYNC1_TM_SHIFT (10)
+#define TS_IREQ_STATUS_VSYNC0_TM_SHIFT (9)
+#define TS_IREQ_STATUS_CLK1_TM_SHIFT (8)
+#define TS_IREQ_STATUS_CLK0_TM_SHIFT (7)
+#define TS_IREQ_STATUS_HSYNC1_ERR_SHIFT (6)
+#define TS_IREQ_STATUS_HSYNC0_ERR_SHIFT (5)
+#define TS_IREQ_STATUS_VSYNC1_ERR_SHIFT (4)
+#define TS_IREQ_STATUS_VSYNC0_ERR_SHIFT (3)
+#define TS_IREQ_STATUS_CLK1_ERR_SHIFT (2)
+#define TS_IREQ_STATUS_CLK0_ERR_SHIFT (1)
+#define TS_IREQ_STATUS_CRC_FAIL_SHIFT (0)
+
+#define TS_IREQ_STATUS_HSYNC1_TM_MASK ((u32)0x1U << TS_IREQ_STATUS_HSYNC1_TM_SHIFT)
+#define TS_IREQ_STATUS_HSYNC0_TM_MASK ((u32)0x1U << TS_IREQ_STATUS_HSYNC0_TM_SHIFT)
+#define TS_IREQ_STATUS_VSYNC1_TM_MASK ((u32)0x1U << TS_IREQ_STATUS_VSYNC1_TM_SHIFT)
+#define TS_IREQ_STATUS_VSYNC0_TM_MASK ((u32)0x1U << TS_IREQ_STATUS_VSYNC0_TM_SHIFT)
+#define TS_IREQ_STATUS_CLK1_TM_MASK ((u32)0x1U << TS_IREQ_STATUS_CLK1_TM_SHIFT)
+#define TS_IREQ_STATUS_CLK0_TM_MASK ((u32)0x1U << TS_IREQ_STATUS_CLK0_TM_SHIFT)
+#define TS_IREQ_STATUS_HSYNC1_ERR_MASK ((u32)0x1U << TS_IREQ_STATUS_HSYNC1_ERR_SHIFT)
+#define TS_IREQ_STATUS_HSYNC0_ERR_MASK ((u32)0x1U << TS_IREQ_STATUS_HSYNC0_ERR_SHIFT)
+#define TS_IREQ_STATUS_VSYNC1_ERR_MASK ((u32)0x1U << TS_IREQ_STATUS_VSYNC1_ERR_SHIFT)
+#define TS_IREQ_STATUS_VSYNC0_ERR_MASK ((u32)0x1U << TS_IREQ_STATUS_VSYNC0_ERR_SHIFT)
+#define TS_IREQ_STATUS_CLK1_ERR_MASK ((u32)0x1U << TS_IREQ_STATUS_CLK1_ERR_SHIFT)
+#define TS_IREQ_STATUS_CLK0_ERR_MASK ((u32)0x1U << TS_IREQ_STATUS_CLK0_ERR_SHIFT)
+#define TS_IREQ_STATUS_CRC_FAIL_MASK ((u32)0x1U << TS_IREQ_STATUS_CRC_FAIL_SHIFT)
+
+/*
+ * LVDS WRAP soft reset
+ * Register Name - SWRESET
+ */
+#define SWRESET_LVDS_PHY_2PORT_SYS_SHIFT (4)
+#define SWRESET_LVDS_PHY_2PORT_APB_SHIFT (2)
+#define SWRESET_TS_SHIFT (0)
+
+#define SWRESET_LVDS_PHY_2PORT_SYS_MASK \
+	((u32)0x1U << SWRESET_LVDS_PHY_2PORT_SYS_SHIFT)
+#define SWRESET_LVDS_PHY_2PORT_APB_MASK \
+	((u32)0x1U << SWRESET_LVDS_PHY_2PORT_APB_SHIFT)
+#define SWRESET_TS_MASK ((u32)0x1U << SWRESET_TS_SHIFT)
+
+/*
+ * LVDS Phy open short interrupt clear
+ * Register Name - LVDS_IREQ_CLEAR
+ */
+#define LVDS_CLEAR_LVDS1_OS_DET_D4P_SHIFT (29)
+#define LVDS_CLEAR_LVDS1_OS_DET_D4M_SHIFT (28)
+#define LVDS_CLEAR_LVDS1_OS_DET_D3P_SHIFT (27)
+#define LVDS_CLEAR_LVDS1_OS_DET_D3M_SHIFT (26)
+#define LVDS_CLEAR_LVDS1_OS_DET_D2P_SHIFT (25)
+#define LVDS_CLEAR_LVDS1_OS_DET_D2M_SHIFT (24)
+#define LVDS_CLEAR_LVDS1_OS_DET_D1P_SHIFT (23)
+#define LVDS_CLEAR_LVDS1_OS_DET_D1M_SHIFT (22)
+#define LVDS_CLEAR_LVDS1_OS_DET_D0P_SHIFT (21)
+#define LVDS_CLEAR_LVDS1_OS_DET_D0M_SHIFT (20)
+#define LVDS_CLEAR_LVDS0_OS_DET_D4P_SHIFT (19)
+#define LVDS_CLEAR_LVDS0_OS_DET_D4M_SHIFT (18)
+#define LVDS_CLEAR_LVDS0_OS_DET_D3P_SHIFT (17)
+#define LVDS_CLEAR_LVDS0_OS_DET_D3M_SHIFT (16)
+#define LVDS_CLEAR_LVDS0_OS_DET_D2P_SHIFT (15)
+#define LVDS_CLEAR_LVDS0_OS_DET_D2M_SHIFT (14)
+#define LVDS_CLEAR_LVDS0_OS_DET_D1P_SHIFT (13)
+#define LVDS_CLEAR_LVDS0_OS_DET_D1M_SHIFT (12)
+#define LVDS_CLEAR_LVDS0_OS_DET_D0P_SHIFT (11)
+#define LVDS_CLEAR_LVDS0_OS_DET_D0M_SHIFT (10)
+
+#define LVDS_CLEAR_LVDS1_OS_DET_D4P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D4P_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D4M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D4M_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D3P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D3P_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D3M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D3M_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D2P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D2P_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D2M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D2M_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D1P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D1P_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D1M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D1M_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D0P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D0P_SHIFT)
+#define LVDS_CLEAR_LVDS1_OS_DET_D0M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS1_OS_DET_D0M_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D4P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D4P_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D4M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D4M_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D3P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D3P_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D3M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D3M_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D2P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D2P_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D2M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D2M_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D1P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D1P_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D1M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D1M_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D0P_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D0P_SHIFT)
+#define LVDS_CLEAR_LVDS0_OS_DET_D0M_MASK \
+	((u32)0x1U << LVDS_CLEAR_LVDS0_OS_DET_D0M_SHIFT)
+
+/*
+ * LVDS Phy open short interrupt status
+ * Register Name - LVDS_IREQ_STATUS
+ */
+#define LVDS_STATUS_LVDS1_OS_DET_D4P_SHIFT (29)
+#define LVDS_STATUS_LVDS1_OS_DET_D4M_SHIFT (28)
+#define LVDS_STATUS_LVDS1_OS_DET_D3P_SHIFT (27)
+#define LVDS_STATUS_LVDS1_OS_DET_D3M_SHIFT (26)
+#define LVDS_STATUS_LVDS1_OS_DET_D2P_SHIFT (25)
+#define LVDS_STATUS_LVDS1_OS_DET_D2M_SHIFT (24)
+#define LVDS_STATUS_LVDS1_OS_DET_D1P_SHIFT (23)
+#define LVDS_STATUS_LVDS1_OS_DET_D1M_SHIFT (22)
+#define LVDS_STATUS_LVDS1_OS_DET_D0P_SHIFT (21)
+#define LVDS_STATUS_LVDS1_OS_DET_D0M_SHIFT (20)
+#define LVDS_STATUS_LVDS0_OS_DET_D4P_SHIFT (19)
+#define LVDS_STATUS_LVDS0_OS_DET_D4M_SHIFT (18)
+#define LVDS_STATUS_LVDS0_OS_DET_D3P_SHIFT (17)
+#define LVDS_STATUS_LVDS0_OS_DET_D3M_SHIFT (16)
+#define LVDS_STATUS_LVDS0_OS_DET_D2P_SHIFT (15)
+#define LVDS_STATUS_LVDS0_OS_DET_D2M_SHIFT (14)
+#define LVDS_STATUS_LVDS0_OS_DET_D1P_SHIFT (13)
+#define LVDS_STATUS_LVDS0_OS_DET_D1M_SHIFT (12)
+#define LVDS_STATUS_LVDS0_OS_DET_D0P_SHIFT (11)
+#define LVDS_STATUS_LVDS0_OS_DET_D0M_SHIFT (10)
+
+#define LVDS_STATUS_LVDS1_OS_DET_D4P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D4P_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D4M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D4M_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D3P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D3P_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D3M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D3M_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D2P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D2P_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D2M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D2M_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D1P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D1P_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D1M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D1M_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D0P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D0P_SHIFT)
+#define LVDS_STATUS_LVDS1_OS_DET_D0M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS1_OS_DET_D0M_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D4P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D4P_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D4M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D4M_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D3P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D3P_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D3M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D3M_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D2P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D2P_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D2M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D2M_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D1P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D1P_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D1M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D1M_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D0P_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D0P_SHIFT)
+#define LVDS_STATUS_LVDS0_OS_DET_D0M_MASK \
+	((u32)0x1U << LVDS_STATUS_LVDS0_OS_DET_D0M_SHIFT)
+
+/*
+ * Tx splitter interrupt mask
+ * Register Name - TS_IREQ_MASK
+ */
+#define TS_IREQ_MASK_HSYNC1_TM_SHIFT (12)
+#define TS_IREQ_MASK_HSYNC0_TM_SHIFT (11)
+#define TS_IREQ_MASK_VSYNC1_TM_SHIFT (10)
+#define TS_IREQ_MASK_VSYNC0_TM_SHIFT (9)
+#define TS_IREQ_MASK_CLK1_TM_SHIFT (8)
+#define TS_IREQ_MASK_CLK0_TM_SHIFT (7)
+#define TS_IREQ_MASK_HSYNC1_ERR_SHIFT (6)
+#define TS_IREQ_MASK_HSYNC0_ERR_SHIFT (5)
+#define TS_IREQ_MASK_VSYNC1_ERR_SHIFT (4)
+#define TS_IREQ_MASK_VSYNC0_ERR_SHIFT (3)
+#define TS_IREQ_MASK_CLK1_ERR_SHIFT (2)
+#define TS_IREQ_MASK_CLK0_ERR_SHIFT (1)
+#define TS_IREQ_MASK_CRC_FAIL_SHIFT (0)
+
+#define TS_IREQ_MASK_HSYNC1_TM_MASK ((u32)0x1U << TS_IREQ_MASK_HSYNC1_TM_SHIFT)
+#define TS_IREQ_MASK_HSYNC0_TM_MASK ((u32)0x1U << TS_IREQ_MASK_HSYNC0_TM_SHIFT)
+#define TS_IREQ_MASK_CLK1_TM_MASK ((u32)0x1U << TS_IREQ_MASK_CLK1_TM_SHIFT)
+#define TS_IREQ_MASK_CLK0_TM_MASK ((u32)0x1U << TS_IREQ_MASK_CLK0_TM_SHIFT)
+#define TS_IREQ_MASK_HSYNC1_ERR_MASK ((u32)0x1U << TS_IREQ_MASK_HSYNC1_ERR_SHIFT)
+#define TS_IREQ_MASK_HSYNC0_ERR_MASK ((u32)0x1U << TS_IREQ_MASK_HSYNC0_ERR_SHIFT)
+#define TS_IREQ_MASK_VSYNC1_ERR_MASK ((u32)0x1U << TS_IREQ_MASK_VSYNC1_ERR_SHIFT)
+#define TS_IREQ_MASK_VSYNC0_ERR_MASK ((u32)0x1U << TS_IREQ_MASK_VSYNC0_ERR_SHIFT)
+#define TS_IREQ_MASK_CLK1_ERR_MASK ((u32)0x1U << TS_IREQ_MASK_CLK1_ERR_SHIFT)
+#define TS_IREQ_MASK_CLK0_ERR_MASK ((u32)0x1U << TS_IREQ_MASK_CLK0_ERR_SHIFT)
+#define TS_IREQ_MASK_CRC_FAIL_MASK ((u32)0x1U << TS_IREQ_MASK_CRC_FAIL_SHIFT)
+
+/*
+ * LVDS Phy open short interrupt mask
+ * Register Name - LVDS_IREQ_MASK
+ */
+#define LVDS_MASK_LVDS1_OS_DET_D4P_SHIFT (29)
+#define LVDS_MASK_LVDS1_OS_DET_D4M_SHIFT (28)
+#define LVDS_MASK_LVDS1_OS_DET_D3P_SHIFT (27)
+#define LVDS_MASK_LVDS1_OS_DET_D3M_SHIFT (26)
+#define LVDS_MASK_LVDS1_OS_DET_D2P_SHIFT (25)
+#define LVDS_MASK_LVDS1_OS_DET_D2M_SHIFT (24)
+#define LVDS_MASK_LVDS1_OS_DET_D1P_SHIFT (23)
+#define LVDS_MASK_LVDS1_OS_DET_D1M_SHIFT (22)
+#define LVDS_MASK_LVDS1_OS_DET_D0P_SHIFT (21)
+#define LVDS_MASK_LVDS1_OS_DET_D0M_SHIFT (20)
+#define LVDS_MASK_LVDS0_OS_DET_D4P_SHIFT (19)
+#define LVDS_MASK_LVDS0_OS_DET_D4M_SHIFT (18)
+#define LVDS_MASK_LVDS0_OS_DET_D3P_SHIFT (17)
+#define LVDS_MASK_LVDS0_OS_DET_D3M_SHIFT (16)
+#define LVDS_MASK_LVDS0_OS_DET_D2P_SHIFT (15)
+#define LVDS_MASK_LVDS0_OS_DET_D2M_SHIFT (14)
+#define LVDS_MASK_LVDS0_OS_DET_D1P_SHIFT (13)
+#define LVDS_MASK_LVDS0_OS_DET_D1M_SHIFT (12)
+#define LVDS_MASK_LVDS0_OS_DET_D0P_SHIFT (11)
+#define LVDS_MASK_LVDS0_OS_DET_D0M_SHIFT (10)
+
+#define LVDS_MASK_LVDS1_OS_DET_D4P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D4P_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D4M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D4M_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D3P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D3P_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D3M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D3M_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D2P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D2P_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D2M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D2M_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D1P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D1P_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D1M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D1M_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D0P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D0P_SHIFT)
+#define LVDS_MASK_LVDS1_OS_DET_D0M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS1_OS_DET_D0M_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D4P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D4P_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D4M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D4M_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D3P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D3P_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D3M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D3M_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D2P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D2P_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D2M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D2M_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D1P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D1P_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D1M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D1M_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D0P_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D0P_SHIFT)
+#define LVDS_MASK_LVDS0_OS_DET_D0M_MASK \
+	((u32)0x1U << LVDS_MASK_LVDS0_OS_DET_D0M_SHIFT)
+
+typedef enum {
+	TS_TXOUT_SEL0 = 0,
+	TS_TXOUT_SEL1,
+	TS_TXOUT_SEL2,
+	TS_TXOUT_SEL3,
+	TS_TXOUT_SEL4,
+	TS_TXOUT_SEL5,
+	TS_TXOUT_SEL6,
+	TS_TXOUT_SEL7,
+	TS_TXOUT_SEL8,
+	TS_TXOUT_SEL_MAX
+} TS_TXOUT_SEL;
+
+typedef enum {
+	TS_SWAP_CH0 = 0,
+	TS_SWAP_CH1,
+	TS_SWAP_CH2,
+	TS_SWAP_CH3,
+	TS_SWAP_CH_MAX
+} TS_SWAP_CH;
+
+typedef enum {
+	DISP_MUX_TYPE = 0,
+	TS_MUX_TYPE,
+	MUX_TYPE_MAX
+} MUX_TYPE;
+
+typedef enum {
+	TS_MUX_PATH_DISP0 = 0,
+	TS_MUX_PATH_DISP1,
+	TS_MUX_PATH_DISP2,
+	TS_MUX_PATH_CORE,
+	TS_MUX_PATH_MAX
+} TS_MUX_PATH;
+
+typedef enum {
+	TS_MUX_IDX0 = 0,
+	TS_MUX_IDX1,
+	TS_MUX_IDX2,
+	TS_MUX_IDX3,
+	TS_MUX_IDX_MAX,
+} TS_MUX_IDX;
+
+typedef enum {
+	LCDC_MUX_IDX0 = 0,
+	LCDC_MUX_IDX1,
+	LCDC_MUX_IDX2,
+	LCDC_MUX_IDX_MAX,
+} LCDC_MUX_IDX;
+
+#define TXOUT_DUMMY ((u32)0x1F)
+#define TXOUT_DE (24U)
+#define TXOUT_HS (25U)
+#define TXOUT_VS (26U)
+#define TXOUT_R_D(x) ((x) + 0x10U)
+#define TXOUT_G_D(x) ((x) + 0x8U)
+#define TXOUT_B_D(x) (x)
+
+#define TXOUT_MAX_LINE 4U
+#define TXOUT_DATA_PER_LINE 7U
+#define TXOUT_GET_DATA(i) \
+	((TXOUT_DATA_PER_LINE - 1U) - ((i) % TXOUT_DATA_PER_LINE) \
+	+ (TXOUT_DATA_PER_LINE * ((i) / TXOUT_DATA_PER_LINE)))
+
+extern void LVDS_WRAP_SetDataPath(
+	int ch, unsigned int data_path, unsigned int set);
+extern void LVDS_WRAP_SetDataArray(
+	int ch,
+	unsigned int data[TXOUT_MAX_LINE][TXOUT_DATA_PER_LINE]);
+extern void LVDS_WRAP_SetConfigure(
+	unsigned int lr, unsigned int bypass, unsigned int width);
+extern void LVDS_WRAP_SetDataSwap(unsigned int ch, unsigned int set);
+extern void LVDS_WRAP_SetMuxOutput(
+	MUX_TYPE mux, int ch, unsigned int select,
+	unsigned int enable);
+extern void LVDS_WRAP_SetAccessCode(void);
+extern void LVDS_WRAP_ResetPHY(unsigned int port, unsigned int reset);
+extern void LVDS_WRAP_Set(
+	unsigned int lvds_type, unsigned int val, unsigned int select,
+	unsigned int sel0[TXOUT_MAX_LINE][TXOUT_DATA_PER_LINE],
+	unsigned int sel1[TXOUT_MAX_LINE][TXOUT_DATA_PER_LINE]);
+extern void LVDS_WRAP_SetSyncPolarity(unsigned int sync);
+
+typedef enum {
+	LVDS_WRAP_CMD_INIT = 0U,
+	LVDS_WRAP_CMD_RESET_PHY,
+	LVDS_WRAP_CDM_MAX,
+} LVDS_WRAP_CMD;
+
+typedef enum {
+	LVDS_PHY_CMD_INIT = 0U,
+	LVDS_PHY_CDM_MAX,
+} LVDS_PHY_CMD;
+
+#define PANEL_LVDS_DUAL 0
+#define PANEL_LVDS_SINGLE 1
+
+
+typedef struct lvds_hw_info {
+	unsigned int lvds_type; // dual or single port lvds
+	unsigned int port_main;
+	unsigned int port_sub;
+	int ts_mux_id;   // ts_mux_id for single lvds
+	unsigned int lcdc_mux_id; // lcdc mux id
+	unsigned int p_clk;       // pixel clock of LVDS
+	unsigned int xres;
+	unsigned int vcm;
+	unsigned int vsw;
+	unsigned int lane_main[LVDS_PHY_LANE_MAX];
+	unsigned int lane_sub[LVDS_PHY_LANE_MAX];
+	unsigned int txout_main[TXOUT_MAX_LINE][TXOUT_DATA_PER_LINE];
+	unsigned int txout_sub[TXOUT_MAX_LINE][TXOUT_DATA_PER_LINE];
+} lvds_hw_info_t;
+
+
+extern lvds_hw_info_t *lvds_register_hw_info(
+	lvds_hw_info_t *l_hw,
+	unsigned int l_type,
+	unsigned int port1,
+	unsigned int port2,
+	unsigned int p_clk,
+	unsigned int lcdc_select,
+	unsigned int xres);
+
+extern void lvds_splitter_init(
+	lvds_hw_info_t *lvds_hw);
+
+extern void lvds_phy_init(
+	const lvds_hw_info_t *lvds_hw);
+
+extern void lvds_wrap_core_init(
+	unsigned int lvds_type,
+	unsigned int width,
+	int tx_mux_id,
+	unsigned int lcdc_mux_id,
+	unsigned int (*sel0)[TXOUT_DATA_PER_LINE],
+	unsigned int (*sel1)[TXOUT_DATA_PER_LINE]);
+
+extern void lvds_phy_core_init(
+	unsigned int lvds_type,
+	unsigned int lvds_main,
+	unsigned int lvds_sub,
+	unsigned int upsample_ratio,
+	unsigned int ref_cnt,
+	unsigned int vcm,
+	unsigned int vsw,
+	const unsigned int *LVDS_LANE_MAIN,
+	const unsigned int *LVDS_LANE_SUB);
+
+
+#endif /*__VIOC_LVDS_H__*/

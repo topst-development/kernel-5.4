@@ -1,0 +1,18 @@
+Telechips GPIO Sample driver
+
+Required properties:
+
+- compatible : should be "gpio_sample".
+- interrupt-parent : indicates interrupt parent of interrupt source.
+- interrupts : describes interrupt source.
+- gpios : describes GPIO used by GPIO sample driver for normal uses that include changing direction
+and value of the GPIO.
+
+    tcc_gpio_sample {
+	compatible = "gpio_sample";
+	leble = "TCC GPIO";
+	interrupt-parent = <&gpa>;
+	interrupts = <1 IRQ_TYPE_EDGE_BOTH>;
+	gpios = <&gpa 2 0>;
+    };
+

@@ -1,0 +1,170 @@
+config DRM_TCC
+	tristate "DRM Support for Telechips SoC Series"
+	depends on OF && DRM && ARCH_TCC
+	select DRM_KMS_HELPER
+	select VIDEOMODE_HELPERS
+	help
+	  Choose this option if you have a Telechips SoC chipset.
+	  If M is selected the module will be called tccdrm.
+
+if DRM_TCC
+
+source "drivers/gpu/drm/tcc/vioc/Kconfig"
+
+config DRM_TCC_CTRL_CHROMAKEY
+  bool "DRM controls chromakey on planes"
+  depends on ARCH_TCC805X
+  default n
+  help
+    If this config is select then TCCDRM can controls chroma-key of WMIX.
+
+config DRM_TCC_SKIP_RESTORE_FBDEV
+  bool "DRM skips function to restores fbdev"
+  default n
+  help
+    Normally, at runtime drivers should restore the fbdev console by calling
+    drm_fb_helper_restore_fbdev_mode_unlocked() from their
+    &drm_driver.lastclosecallback. This ensures that the user isn't greeted
+    with a black screen when e.g. X dies.
+    But, If you don't need this function, please set this config to y then
+    TCCDRM does not call rm_fb_helper_restore_fbdev_mode_unlocked when
+    &drm_driver.lastclosecallback is called.
+
+comment "CRTCs"
+
+config DRM_TCC_LCD
+	bool "Telechips Primary Display"
+	select DRM_TCC_DPI
+	help
+	  Choose this option if you want to use LVDS/DP I/F for DRM.
+
+config DRM_TCC_VIC_MAX
+  int "Maximum Video Identification Code supported by TCC DRM"
+  default 1026
+
+config DRM_TCC_LCD_VIC
+	int "Video Identification Code for Primary Display"
+  depends on DRM_TCC_LCD
+  default 1024
+  range 0 DRM_TCC_VIC_MAX
+	help
+	  Video Identification Code for First-Display
+
+config DRM_TCC_KEEP_LOGO
+        bool "DRM TCC KEEP LOGO"
+        default y
+        help
+          If this config is selected to y, DRM driver skips process that fills its plane with block color when it is binded.
+
+config DRM_TCC_EXT
+        bool "Telechips Extended Display"
+        help
+          Choose this option if you want to use Extended LCD for DRM.
+
+config DRM_TCC_EXT_VIC
+	int "Video Identification Code for EXT"
+  depends on DRM_TCC_EXT
+  default 1024
+  range 0 DRM_TCC_VIC_MAX
+	help
+	  Video Identification Code for Ext-Display
+
+config DRM_TCC_THIRD
+        bool "Telechips third display"
+	depends on (ARCH_TCC803X || ARCH_TCC805X)
+        help
+          Choose this option if you want to use third display for DRM.
+
+config DRM_TCC_THIRD_VIC
+	int "Video Identification Code for THIRD"
+  depends on DRM_TCC_THIRD
+  default 1025
+  range 0 DRM_TCC_VIC_MAX
+	help
+	  Video Identification Code for Third-Display
+
+config DRM_TCC_FOURTH
+        bool "Telechips fourth display"
+	depends on (ARCH_TCC803X || ARCH_TCC805X)
+        help
+          Choose this option if you want to use third display for DRM.
+
+config DRM_TCC_FOURTH_VIC
+	int "Video Identification Code for FOURTH"
+  depends on DRM_TCC_FOURTH
+  default 1024
+  range 0 DRM_TCC_VIC_MAX
+	help
+	  Video Identification Code for fourth-Display
+
+
+config DRM_TCC_SCREEN_SHARE
+	bool "TCC Screen shared display type"
+	depends on DRM_TCC && TCC_SCREEN_SHARE
+	help
+		Choose this option if you want to use Screen shared function.
+
+config DRM_TCC_SCREEN_SHARE_VIC
+	int "Video Identification Code for Screen Share Display"
+	depends on DRM_TCC_SCREEN_SHARE
+	default 1026
+	range 1 DRM_TCC_VIC_MAX
+	help
+		Video Identification Code for Screen share Display
+
+comment "Encoders and Bridges"
+
+config DRM_TCC_DPI
+	bool "Parallel output"
+	select DRM_PANEL
+	help
+	  This enables support for TCC parallel output.
+
+config DRM_TCC_DPI_PROC
+	bool "Proc F/S for debug"
+  default n
+	depends on DRM_TCC_DPI
+	help
+	  This provides proc F/S to debug DPI
+
+endif
+
+#
+# Debugging messages
+#
+menuconfig DRM_DRV_DEBUG
+        bool "DRM Debugging messages (DEVELOPMENT)"
+        depends on DRM_TCC
+        help
+          Choose this option if you want to use debugging messages (DEVELOPMENT).
+          You can choice various debugging messages.
+          Kernel debugging level is 'KERN_DEBUG <7>'. (use "dmesg -n 8")
+
+if DRM_DRV_DEBUG
+
+config DRM_UT_CORE
+        bool "DRM core messages"
+        help
+          Choose this option if you want to enable DRM core debugging messages.
+          Kernel debugging level is 'KERN_DEBUG <7>'. (use "dmesg -n 8")
+
+config DRM_UT_DRIVER
+        bool "DRM driver messages"
+        help
+          Choose this option if you want to enable DRM driver debugging messages.
+          Kernel debugging level is 'KERN_DEBUG <7>'. (use "dmesg -n 8")
+
+config DRM_UT_KMS
+        bool "DRM KMS messages"
+        help
+          Choose this option if you want to enable DRM KMS debugging messages.
+          Kernel debugging level is 'KERN_DEBUG <7>'. (use "dmesg -n 8")
+
+config DRM_UT_PRIME
+        bool "DRM PRIME messages"
+        help
+          Choose this option if you want to enable DRM PRIME debugging messages.
+          Kernel debugging level is 'KERN_DEBUG <7>'. (use "dmesg -n 8")
+
+endif
+

@@ -1,0 +1,11 @@
+Telechips Reference Boards Bindings
+==============================================================================
+
+Required root node properties:
+    - compatible = should be one or more of the following.
+        - "telechips,tcc8971"
+        - "telechips,tcc8031"
+        - "telechips,tcc8050"
+        - "telechips,tcc8053"
+        - "telechips,tcc8059"
+

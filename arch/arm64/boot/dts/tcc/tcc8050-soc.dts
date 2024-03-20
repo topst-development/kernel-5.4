@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+/dts-v1/;
+
+#include "tcc-pmap-805x-android-customized.dtsi"
+
+#include "tcc8050.dtsi"
+
+/ {
+};

@@ -1,0 +1,63 @@
+Required properties:
+ - compatible:
+        "telechips,tcc-pinctrl"
+ - reg: The pinctrl(gpio) address range, relative to the pinctrl range
+	<cell num>
+        1 : gpio base address(ap)
+        2 : range of gpio base address
+        3 : pmgpio base address(micom)
+        4 : range of pmgpio base address
+
+Optional properties:
+ - telechips,no-pull : Disable pull-up/down
+ - telechips,pull-up : Select pull-up and enable pull-up
+ - telechips,pull-down : Select pull-down and enable pull-down
+ - telechips,input-enable : Enable input buffer, disable ouput
+ - telechips,output-low : Enable output and set to low, disable input buffer
+ - telechips,output-high : Enable output and set to high, disable input buffer
+ - telechips,input_buffer_enable : Enable input buffer
+ - telechips,input_buffer_disable : Disable input buffer
+ - telechips,schmitt-input : Set to Schmitt input type
+ - telechips,cmos-input : Set to CMOS input type
+ - telechips,slow-slew : Select slew rate to fast
+ - telechips,fast-slew : Select slew rate to low
+ - telechips,eclk-sel : Select external input clock
+ - telechips,drive-strength : Set port driver strength
+
+Example:
+
+pinctrl: pinctrl@14200000 {
+    compatible = "telechips,tcc-pinctrl";
+    reg = <0x14200000 0x300 0x1B937800 0x100>;  /* gpio, pmgpio */
+};
+
+&pinctrl {
+    pinctrl_gpio {
+    gpa {
+        pin-info = <0x0 0 32>;
+    };
+
+    gpb {
+        pin-info = <0x40 0 29>;
+    };
+...
+    sd0_clk: sd0_clk {
+        telechips,pins = "gpsd0-0";
+        telechips,pin-function = <1>;
+        telechips,drive-strength = <3>;
+        telechips,input_buffer_enable;
+    };
+...
+    uart7_data: uart7_data {
+        telechips,pins = "gpa-12", "gpa-13";
+        telechips,pin-function = <7>;
+    };
+...
+    test: test {
+        telechips,pins = "gpx-1", "gpx-2";
+        telechips,pin-function = <2>;
+		telechips,drive-strength = <3>;
+		telechips,input_buffer_enable;
+		telechips,pull-up;
+    };
+};

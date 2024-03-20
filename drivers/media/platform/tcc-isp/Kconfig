@@ -1,0 +1,29 @@
+# drivers/media/platform/tcc-isp/Kconfig
+#
+# Copyright (c) 2020-2020 Telechips Co., Ltd.
+#	http://www.telechips.com/
+#
+# Licensed under GPL
+
+config TCC_ISP
+	bool "Telechips ISP driver"
+	default y
+        depends on ARCH_TCC805X && VIDEO_TCCVIN2
+	help
+	  Support for Telechips Embedded ISP
+
+	  Say Y here to enable Telechips Embedded ISP driver
+	  The driver will be called Telechips Embedded ISP driver
+	  .
+
+# only for TCC805X ES(TCS CV8050C-618)
+config TCC_ISP_USE_IOMMU
+	bool "FOR 805X ES, Set IOMMU to access I2C controller 7 from ISP"
+	default n
+	depends on ARCH_TCC805X && VIDEO_TCCVIN2
+	help
+	  This must be set on the TCC805X ES
+
+	  Say Y here to enable Telechips Embedded ISP IOMMU function
+	  The function will be called as Telechips Embedded ISP IOMMU
+	  .

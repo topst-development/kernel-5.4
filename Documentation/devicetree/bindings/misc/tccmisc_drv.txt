@@ -1,0 +1,14 @@
+This is for 'telechips,tccmisc'.
+
+Required properties for display:
+	-compatible:
+		"telechips,tccmisc"
+
+-------------------------------------------------------------------------------
+
+Example:
+	tccmisc:tccmisc {
+		/* Only use kernel-5.4 or up */
+		compatible = "telechips,tccmisc";
+		status = "okay";
+	};

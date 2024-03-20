@@ -1,0 +1,5 @@
+config TCC_THSM
+	tristate "TCC THSM"
+	default n
+	help
+		Support to THSM based on CA7,R5, <-> CA53 communication

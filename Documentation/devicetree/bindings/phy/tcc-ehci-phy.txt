@@ -1,0 +1,27 @@
+Telechips USB EHCI PHY
+
+Required properties:
+ - compatible:  must be "telechips,tcc_ehci_phy"
+ - reg:         physical base addresses of the controller and length of memory
+                mapped region
+ - interrupts:  interrupt should be described here
+
+Optional properties:
+ - mux_port:    MUX port feature for USB 2.0 DRD port
+
+Example:
+
+ehci_phy: ehci_phy@11DA0010 {
+	compatible = "telechips,tcc_ehci_phy";
+	reg = <0x0 0x11DA0010 0x0 0x30>;
+	interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
+	status = "disabled";
+};
+
+mhst_phy: mux_host_phy@11DA00DC {
+	compatible = "telechips,tcc_ehci_phy";
+	reg = <0x0 0x11DA00DC 0x0 0x20>;
+	interrupts = <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>;
+	mux_port;
+	status = "disabled";
+};

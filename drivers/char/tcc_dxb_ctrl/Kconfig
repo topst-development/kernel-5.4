@@ -1,0 +1,6 @@
+config TCC_RADIO_GPIO_CTRL
+    tristate "Telechips Radio GPIO controller"
+    default n
+    help
+        This is for control power/reset of Radio Tuner device.
+	    This driver is for SDR Applications.

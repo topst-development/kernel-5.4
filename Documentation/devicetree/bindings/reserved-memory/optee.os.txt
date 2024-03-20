@@ -1,0 +1,28 @@
+*** OP-TEE OS Region Device Tree Bindings ***
+
+Telechips OP-TEE OS is loaded in the middle of memory.
+REE(Normal World) cannot use the corresponding area, so it should be set as
+reserved memory.
+
+Properties:
+compatible (required) - should contain "optee.os"
+reg (required) - standard definition
+no-map (optional) - empty property
+    - Indicates the operating system must not create a virtual mapping
+      of the region as part of its standard mapping of system memory,
+      nor permit speculative access to it under any circumstances other
+      than under the control of the device driver using the region.
+status (optional) - standard definition
+    - bootloader can be set the status to "okay" when OPTEE OS is running
+      even if the status is "disabled".
+
+Example:
+	reserved_memory: reserved-memory {
+		    :
+		reserved_optee: optee_os {
+			compatible = "optee.os";
+			reg = <0x0 0x2e000000 0x0 0x02000000>;
+			no-map;
+			status = "disabled";
+		};
+	};

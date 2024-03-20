@@ -1,0 +1,26 @@
+* Device Tree Bindings for CXD5700
+
+CXD5700 is camera image sensor. Basically, it is disabled
+by default for Telechips EVB.
+
+Required properties:
+
+- status     : disable or enable the device node
+- compatible : property name that conveys the platform architecture identifiers,
+               as 'sony,cxd5700'
+- reg        : I2C slave address
+- port       : specifies the endpoint of the sensor (output only)
+
+example
+-------
+	cxd5700: cxd5700 {
+		status		= "disabled";
+		compatible	= "sony,cxd5700";
+		reg		= <0x18>;
+		port {
+			cxd5700_out0: endpoint {
+				remote-endpoint = <&max9275_in0>;
+				io-direction	= "output";
+			};
+		};
+	};

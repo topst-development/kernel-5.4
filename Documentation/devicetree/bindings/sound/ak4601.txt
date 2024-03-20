@@ -1,0 +1,32 @@
+AK4601 Audio Codec
+
+This device supports I2C mode.
+
+Required properties:
+
+- compatible : "akm,ak4601"
+- reg : The I2C address of the device for I2C
+
+Optional properties:
+- ak4601,pdn-gpio: A GPIO specifier for the power down & reset pin
+- cmute-gpios: A GPIO specifier for the codec mute pin
+- amute-gpios: A GPIO specifier for the mute pin for PowerAMP
+- stanby-gpios: A GPIO specifier for the stanby pin for PowerAMP
+
+Example:
+
+&i2c {
+	status = "okay";
+	...
+		ak4601: ak4601@10 {
+			compatible = "akm,ak4601";
+			ak4601,pdn-gpio = <&gpe 14 0>;
+			cmute-gpios = <&gpe 15 1>;
+			//CODEC_MUTE    0: active high, 1: active low
+			amute-gpios = <&gpma 1 0>;
+			//AMP_MUTE      0: active high, 1: active low
+			stanby-gpios = <&gpma 2 0>;
+			//AMP_STBY      0: active high, 1: active low
+			reg = <0x10>;
+		};
+};

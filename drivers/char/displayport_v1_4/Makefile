@@ -1,0 +1,34 @@
+#
+# Makefile for the kernel character device drivers.
+#
+ccflags-y += -I$(srctree)/drivers/char/displayport_v1_4 \
+				  -I$(srctree)/drivers/char/displayport_v1_4/include
+
+ifeq ($(CONFIG_DRM_TCC),y)
+ccflags-y += -I$(srctree)/drivers/gpu/drm/tcc
+endif
+
+ifeq ($(CONFIG_DRM_PANEL_MAX968XX),y)
+ccflags-y += -I$(srctree)/drivers/gpu/drm/panel
+endif
+
+ifneq ($(CONFIG_DRM_PANEL_MAX968XX),y)
+obj-y += Dptx_serdes.o
+endif
+
+obj-$(CONFIG_TCC_DP_DRIVER_V1_4) +=\
+	Dptx.o \
+	Dptx_api.o \
+	Dptx_platform.o \
+	Dptx_reg.o \
+	Dptx_aux.o \
+	Dptx_audin.o \
+	Dptx_vidin.o \
+	Dptx_audgen.o \
+	Dptx_core.o \
+	Dptx_intr.o \
+	Dptx_link.o \
+	Dptx_edid.o \
+	Dptx_extension.o \
+	Dptx_proc.o \
+	Dptx_drm_dp_addition.o

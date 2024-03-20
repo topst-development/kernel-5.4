@@ -1,0 +1,132 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+#include "tcc805x-display.dtsi"
+
+/ {
+	/* Describe here after remove this statement if you have something to be override. */
+	lcd_drm_dummy {
+		status = "okay";
+		base_display = <&drm_dpv14_0>;
+	};
+
+	drm_dpv14_0 {
+		status = "okay";
+		lcdc-mux-select = <3>;
+		pinctrl-names = "default", "power_on", "reset_off", "blk_on", "blk_off", "power_off";
+		pinctrl-0 = <&lcd_port_default1>;
+		pinctrl-1 = <&lcd_port_power_on1>;
+		pinctrl-2 = <&lcd_port_reset_off1>;
+		pinctrl-3 = <&lcd_port_blk_on1>;
+		pinctrl-4 = <&lcd_port_blk_off1>;
+		pinctrl-5 = <&lcd_port_reset_on1 &lcd_port_power_off1>;
+		/* binding external backlight driver */
+		backlight = <&lcd_port1_bl>;
+
+		port@0 {
+			reg = <0>;
+			dpv14_0_input_0: endpoint {
+				remote-endpoint = <&lcd_display_out>;
+			};
+		};
+	};
+
+	drm_dpv14_1 {
+		status = "disabled";
+		lcdc-mux-select = <0>;
+		pinctrl-names = "default", "power_on", "reset_off", "blk_on", "blk_off", "power_off";
+		pinctrl-0 = <&lcd_port_default2>;
+		pinctrl-1 = <&lcd_port_power_on2>;
+		pinctrl-2 = <&lcd_port_reset_off2>;
+		pinctrl-3 = <&lcd_port_blk_on2>;
+		pinctrl-4 = <&lcd_port_blk_off2>;
+		pinctrl-5 = <&lcd_port_reset_on2 &lcd_port_power_off2>;
+		/* binding external backlight driver */
+		backlight = <&lcd_port2_bl>;
+
+		port@1 {
+			reg = <1>;
+			dpv14_1_input_1: endpoint {
+				remote-endpoint = <&ext_display_out>;
+			};
+		};
+	};
+
+	drm_tm123xdhp90 {
+		status = "disabled";
+		phy-ports = <PHY_PORT_D0 PHY_PORT_D1>;
+		lcdc-mux-select = <2>;
+		pinctrl-names = "default", "pwr_on_1", "pwr_on_2",
+					"blk_on", "blk_off", "power_off";
+                pinctrl-0 = <&lcd_port_default2>;
+		pinctrl-1 = <&lcd_port_power_on2>;
+		pinctrl-2 = <&lcd_port_reset_off2>;
+		pinctrl-3 = <&lcd_port_blk_on2>;
+		pinctrl-4 = <&lcd_port_blk_off2>;
+		pinctrl-5 = <&lcd_port_reset_on2 &lcd_port_power_off2>;
+		/* binding external backlight driver */
+		backlight = <&lcd_port2_bl>;
+	};
+
+	tcc-drm-lcd {
+		status = "okay";
+		connector_type = "DP";
+		port@0 {
+			reg = <0>;
+			lcd_display_out: endpoint {
+				remote-endpoint = <&dpv14_0_input_0>;
+			};
+		};
+	};
+
+	tcc-drm-ext {
+		status = "disabled";
+		connector_type = "DP";
+		port@0 {
+			reg = <0>;
+			ext_display_out: endpoint {
+				remote-endpoint = <&dpv14_1_input_1>;
+			};
+		};
+	};
+
+	tcc-drm-third {
+		status = "disabled";
+	};
+
+	tcc-drm-fourth {
+		status = "disabled";
+	};
+
+	tcc-drm-screen-share {
+		status = "disabled";
+	};
+
+       lcd_port1_bl: lcd_port1_bl {
+               status = "disabled";
+               compatible = "gpio-backlight"; /* use gpio backlight module */
+	       default-on;
+       };
+
+       lcd_port2_bl: lcd_port2_bl {
+               status = "disabled";
+               compatible = "gpio-backlight";
+	       default-on;
+       };
+
+       lcd_port3_bl: lcd_port3_bl {
+               status = "disabled";
+               compatible = "gpio-backlight";
+               default-on;
+       };
+
+       lcd_port4_bl: lcd_port4_bl {
+               status = "disabled";
+               compatible = "gpio-backlight";
+               default-on;
+       };
+
+};
+

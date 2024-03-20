@@ -1,0 +1,19 @@
+/* SPDX-License-Identifier: (GPL-2.0-or-later OR MIT) */
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+#ifndef DT_BINDINGS_TCC897X_BOOT_MODE_H
+#define DT_BINDINGS_TCC897X_BOOT_MODE_H
+
+#define BOOT_MODE_PREFIX	(0x77665000UL)
+
+#define BOOT_COLD		(BOOT_MODE_PREFIX + 0x000UL)
+
+/* Reboot by user request */
+#define BOOT_FASTBOOT		(BOOT_MODE_PREFIX + 0x500UL)
+#define BOOT_NORMAL		(BOOT_MODE_PREFIX + 0x501UL)
+#define BOOT_RECOVERY		(BOOT_MODE_PREFIX + 0x502UL)
+#define BOOT_FORCE_NORMAL	(BOOT_MODE_PREFIX + 0x503UL)
+
+#endif /* DT_BINDINGS_TCC897X_BOOT_MODE_H */

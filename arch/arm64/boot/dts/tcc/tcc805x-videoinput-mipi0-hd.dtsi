@@ -1,0 +1,202 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+&mipi_csi2_0 {
+	status = "okay";
+	mipi-chmux-0 = <0>;
+	mipi-chmux-1 = <0>;
+	mipi-chmux-2 = <0>;
+	mipi-chmux-3 = <0>;
+
+    isp0-bypass = <1>;
+    isp1-bypass = <1>;
+    isp2-bypass = <1>;
+    isp3-bypass = <1>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		/*
+		 * 0
+		 * input port.
+		 *
+		 * 1 ~ 4
+		 * output ports. (1: VC0 ~ 4: VC3)
+		 */
+		port@0 {
+			reg = <0>;
+			mipi_csi2_0_in0: endpoint@0 {
+				remote-endpoint	= <&tp2855_out0>;
+				io-direction	= "input";
+				channel		= <0>;
+				num-channel	= <4>;
+
+				/*
+				 * 0: CH0 only, no data interleave
+				 * 1: DT only
+				 * 2: VC only
+				 * 3: VC and DT
+				 */
+				interleave-mode = <2>;
+				hs-settle = <13>;
+				data-lanes = <1 2 3 4>;
+			};
+			mipi_csi2_0_in1: endpoint@1 {
+				remote-endpoint	= <&tp2855_out1>;
+				io-direction	= "input";
+				channel		= <1>;
+			};
+			mipi_csi2_0_in2: endpoint@2 {
+				remote-endpoint	= <&tp2855_out2>;
+				io-direction	= "input";
+				channel		= <2>;
+			};
+			mipi_csi2_0_in3: endpoint@3 {
+				remote-endpoint	= <&tp2855_out3>;
+				io-direction	= "input";
+				channel		= <3>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+			mipi_csi2_0_out0: endpoint {
+				remote-endpoint	= <&videoinput0_in>;
+				io-direction	= "output";
+				channel		= <0>;
+				/*
+				 * 0: Single pixel mode
+				 * 1: Dual pixel mode (RAW8/10/12, YUV422)
+				 * 2: Quad pixel mode (RAW8/10/12)
+				 * 3: Invalid
+				 */
+				pixel-mode = <1>;
+			};
+		};
+		port@2 {
+			reg = <2>;
+			mipi_csi2_0_out1: endpoint {
+				remote-endpoint	= <&videoinput1_in>;
+				io-direction	= "output";
+				channel		= <1>;
+				pixel-mode = <1>;
+			};
+		};
+		port@3 {
+			reg = <3>;
+			mipi_csi2_0_out2: endpoint {
+				remote-endpoint	= <&videoinput2_in>;
+				io-direction	= "output";
+				channel		= <2>;
+				pixel-mode = <1>;
+			};
+		};
+		port@4 {
+			reg = <4>;
+			mipi_csi2_0_out3: endpoint {
+				remote-endpoint	= <&videoinput3_in>;
+				io-direction	= "output";
+				channel		= <3>;
+				pixel-mode = <1>;
+			};
+		};
+	};
+};
+
+&videoinput0 {
+	status		= "okay";
+	cifport		= <&cifport		5>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera
+			   0>;
+	port {
+		videoinput0_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out0>;
+			io-direction	= "input";
+            bus-type        = <0>;
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};
+
+&videoinput1 {
+	status		= "okay";
+	cifport		= <&cifport		6>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera1
+			   0>;
+	port {
+		videoinput1_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out1>;
+			io-direction	= "input";
+            bus-type        = <0>;
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};
+
+&videoinput2 {
+	status		= "okay";
+	cifport		= <&cifport		7>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera2
+			   0>;
+	port {
+		videoinput2_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out2>;
+			io-direction	= "input";
+            bus-type        = <0>;
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};
+
+&videoinput3 {
+	status		= "okay";
+	cifport		= <&cifport		8>;
+	/* memory-region
+	 *  - [0]: parking guideline
+	 *  - [1]: deinterlacing by viqe
+	 *  - [2]: preview
+	 *  - [3]: last frame
+	 */
+	memory-region	= <0
+			   0
+			   &pmap_rearcamera3
+			   0>;
+	port {
+		videoinput3_in: endpoint {
+			remote-endpoint	= <&mipi_csi2_0_out3>;
+			io-direction	= "input";
+            bus-type        = <0>;
+			stream-enable	= <1>;	// VIN_CTRL.SE
+			flush-vsync	= <1>;	// VIN_MISC.FVS
+		};
+	};
+};

@@ -1,0 +1,16 @@
+Telechips USB DWC OTG PHY
+
+Required properties:
+ - compatible:  must be "telechips,tcc_dwc_otg_phy"
+ - reg:         physical base addresses of the controller and length of memory
+                mapped region
+
+Optional properties:
+
+Example:
+
+dwc_otg_phy: dwc_otg_phy@11DA0100 {
+	compatible = "telechips,tcc_dwc_otg_phy";
+	reg = <0x 0x11DA0100 0x 0x30>;
+	status = "disabled";
+};

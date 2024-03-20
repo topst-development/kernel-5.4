@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# telechips drm configuration
+#
+
+config TCC_VIOC_LOW_API
+	bool "Telechips VIOC LOW APIs"
+	depends on ARCH_TCC
+	default y
+
+	help
+      If true, it supports low api to control VIOC blocks.
+
+if TCC_VIOC_LOW_API
+config VIOC_MAP_DECOMP
+	bool "VIOC MAP Decompressor support for HEVC"
+	depends on (ARCH_TCC803X || ARCH_TCC805X)
+	default y
+
+	help
+	  TCC VIOC MAP CONVERTER Block.
+	  Decompress  HEVC compressed data.
+
+	  If unsure, say N.
+
+config VIOC_AFBCDEC
+    bool "Enable AFBC decoder"
+    depends on (ARCH_TCC803X) && MALI_MIDGARD
+    default n
+    help
+        TCC AFBC Decoder
+
+config VIOC_PVRIC_FBDC
+    bool "Enable PVRIC_FBDC"
+    depends on (ARCH_TCC805X) && POWERVR_ROGUE
+    default n
+    help
+        TCC PVRIC Framebuffer decompressor
+endif

@@ -1,0 +1,557 @@
+// TOST BOARD
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+#ifndef DT_OVERLAY
+/dts-v1/;
+#endif
+
+#include "tcc8050-linux-ivi.dtsi"
+
+/* Definition for H/W LCD ports */
+#define LCD_PORT1_PWR "gpmc-19"
+#define LCD_PORT1_RST "gpmc-20"
+#define LCD_PORT1_BLK "gph-6"
+
+#define LCD_PORT2_PWR "gpc-8"
+#define LCD_PORT2_RST "gpc-9"
+#define LCD_PORT2_BLK "gph-7"
+
+#define LCD_PORT3_PWR "gpmc-2"
+#define LCD_PORT3_RST "gpmc-18"
+#define LCD_PORT3_BLK "gpe-15"
+
+#define LCD_PORT4_PWR "gpmb-25"
+#define LCD_PORT4_RST "gpmb-19"
+#define LCD_PORT4_BLK "gpmc-21"
+
+#include "tcc8050-linux-ivi-display.dtsi"
+
+/ {
+	switch0:switch0 {
+		compatible = "telechips,switch";
+		status = "okay";
+
+#if 0	/* for softswitch */
+		pinctrl-names = "default";
+		pinctrl-0 = <&switch_mb23>;
+
+		switch-gpios = <&gpmb 23 1>;
+		switch-active = <0>;
+#endif
+	};
+
+	lcd_port1_bl: lcd_port1_bl {
+			gpios = <&gph 6 0>;
+	};
+
+	lcd_port2_bl: lcd_port2_bl {
+			gpios = <&gph 7 0>;
+	};
+
+	lcd_port3_bl: lcd_port3_bl {
+			gpios = <&gpe 15 0>;
+	};
+
+	lcd_port4_bl: lcd_port4_bl {
+			gpios = <&gpmc 21 0>;
+	};
+
+	vqmmc_emmc: vqmmc_emmc {
+		compatible = "regulator-fixed";
+		regulator-name = "vqmmc_emmc";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-always-on;
+	};
+
+	sdhc2_pwrseq: sdhc2_pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios = <&gpsd1 8 GPIO_ACTIVE_LOW>;
+	};
+
+	vqmmc_sdio: vqmmc_sdio {
+		compatible = "regulator-fixed";
+		regulator-name = "vqmmc_sdio";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-always-on;
+	};
+
+	vqmmc_sdhc2: vqmmc_sdhc2 {
+		compatible = "regulator-fixed";
+		regulator-name = "vqmmc_sdhc2";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
+	};
+
+	tcc_sc_mmc: tcc_sc_mmc {
+		compatible = "telechips,tcc805x-sc-mmc";
+		status = "okay";
+
+		max-frequency = <200000000>;
+		bus-width = <8>;
+
+		sc-firmware = <&tcc_sc_fw>;
+
+		no-sdio;
+		no-sd;
+		non-removable;
+		keep-power-in-suspend;
+		disable-wp;
+
+		mmc-hs400-1_8v;
+		vqmmc-supply = <&vqmmc_emmc>;
+	};
+
+	tcc_sc_ufs: tcc_sc_ufs {
+		compatible = "telechips,tcc805x-sc-ufs";
+		status = "disabled";
+		sc-firmware = <&tcc_sc_fw>;
+	};
+
+	/*If Single core mode on, driver is load */
+	vbus_supply_ehci: vbus_supply_ehci {
+		gpios = <&gpmc 7 0x0>;
+		gpios-states = <0x1>;
+		status = "okay";
+	};
+
+	vbus_supply_dwc3: vbus_supply_dwc3 {
+		gpios = <&gpmc 8 0x0>;
+	};
+
+	vbus_supply_enable: vbus_supply_enable {
+		compatible = "regulator-fixed";
+		regulator-name = "vbus_supply_enable";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpios = <&gpmc 5 0x0>;
+		enable-active-high;
+		regulator-always-on;
+	}; 
+
+	aux_detect {
+		status = "disabled";
+
+		aux-gpios = <&gpmb 13 1>;
+	};
+
+	tcc_gpio_sample {
+		compatible = "gpio_sample";
+		label = "TCC GPIO";
+		interrupt-parent = <&gpa>;
+		interrupts = <1 IRQ_TYPE_EDGE_BOTH>;
+		gpios = <&gpa 2 0>;
+	};
+
+	fb0: fb@0 {
+		status = "okay";
+	};
+
+	/* Panel for Framebuffer driver */
+	fb_tm123xdhp90:fb_tm123xdhp90 {
+		status = "disabled";
+		pinctrl-0 = <&lcd_port_default3>;
+		pinctrl-1 = <&lcd_port_power_on3>;
+		pinctrl-2 = <&lcd_port_reset_off3>;
+		pinctrl-3 = <&lcd_port_blk_on3>;
+		pinctrl-4 = <&lcd_port_blk_off3>;
+		pinctrl-5 = <&lcd_port_reset_on3 &lcd_port_power_off3>;
+		backlight = <&lcd_port3_bl>;
+	};
+
+	/*UFS CARD DETECT*/
+	ufs_card_detect: ufs_card_detect {
+		compatible = "regulator-fixed";
+		regulator-name = "ufs_card_detect";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpios = <&gpa 29 0x0>;
+		enable-active-high;
+		regulator-always-on;
+	}; 
+};
+
+&a72_sc_mbox {
+	status = "okay";
+};
+
+&tcc_sc_fw {
+	status = "okay";
+	mboxes = <&a72_sc_mbox 0>;
+};
+
+&i2c0 {
+	status = "okay";
+	port-mux = <22>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c22_bus>;
+
+	/* pmic da9131-D0 */
+	da9131_D0: pmic@68 {
+		compatible = "dlg,da9131";
+		reg = <0x68>;
+		status = "disabled";
+
+		regulators {
+			DA9131_D0_BUCK1: buck1 {
+				regulator-name = "core_0p8";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			DA9131_D0_BUCK2: buck2 {
+				regulator-name = "gb_0p8";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+		};
+	}; /* pmic da9131-D0 */
+
+	/* pmic da9131-D2 */
+	da9131_D2: pmic@69 {
+		compatible = "dlg,da9131";
+		reg = <0x69>;
+		status = "disabled";
+
+		regulators {
+			DA9131_D2_BUCK1: buck1 {
+				regulator-name = "cpu_1p0";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			DA9131_D2_BUCK2: buck2 {
+				regulator-name = "io_3p3";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+		};
+	}; /* pmic da9131-D2 */
+
+	/* pmic da9062 */
+	da9062: pmic@58 {
+		compatible = "dlg,da9062";
+		reg = <0x58>;
+		rst-gpios = <&gpma 12 0>;
+		status = "disabled";
+
+		da9062_gpio: gpio {
+			compatible = "dlg,da9062-gpio";
+			gpio-controller;
+			#gpio-cells = <2>;
+		};
+
+		regulators {
+			DA9062_BUCK1: buck1 {
+				regulator-name = "memq_1p1";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			DA9062_BUCK2: buck2 {
+				regulator-name = "cpu_0p9v";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			DA9062_BUCK3: buck3 {
+				regulator-name = "io_1p8";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			DA9062_BUCK4: buck4 {
+				regulator-name = "memq_0p6";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+#if 0
+			/* Temp block for LDO2. Block min-microvolt of LDO2 */
+			DA9062_LDO2: ldo2 {
+				regulator-name = "mem_1p8";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+#endif
+			DA9062_LDO3: ldo3 {
+				regulator-name = "mipi_1p2";
+				regulator-always-on;
+				regulator-boot-on;
+			};
+
+			DA9062_LDO4: ldo4 {
+				regulator-name = "sdio_pwr";
+				regulator-always-on;
+				regulator-boot-on;
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <3300000>;
+			};
+		};
+	}; /* pmic da9062 */
+};
+
+
+ /* eMMC */
+&sdhc0 {
+	bus-width = <8>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&sd0_clk &sd0_cmd &sd0_bus8 &sd0_strb>;
+	status = "disabled";
+
+	sdhci-caps-mask = <0x7 0x0>;
+
+	non-removable;
+	keep-power-in-suspend;
+	disable-wp;
+	cap-mmc-hw-reset;
+
+	mmc-hs400-1_8v;
+	mmc-hs400-enhanced-strobe;
+	tcc-mmc-taps = <0xF 0xF 0xF 0xF>;
+	tcc-mmc-hs400-pos-tap = <0x6>;
+	tcc-mmc-hs400-neg-tap = <0xB>;
+
+	tcc-mmc-reset = <&gpsd0 14 0>;
+
+	vqmmc-supply = <&vqmmc_emmc>;
+};
+
+
+/* SDIO  */
+&sdhc1 {
+	status = "disabled";
+	pinctrl-names = "default";
+	pinctrl-0 = <&sd1_clk &sd1_cmd &sd1_bus4 &out0_clk>;
+
+	keep-power-in-suspend;
+	cap-sdio-irq;
+
+	vqmmc-supply = <&vqmmc_sdio>;
+
+	cd-force-presence-change;
+
+	tcm38xx {
+		compatible = "telechips,tcm38xx";
+		wifi_pwr-gpio = <&gpmd 10 0>; /* BT_WIFI_VBAT_EN */
+		wlreg_on-gpio = <&gpmd 11 0>; /* WIFI_REG_ON */
+		//wifi_pwr_1p8v-gpio = <&gpsd1 6 0>;
+		//wifi_pwr_3p3v-gpio = <&gpsd1 7 0>;
+	};
+};
+
+&sd1_clk {
+	telechips,pull-up;
+};
+
+&sd1_cmd {
+	telechips,pull-up;
+};
+
+&sd1_bus4 {
+	telechips,pull-up;
+};
+
+/* SD slot */
+
+&sdhc2 {
+	/*
+	 * In order to reduce boot time,
+	 * we use the driver as module not built-in.
+	 */
+
+	compatible = "telechips,tcc805x-sdhci,module-only";
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&sd2_clk &sd2_cmd &sd2_bus4 &sd1_bus4_wp_cd &sd1_pwr>;
+
+	broken-cd;
+	cd-inverted;
+	keep-power-in-suspend;
+
+	wp-gpios = <&gpsd1 7 1>;
+	cd-gpios = <&gpsd1 6 0>;
+
+	vqmmc-supply = <&vqmmc_sdhc2>;
+	mmc-pwrseq = <&sdhc2_pwrseq>;
+};
+
+&sd2_clk {
+	telechips,no-pull;
+};
+
+&sd2_cmd {
+	telechips,no-pull;
+};
+
+&sd2_bus4 {
+	telechips,no-pull;
+};
+
+#if 0
+&i2c1 {
+	status = "okay";
+	port-mux = <10>; /* [0]SCL [1]SDA */
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c10_bus>;
+};
+#endif
+
+&i2c2 {
+	status = "disabled";
+	port-mux = <30>; /* [0]SCL [1]SDA */
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c30_bus>;
+	ak4601: ak4601@10 {
+		compatible = "akm,ak4601";
+		ak4601,pdn-gpio = <&gpmb 29 0>;
+		//cmute-gpios = <&gpmc 5 1>;     //CODEC_MUTE    0: active high, 1: active low
+		//amute-gpios = <&gpma 1 1>;       //AMP_MUTE      0: active high, 1: active low
+		//stanby-gpios = <&gpma 2 0>;     //AMP_STBY      0: active high, 1: active low
+		reg = <0x10>;
+	};
+};
+
+&i2c3 {
+	status = "disabled";
+	port-mux = <11>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c11_bus>;
+
+	/* CarPlay require ack timeout count: 500 */
+	ack-timeout = <500>;
+};
+
+&i2c4 {
+	status = "disabled";
+	port-mux = <6>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c6_bus>;
+	mxt_touch@4b {
+		compatible = "atmel,maxtouch";
+		status = "okay";
+		reg = <0x4b>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&tsc0_default>;
+
+		interrupt-parent = <&gpsd1>;
+		interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
+		interrupt-controller;
+		reset-gpio = <&gpb 16 0>;
+	};
+};
+
+&i2c5 {
+	status = "disabled";
+	port-mux = <33>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c33_bus>;
+
+	mxt_touch@4d {
+		compatible = "atmel,maxtouch";
+		status = "disabled";
+		reg = <0x4d>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&tsc1_sv01>;
+
+		interrupt-parent = <&gpa>;
+		interrupts = <21 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpio = <&gpmd 8 0>;
+	};
+
+	mxt_touch@4f {
+		compatible = "atmel,maxtouch";
+		status = "disabled";
+		reg = <0x4f>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&tsc2_sv01>;
+
+		interrupt-parent = <&gpc>;
+		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpio = <&gpc 12 0>;
+	};
+};
+
+
+&max968xx_config {
+	compatible = "telechips,max968xx_configuration";
+	max968xx_evb_type = <2>;/* 0: TCC8059 EVB, 1: TCC8050/3 sv0.1, 2:TCC8050/3 sv1.0 */
+	max96851_lane_02_13_swap = <1>;
+
+	pinctrl-names = "default", "default";
+	pinctrl-0 = <&serdes_intb_sv10>;
+	pinctrl-1 = <&serdes_lock>;
+	status = "disabled";
+};
+
+&aux_detect_pin {
+	telechips,pins = "gpmb-13";
+	status = "disabled";
+};
+
+/* bluetooth */
+&tcc_bluetooth {
+	compatible = "telechips, tcc_bluetooth";
+	bt_power-gpio = <&gpmd 10 0>; /* BTWIFI_VBAT_EN */
+	bt_reg_on-gpio = <&gpmd 9 0>;
+	bt_hwake-gpio = <&gpk 2 0>;
+	status = "disabled";
+};
+
+/*For Raspberry PI Pin*/
+&i2c1 {
+	status = "okay";
+	port-mux = <15>; /* [0]SCL [1]SDA */
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c15_bus>;
+};
+
+&uart2 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart22_data>;
+};
+
+&pwm {
+	status = "okay";
+	gfb-port = <64 68 69 255>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm64_out &pwm68_out &pwm69_out>;
+};
+
+&gpsb0 {
+	status = "okay";
+	gpsb-port = <15>;
+	pinctrl-names = "idle", "active";
+	pinctrl-0 = <&gpsb15_bus_idle>;
+	pinctrl-1 = <&gpsb15_bus_spi>;
+
+	/* cs-gpios */
+	cs-gpios = <&gpc 1 0>,<&gpc 6 0>;
+};
+
+&gpsb1 {
+	status = "disabled";
+};
+
+&gpsb2 {
+	status = "okay";
+	compatible = "telechips,tcc805x-spi";
+	gpsb-port = <22>;
+	pinctrl-names = "idle", "active";
+	pinctrl-0 = <&gpsb22_bus_idle>;
+	pinctrl-1 = <&gpsb22_bus_spi>;
+
+	cs-gpios = <&gpg 8 0>;
+
+	#address-cells = <1>;
+	#size-cells = <0>;
+	spidev@0 {
+		compatible = "rohm,dh2228fv";
+		reg = <0>;
+		spi-max-frequency = <20000000>;
+	};
+};

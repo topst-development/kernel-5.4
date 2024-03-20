@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+/*
+ * Copyright (C) Telechips Inc.
+ */
+
+&i2c7 {
+	status = "okay";
+};
+
+&i2c6 {
+	status = "okay";
+};
